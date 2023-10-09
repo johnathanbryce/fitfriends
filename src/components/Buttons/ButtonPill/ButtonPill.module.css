@@ -1,0 +1,27 @@
+.container{
+    font-size: 18px;
+    outline: none;
+    border: none;
+    font-weight: bold;
+    padding: 15px;
+    width: 150px;
+    border-radius: var(--borderRadiusPillButton);
+}
+.secondary {
+    color: var(--primaryColorBlue);
+    background-color: var(--inactiveColorLight);
+}
+.primary {
+    background-color: var(--buttonColorPillDashboard);
+    color: white;
+}
+.secondary:focus, .secondary:hover{
+    outline: none;
+    border: none;
+    background-color: var(--inactiveColorMedium);      
+}
+.primary:focus, .primary:hover {
+    outline: none;
+    border: none;
+    background-color: var(--primaryColorExtraBlue);      
+}

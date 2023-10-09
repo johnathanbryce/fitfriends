@@ -1,0 +1,30 @@
+
+/* Desktops / Laptops: */
+@media (max-width: 1350px) { 
+
+}
+
+/* Tablets (landscape) / Small Laptops) */
+@media (max-width: 1200px) { 
+
+}
+
+/* Tablets (portrait) */
+@media (max-width: 950px) { 
+
+}
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+
+}
+
+/* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
+@media (max-width: 325px) {  
+
+}
