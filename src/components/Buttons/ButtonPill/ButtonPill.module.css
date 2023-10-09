@@ -1,27 +1,21 @@
-.container{
-    font-size: 18px;
-    outline: none;
-    border: none;
+
+.button{
+    color: var(--button-primary-text);
+    background-color: var(--button-primary-bg);
+    padding: var(--button-padding);
+    border-radius: var(--border-radius);
     font-weight: bold;
-    padding: 15px;
-    width: 150px;
-    border-radius: var(--borderRadiusPillButton);
 }
-.secondary {
-    color: var(--primaryColorBlue);
-    background-color: var(--inactiveColorLight);
+
+.button:hover{
+    background-color: var(--button-hover-bg);
+    transition: var(--hover-transition);
 }
-.primary {
-    background-color: var(--buttonColorPillDashboard);
-    color: white;
-}
-.secondary:focus, .secondary:hover{
-    outline: none;
-    border: none;
-    background-color: var(--inactiveColorMedium);      
-}
-.primary:focus, .primary:hover {
-    outline: none;
-    border: none;
-    background-color: var(--primaryColorExtraBlue);      
+
+.inactive_button{
+    color: var(--button-primary-text);
+    background-color: var(--inactive-color);
+    padding: var(--button-padding);
+    border-radius: var(--border-radius);
+    font-weight: bold;
 }

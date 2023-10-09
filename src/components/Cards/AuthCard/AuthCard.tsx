@@ -1,0 +1,31 @@
+import styles from './AuthCard.module.css'
+// Internal Components
+import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
+import HorizontalLineBreak from '@/components/HorizontalLineBreak/HorizontalLineBreak'
+
+interface AuthCardProps {
+    children: any,
+    title: string,
+    isLoading: boolean,
+    onSubmit: (e: any) => void;
+    subSection?: string,
+}
+
+export default function AuthCard({children, title, subSection, onSubmit, isLoading}: AuthCardProps) {
+  return (
+    <div className={styles.auth_card}>
+      <h2 className={styles.title}> {title} </h2>
+      <form className={styles.form} onSubmit={onSubmit}>
+        {children}
+        <ButtonPill label='Log In' isLoading={isLoading}/>
+        { subSection ? (
+          <>
+            <HorizontalLineBreak />
+            <p> {subSection} </p>
+          </>
+        ) : (null)
+        }
+      </form>
+    </div>
+  )
+}
