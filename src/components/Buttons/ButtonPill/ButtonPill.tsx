@@ -3,15 +3,13 @@ import styles from "./ButtonPill.module.css"
 
 interface ButtonPillProps {
   label: string,
-  onClick?: (...args: any[]) => void;
-  type: string,
-  isLoading: boolean
+  isLoading: boolean,
+
 }
   
-const ButtonPill = ({ label, onClick, type, isLoading }: ButtonPillProps) => {
-
+const ButtonPill = ({ label, isLoading }: ButtonPillProps) => {
     return (
-      <button className={[styles.container, type === 'primary' ? styles.primary : styles.secondary].join(' ')} onClick={onClick} disabled={isLoading}>
+      <button className={ isLoading ? styles.inactive_button : styles.button} type='submit' disabled={isLoading}>
         {isLoading ? 'Loading...': label}
       </button> 
     );

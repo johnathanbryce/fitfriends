@@ -1,10 +1,12 @@
 :root {
-    /* default */
+    /* default / misc */
     --default-color:#F9F9F9;
+    --inactive-color: grey;
 
     /* background */
     --background-primary:#F9F9F9;
     --background-secondary:	#263238;
+    --background-secondary-light: rgba(38, 50, 56, 0.8);
     --card-bg-primary:	rgba(249, 249, 249,  0.80);
     --form-bg:	rgba(249, 249, 249,  0.80);
 
@@ -22,7 +24,9 @@
     --button-primary-text:#F9F9F9;
     --button-secondary-bg:	#00BD9D;
     --button-secondary-text:#F9F9F9;
-    --button-hover-bg:#FFC107;
+    /* --button-hover-bg:#FFC107; */
+    --button-hover-bg: rgba(255, 87, 34, 0.8);
+    --button-padding: 1rem;
 
     /* borders */
     --border-radius: 0.5rem;
@@ -37,9 +41,14 @@
 
     /* inputs */
     --input-bg:	#263238;
-    --input-text:	#F9F9F9;
-
+    --input-text: #F9F9F9;
+    --input-padding: 1rem;
+    --input-focus-transition: 0.15s ease-in-out;
+    
     /* header/footer */
     --header-bg: #263238;
     --footer-bg: #263238;
+
+    /* hover */
+    --hover-transition: 0.3s ease-in-out;
 }

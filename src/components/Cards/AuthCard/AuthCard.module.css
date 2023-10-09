@@ -1,0 +1,30 @@
+.auth_card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    width: 50rem;
+    background-color: var(--background-secondary-light);
+    color: var(--font-secondary);
+}
+
+.auth_card * {
+    color: var(--font-secondary);
+}
+
+.title{
+    text-align: center;
+    width: 100%;
+    padding: 2rem;
+    color: var(--font-secondary);
+    background-color: var(--background-secondary);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 60%;
+    padding: 2rem;
+}
