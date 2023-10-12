@@ -7,17 +7,18 @@ interface AuthCardProps {
     children: any,
     title: string,
     isLoading: boolean,
+    buttonLabel: string,
     onSubmit: (e: any) => void;
     subSection?: string,
 }
 
-export default function AuthCard({children, title, subSection, onSubmit, isLoading}: AuthCardProps) {
+export default function AuthCard({children, title, subSection, buttonLabel, onSubmit, isLoading}: AuthCardProps) {
   return (
     <div className={styles.auth_card}>
       <h2 className={styles.title}> {title} </h2>
       <form className={styles.form} onSubmit={onSubmit}>
         {children}
-        <ButtonPill label='Log In' isLoading={isLoading}/>
+        <ButtonPill label={buttonLabel} isLoading={isLoading}/>
         { subSection ? (
           <>
             <HorizontalLineBreak />

@@ -17,7 +17,13 @@ export default function Login() {
 
   return (
     <section className={styles.login}>
-      <AuthCard title='Log In' subSection="Forgot your password?" onSubmit={handleLoginSubmit} isLoading={isLoading}>
+      <AuthCard 
+        title='Log In' 
+        subSection="Forgot your password?"
+        buttonLabel='Log In' 
+        onSubmit={handleLoginSubmit} 
+        isLoading={isLoading}
+      >
         <p> or log in with email</p>
         <InputForm 
           name='Your Email'
