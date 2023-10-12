@@ -4,7 +4,7 @@ import styles from "./ButtonPill.module.css"
 interface ButtonPillProps {
   label: string,
   isLoading: boolean,
-  onClick?: () => void
+  onClick?: (e: any) => void
 }
   
 const ButtonPill = ({ label, isLoading, onClick }: ButtonPillProps) => {

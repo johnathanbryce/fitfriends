@@ -6,6 +6,11 @@ import AuthCard from '@/components/Cards/AuthCard/AuthCard'
 import InputForm from '@/components/InputForm/InputForm'
 // Auth Provider Context
 import { useAuth } from '@/context/AuthProvider'
+// Next.js
+import Image from 'next/image'
+// Internal Assets
+import googleIcon from '../../../../public/images/google-icon.png'
+import appleIcon from '../../../../public/images/apple-icon.png'
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false); 
@@ -16,11 +21,14 @@ export default function Login() {
     <section className={styles.login}>
       <AuthCard 
         title='Sign In' 
-        subSection="Forgot your password?"
-        buttonLabel='Log In' 
+        subSection="Forgot your password?" 
         isLoading={isLoading}
       >
-        <button onClick={handleSignInWithGoogle}> Sign In With Google </button>
+        <button onClick={handleSignInWithGoogle} className={styles.login_option}> 
+          <Image src={googleIcon} className={styles.icon} alt="Google's icon"/> 
+          <p className={styles.button_label}> Sign in using Google </p>
+          <div className={styles.empty} />
+        </button>
 
       </AuthCard>   
     </section>

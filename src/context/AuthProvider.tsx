@@ -28,7 +28,7 @@ interface AuthContextState {
   handleLogout: () => void;
   handleSignup: (formData: any) => void;
   resendConfirmation: (email: string) => void;
-  resetPassword: (email: string, password: string) => void;
+  resetPassword: (e: any) => void;
   forgotPassword: (email: string) => void; 
 }
 
@@ -110,8 +110,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   
   }
 
-  const resetPassword = async (email: string, password: string) => {
-   
+  const resetPassword = async (email: any) => {
+
   }
 
   return (
