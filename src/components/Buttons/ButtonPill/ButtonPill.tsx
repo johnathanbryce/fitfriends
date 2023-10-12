@@ -4,12 +4,12 @@ import styles from "./ButtonPill.module.css"
 interface ButtonPillProps {
   label: string,
   isLoading: boolean,
-
+  onClick?: () => void
 }
   
-const ButtonPill = ({ label, isLoading }: ButtonPillProps) => {
+const ButtonPill = ({ label, isLoading, onClick }: ButtonPillProps) => {
     return (
-      <button className={ isLoading ? styles.inactive_button : styles.button} type='submit' disabled={isLoading}>
+      <button onClick={onClick} className={ isLoading ? styles.inactive_button : styles.button} type='submit' disabled={isLoading}>
         {isLoading ? 'Loading...': label}
       </button> 
     );

@@ -5,6 +5,8 @@ import '../styles/vars.css';
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Head from 'next/head';
+// Auth Context
+import { AuthProvider } from '@/context/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,9 +26,9 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </Head>
       <body className={inter.className}>
-        {/* Auth Provider for entire app */}
-        {children}
-        {/* Auth Provider for entire app*/}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )
