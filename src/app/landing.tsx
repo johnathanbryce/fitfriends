@@ -3,25 +3,25 @@
 import { useEffect } from 'react';
 // Next.js
 import { useRouter } from 'next/navigation';
-
-// User Login Authorization -- Auth Context
-/* import { useAuth } from '@/context/AuthContext'; */
+// Pages
+import Dashboard from './(userLoggedIn)/dashboard/page';
 
 export default function LandingPageRouter() {
+    // Checks if user === true and routes to either dashboard or login page
+    const user = localStorage.getItem('user')
+    console.log('landing', user)
+
     const router = useRouter();
-    /* const {user} = useAuth() */
-    const user = false; // TODO: replace with auth logic
 
     useEffect(() => {
       if (!user) {
-        // User is not logged in, redirect to the login page
         router.replace('/login'); 
       }
     }, [user, router]);
-  
+
     return (
       <>
-          {user ? <h1> logged in (/dashboard)</h1> : null}
+          {user ? <Dashboard/> : null}
       </>
     );
 }
