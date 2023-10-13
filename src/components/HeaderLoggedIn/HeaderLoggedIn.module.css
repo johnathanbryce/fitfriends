@@ -1,0 +1,22 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 5rem;
+    height: 12.5rem; /* if this changes, also adjust LayoutLoggedIn container height */
+}
+
+.icons_container{
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+}
+
+.icon{
+    font-size: clamp(2rem, 2vw, 3.25rem);
+    cursor: pointer;
+}
+
+.icon:hover{
+    color: var(--font-headers);
+    transition: var(--hover-transition);
+}

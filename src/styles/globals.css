@@ -48,11 +48,11 @@ h1 {
 
 
 h2 {
-  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-size: clamp(2.8rem, 5vw, 4.3rem);
 }
 
 h3 {
-  font-size: clamp(2.5rem, 4vw, 3.8rem);
+  font-size: clamp(2.5rem, 4vw, 3.4rem);
 }
 
 h4 {
