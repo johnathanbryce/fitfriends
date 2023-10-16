@@ -11,10 +11,16 @@
     gap: 2rem;
 }
 
-.leaderboard_container{
+.leaderboard_container {
     display: flex;
     justify-content: space-between;
     gap: 2rem;
+}
+
+.participants_container{
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap;
 }
 
 

@@ -22,6 +22,19 @@ main {
     display: block; /* Render the main element consistently in IE */
 }
 
+/* Disable number input spinners for Chrome, Safari, and Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+/* Disable number input spinners for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 /* Typography */
 p {
     font-size: clamp(1.4rem, 2vw, 1.8rem);
@@ -60,9 +73,9 @@ h4 {
 }
 
 h5 {
-  font-size: clamp(1.6rem, 2.5vw, 2.5rem);
+  font-size: clamp(1.6rem, 2.5vw, 2rem);
 }
 
 h6 {
-  font-size: clamp(1.4rem, 2vw, 1.6rem);
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
 }

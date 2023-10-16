@@ -21,7 +21,7 @@
 }
 
 .input_width_wrapper{
-    width: 5rem;
+    width: clamp(6.25rem, 7vw, 8rem);
 }
 
 .input_category {

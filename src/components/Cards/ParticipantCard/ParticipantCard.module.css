@@ -1,0 +1,40 @@
+.participant_card{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    background-color: var(--background-secondary);
+}
+
+.nickname, .points_container > * {
+    color: var(--font-secondary);
+}
+
+.name {
+    color: var(--font-headers);
+}
+
+.participant_overview{
+    display: flex;
+    justify-content: space-between;
+}
+
+.points_container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.total_points{
+    font-weight: 700;
+    color: var(--accent-secondary);
+}
+
+.img {
+    width: 40%;
+    height: 100%; 
+    object-fit: cover;
+    border-radius: 50%;
+}
+
