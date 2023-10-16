@@ -24,8 +24,8 @@
     --button-primary-text:#F9F9F9;
     --button-secondary-bg:	#00BD9D;
     --button-secondary-text:#F9F9F9;
-    /* --button-hover-bg:#FFC107; */
     --button-hover-bg: rgba(255, 87, 34, 0.8);
+    --button-hover-bg-secondary: rgba(0, 189, 157, 0.8);
     --button-padding: 1rem;
 
     /* borders */

@@ -1,0 +1,41 @@
+.daily_points_input{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--border-radius);
+    background-color: var(--background-secondary);
+    padding: 2rem;
+}
+
+.curr_month_day{
+    color: var(--font-headers);
+}
+.curr_month_day_small_screens{
+    display: none;
+}
+
+.input {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.input_width_wrapper{
+    width: 5rem;
+}
+
+.input_category {
+    color: var(--font-secondary);
+}
+
+.button_width_wrapper{
+    display: flex;
+    flex: 0.4;
+}
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .curr_month_day{
+        display: none;
+    }
+}

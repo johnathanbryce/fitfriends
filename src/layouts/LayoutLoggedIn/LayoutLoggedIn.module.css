@@ -4,3 +4,10 @@
     align-items: center;
     height: calc(100vh - 12.5rem); /* 12.5rem === fixed height of header, adjust accordingly if header height changes */
 }
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .main_container {
+        padding: 0 2rem;
+    }
+}

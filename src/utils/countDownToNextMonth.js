@@ -1,4 +1,4 @@
-export function countDownToNextMonthMinus5Days(offset = 0) {
+export function countDownToNextMonth(offset = 0) {
   // Get the current date
   const currentDate = new Date();
 
@@ -14,7 +14,7 @@ export function countDownToNextMonthMinus5Days(offset = 0) {
 
   // Calculate the date for the target month minus 5 days
   const targetDate = new Date(targetYear, targetMonth - 1, 0);
-  targetDate.setDate(targetDate.getDate() - 5);
+  targetDate.setDate(targetDate.getDate());
 
   // Calculate the time difference between the target date and the current date
   const timeDifference = targetDate - currentDate;

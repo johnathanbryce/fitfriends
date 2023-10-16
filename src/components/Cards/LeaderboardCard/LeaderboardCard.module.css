@@ -1,0 +1,25 @@
+.leaderboard_card{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+}
+
+.user_details{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.points{
+    font-weight: 700;
+    color: var(--accent-secondary);
+}
+
+.user_img{
+    width: 30%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    border-radius: 50%;
+}

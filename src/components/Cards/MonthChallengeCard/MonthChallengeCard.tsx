@@ -1,8 +1,8 @@
 'use client'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import styles from './MonthChallengeCard.module.css'
 // Utility Functions
-import {countDownToNextMonthMinus5Days} from '../../../utils/countDownToNextMonthMinus5Days'
+import {countDownToNextMonth} from '../../../utils/countDownToNextMonth'
 
 interface MonthChallengeCardProps {
     index?: any,
@@ -15,7 +15,7 @@ export default function MonthChallengeCard({index, month, isActive, handleChalle
     const [notifyUser, setNotifyUser] = useState('');
     const [toggleNotification, setToggleNotification] = useState(false);
     
-    const countdownStringCurrentMonth = countDownToNextMonthMinus5Days(1); // Next month
+    const countdownStringCurrentMonth = countDownToNextMonth(1); // Next month
 
     const handleClick = () => {
         setNotifyUser(`challenge will be active in ${countdownStringCurrentMonth}`)
