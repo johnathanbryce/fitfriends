@@ -1,0 +1,33 @@
+.challenge_card_container{
+}
+
+.month_card_btn{
+    text-align: center;
+    background-color: var(--background-secondary);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    width: 100%;
+}
+
+.month_card_btn h3 {
+    color: var(--font-secondary);
+}
+
+.disabled{
+    cursor: not-allowed;
+    background-color: var(--background-secondary-light);
+}
+
+.notify_user{
+    font-size: clamp(1rem, 2vw, 1.4rem);
+}
+
+.active_challenge{
+    cursor: pointer;
+    background-color: var(--accent-primary);
+}
+
+.active_challenge:hover{
+    background-color: var(--button-hover-bg);
+    transition: var(--hover-transition);
+}

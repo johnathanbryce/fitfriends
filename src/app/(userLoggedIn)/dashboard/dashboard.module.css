@@ -1,0 +1,36 @@
+.dashboard{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    width: 65vw;
+}
+
+.dashboard_section{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.leaderboard_container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.participants_container{
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap;
+}
+
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .dashboard{
+        width: 100%;
+    }
+
+    .participants_container{
+        justify-content: center;
+    }
+}

@@ -8,7 +8,6 @@ import HeaderLoggedOut from '@/components/HeaderLoggedOut/HeaderLoggedOut';
 // Layout
 import LayoutLoggedOut from '@/layouts/LayoutLoggedOut/LayoutLoggedOut';
 
-
 export const metadata: Metadata = {
   title: 'FitFriends',
   description: "Login to access your FitFriends account and challenges!",

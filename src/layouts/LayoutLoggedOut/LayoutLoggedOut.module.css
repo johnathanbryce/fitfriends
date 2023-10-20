@@ -1,4 +1,6 @@
 .main_container {
     display: flex;
     justify-content: center;  
+    align-items: center;
+    padding: 4rem 2rem;
 }

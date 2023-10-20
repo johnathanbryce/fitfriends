@@ -1,0 +1,41 @@
+.leaderboard_card{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+}
+
+.user_details{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.points{
+    font-weight: 700;
+    color: var(--accent-secondary);
+}
+
+.user_img{
+    width: 20%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    border-radius: 50%;
+}
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .leaderboard_card{
+        gap: 2rem;
+    }
+    
+    .user_details{
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .user_img{
+        width: 30%;
+    }
+}

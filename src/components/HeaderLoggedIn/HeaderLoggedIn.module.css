@@ -1,0 +1,23 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 5rem;
+    height: 12.5rem; 
+}
+
+.icons_container{
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+}
+
+.icon{
+    font-size: clamp(2rem, 2vw, 3.25rem);
+    cursor: pointer;
+}
+
+.icon:hover{
+    color: var(--font-headers);
+    transition: var(--hover-transition);
+}

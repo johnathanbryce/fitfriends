@@ -3,7 +3,10 @@ import React from 'react';
 import styles from './layout.module.css'
 // Next.js
 import { Metadata } from 'next';
-
+// Internal Components
+import HeaderLoggedIn from '@/components/HeaderLoggedIn/HeaderLoggedIn';
+// Layouts
+import LayoutLoggedIn from '@/layouts/LayoutLoggedIn/LayoutLoggedIn';
 
 export const metadata: Metadata = {
   title: 'FitFriends',
@@ -18,9 +21,10 @@ export default function LoggedInLayout({
 }) {
   return (
     <>
-    {/* header logged in */}
-    <h1>HEADER LOGGED IN</h1>
+    <HeaderLoggedIn />
+    <LayoutLoggedIn>
      {children}
+     </LayoutLoggedIn>
     {/* footer logged in */}
     </>
   )

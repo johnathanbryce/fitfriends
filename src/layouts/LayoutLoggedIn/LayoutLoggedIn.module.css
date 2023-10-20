@@ -1,0 +1,13 @@
+.main_container {
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+    padding: 2rem 2rem;
+}
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .main_container {
+       /*  padding: 0 2rem; */
+    }
+}

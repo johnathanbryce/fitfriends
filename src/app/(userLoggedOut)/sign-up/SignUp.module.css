@@ -17,11 +17,7 @@
     font-size: 1.6rem;
 }
 
-.icon {
-    width: 4rem;
-    flex: 0.1;
-}
-
-.empty{
-    flex: 0.1;
+.user_name_wrapper{
+    display: flex;
+    gap: 1rem;
 }

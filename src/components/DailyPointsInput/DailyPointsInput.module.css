@@ -1,0 +1,29 @@
+.daily_points_input{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--border-radius);
+    background-color: var(--background-secondary);
+    padding: 2rem;
+}
+
+.input {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.input_width_wrapper{
+    width: clamp(6.25rem, 7vw, 8rem);
+    width: 10rem;
+}
+
+.input_category {
+    color: var(--font-secondary);
+}
+
+.button_width_wrapper{
+    display: flex;
+    flex: 0.3;
+}
+
