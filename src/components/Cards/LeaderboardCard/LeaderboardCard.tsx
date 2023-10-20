@@ -17,7 +17,7 @@ export default function LeaderboardCard({category, img, name, points}: Leaderboa
         <div className={styles.user_details}>
             <Image src={img.src} width={100} height={100} className={styles.user_img} alt='a profile picture image of one of the leaderboard members' />
             <div>
-                <p>{name}</p>
+                <p className={styles.name}>{name}</p>
                 <p className={styles.points}>Total: {points}</p>
             </div>
         </div>

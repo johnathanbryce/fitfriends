@@ -3,7 +3,7 @@ import { useState } from 'react'
 import styles from './reset-password.module.css'
 // Internal Components
 import AuthCard from '@/components/Cards/AuthCard/AuthCard'
-import InputForm from '@/components/InputForm/InputForm'
+import InputForm from '@/components/Input/Input'
 // Auth Provider Context
 import { useAuth } from '@/context/AuthProvider'
 

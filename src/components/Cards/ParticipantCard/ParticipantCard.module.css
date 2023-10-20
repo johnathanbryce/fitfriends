@@ -38,3 +38,24 @@
     border-radius: 50%;
 }
 
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) {
+    .participant_card{
+        flex-direction: row;
+        align-items: center;
+        gap: 2rem;
+        width: 40rem;
+        /* width: 90vw; */
+    }
+    .participant_overview{
+
+        gap: 2rem;
+        justify-content: initial;
+    }
+    
+    .img {
+        width: 30%;
+
+    }
+}
+

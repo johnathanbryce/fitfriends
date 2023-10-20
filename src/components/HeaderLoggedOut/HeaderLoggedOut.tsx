@@ -9,7 +9,7 @@ export default function HeaderLoggedOut() {
         <h1> FitFriends</h1>
         <ButtonPillRoute 
           label='Sign Up'
-          src='sign-in'
+          src='sign-up'
         />
 
     </header>

@@ -18,7 +18,7 @@ export default function ParticipantCard({name, nickname, img, cardio, weights, t
     const totalPoints = cardio + weights;
 
   return (
-    <Link href="/">
+    <Link href="/"> {/*TODO: route this to user specific url ID: /user-overview/userID */}
         <div className={styles.participant_card}>
             <div>
                 <h5 className={styles.name}>{name}</h5>
