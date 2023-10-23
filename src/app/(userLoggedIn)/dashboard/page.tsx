@@ -59,6 +59,11 @@ const USERS_DUMMY_LIST = [
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
 
+ // TODO: - Redirect to the sign-in page if the user is not authenticated
+/*   if (!user) {
+    return <SignIn />;
+  } */
+
   // util functions
   const currentDay = getCurrentDay()
 

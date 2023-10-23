@@ -5,6 +5,7 @@ import styles from './layout.module.css'
 import { Metadata } from 'next';
 // Internal Components
 import HeaderLoggedOut from '@/components/HeaderLoggedOut/HeaderLoggedOut';
+import WavyUpSectionBreak from '@/components/WavesAnimationUp/WavesAnimationUp';
 // Layout
 import LayoutLoggedOut from '@/layouts/LayoutLoggedOut/LayoutLoggedOut';
 
@@ -25,6 +26,7 @@ export default function LoggedOutLayout({
       <LayoutLoggedOut>
         {children}
       </LayoutLoggedOut>
+      <WavyUpSectionBreak color='rgba(255, 87, 34, 0.25)' />
     </>
   )
 }

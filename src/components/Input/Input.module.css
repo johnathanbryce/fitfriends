@@ -34,3 +34,16 @@
     color: var(--font-primary);
 }
 
+.error {
+    border: 0.1rem solid red;
+    animation: shake 0.8s ease-in-out; /* Add shake animation */
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    10%, 90% { transform: translateX(-5px); }
+    20%, 80% { transform: translateX(5px); }
+    30%, 70% { transform: translateX(-5px); }
+    40%, 60% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
