@@ -1,23 +1,12 @@
-
-.login_option {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--default-color);
- 
-    padding: 1rem 2rem;;
-    border-radius: var(--border-radius);
-
-}
-
-.button_label{
-    color: var(--font-primary);
-    font-weight: bold;
-    flex: 1;
-    font-size: 1.6rem;
+.login p {
+    font-size: 1.4rem;
 }
 
 .user_name_wrapper{
     display: flex;
     gap: 1rem;
+}
+
+.error_text{
+    color: var(--error-color);
 }

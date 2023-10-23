@@ -4,7 +4,7 @@
     --inactive-color: grey;
 
     /* background */
-    --background-primary:#F9F9F9;
+    --background-primary: white; /* #F9F9F9; */
     --background-secondary:	#263238;
     --background-secondary-light: rgba(38, 50, 56, 0.8);
     --card-bg-primary:	rgba(249, 249, 249,  0.80);
@@ -33,7 +33,7 @@
     --border-color: #263238;
 
     /* error/success */
-    --error-color: #FF5722;
+    --error-color: #DC143C;
     --success-color: #00BD9D;
 
     /* box-shadow */
