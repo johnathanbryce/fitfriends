@@ -5,6 +5,11 @@
     width: 65vw;
 }
 
+.challenge_month {
+    text-align: center;
+    color: var(--font-headers);
+}
+
 .dashboard_section{
     display: flex;
     flex-direction: column;

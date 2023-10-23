@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 // Next.js
 import { useRouter } from 'next/navigation';
 // Pages
-import Dashboard from './(userLoggedIn)/dashboard/page';
+import Dashboard from './(userLoggedIn)/dashboard/[userID]/page';
 
 export default function LandingPageRouter() {
     const router = useRouter();

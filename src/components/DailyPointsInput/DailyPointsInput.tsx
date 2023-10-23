@@ -4,11 +4,52 @@ import styles from './DailyPointsInput.module.css'
 // Internal Components
 import Input from '../Input/Input';
 import ButtonPill from '../Buttons/ButtonPill/ButtonPill';
+// Utility Functions
+import { getChallengeMonthAndYear } from '@/utils/monthlyChallengeHelpers';
+// Firebase
+import { database } from '../../../firebaseApp';
+import {child, push, get, update, ref, onValue} from 'firebase/database'
 
-export default function DailyPointsInput() {
+interface DailyPointsInputProps {
+    userID: any,
+}
+
+export default function DailyPointsInput({userID}: DailyPointsInputProps) {
     const [cardio, setCardio] = useState<number | ''>(0);
     const [weights, setWeights] = useState<number | ''>(0);
+    const [challengeMonth, setChallengeMonth] = useState(getChallengeMonthAndYear)
  
+    const updatePoints = async () => {
+        try {
+          const userRef = ref(database, `users/${userID}/challenges/${challengeMonth}`);
+          const userSnapshot = await get(userRef);
+    
+          if (userSnapshot.exists()) {
+            const userData = userSnapshot.val();
+            // get the current cardio and weights points
+            const currentCardioPoints = parseInt(userData.cardioPoints);
+            const currentWeightsPoints = parseInt(userData.weightsPoints);
+            // calculate new points based on the current data and the values in the input state
+            const newCardioPoints = currentCardioPoints + (parseInt(cardio as string));
+            const newWeightsPoints = currentWeightsPoints + (parseInt(weights as string));
+            // object with the updated data
+            const updatedData = {
+              cardioPoints: newCardioPoints,
+              weightsPoints: newWeightsPoints,
+              totalPoints: newCardioPoints + newWeightsPoints
+            };
+    
+            // Update the user's data in the database
+            update(ref(database, `users/${userID}/challenges/${challengeMonth}`), updatedData);
+
+            setCardio(0);
+            setWeights(0);
+          }
+        } catch (error) {
+          console.error('Error updating points:', error);
+        }
+      }
+
   return (
     <div className={styles.daily_points_input}>
         <div className={styles.input}>
@@ -40,9 +81,29 @@ export default function DailyPointsInput() {
                 label='Submit'
                 isLoading={false}
                 secondary={true}
-                onClick={() => console.log('submit')}
+                onClick={updatePoints}
             />
         </div>
     </div>
   )
 }
+
+
+/*
+    const updateUserPoints = (uid: string, challengeMonth: any) => {
+        const newPoints = {
+        weightsPoints: weights,
+        cardioPoints: cardio
+        }
+
+        const newPointsKey = push(child(ref(database), 'users')).key;
+
+        // this updates at both "users" & "challenges"
+        const updates: { [key: string]: any } = {};
+        updates['/users/' + uid + newPointsKey] = newPoints;
+        updates['/challenges/' + newPointsKey] = newPoints;
+        return update(ref(database), updates);
+    }
+
+
+*/
