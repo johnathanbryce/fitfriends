@@ -5,6 +5,8 @@ import styles from './SignUp.module.css'
 import AuthCard from '@/components/Cards/AuthCard/AuthCard'
 import InputForm from '@/components/Input/Input'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
+// Internal Assets
+import defaultUser from '../../../../public/images/default-user-img.png'
 // Next.js
 import { useRouter } from 'next/navigation';
 // Firebase Auth
@@ -12,6 +14,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 // Firebase
 import { database, auth } from '../../../../firebaseApp'
 import {set, ref} from 'firebase/database'
+// Utility Functions
+import { getChallengeMonthAndYear } from '@/utils/monthlyChallengeHelpers'
 
 export default function SignUp() {
   // User input state
@@ -40,19 +44,34 @@ export default function SignUp() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      const challengeMonthAndYear = getChallengeMonthAndYear();
+
       const userData = {
         uid: user.uid,
         email: user.email,
         firstName: firstName,
         lastName: lastName,
-        userName: userName
+        userName: userName,
+        profilePicture: defaultUser,
+        challenges: {
+          [challengeMonthAndYear]: {
+            cardioPoints: 0,
+            weightsPoints: 0,
+            totalPoints: 0
+          }
+        },
+       totalPointsOverall: {
+          totalWeights: 0,
+          totalCardio: 0,
+          totalPoints: 0
+       }
       };
 
       const userRef = ref(database, `users/${user.uid}`);
       await set(userRef, userData);
 
       setIsLoading(false);
-      router.replace('/dashboard');
+      router.replace(`/dashboard/${user.uid}`);
     } catch (error: any) {
       console.error('Error creating user:', error);
       if (error.code === 'auth/invalid-email' || error.code === 'auth/missing-email') {
@@ -61,7 +80,6 @@ export default function SignUp() {
         setPasswordError(true);
       } 
       setIsLoading(false);
-      // Handle error, e.g., display an error message to the user
     }
   }
 

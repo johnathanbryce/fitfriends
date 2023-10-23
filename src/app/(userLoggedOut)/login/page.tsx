@@ -8,6 +8,8 @@ import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 // Auth Provider Context
 import { useAuth } from '@/context/AuthProvider'
 // Next.js
+import { useRouter } from 'next/navigation';
+// Next.js
 import Image from 'next/image'
 // Internal Assets
 import googleIcon from '../../../../public/images/google-icon.png'
@@ -23,26 +25,12 @@ export default function Login() {
   const [passwordInput, setPasswordInput] = useState('')
   const [isLoading, setIsLoading] = useState(false); 
 
-  const { handleSignInWithGoogle } = useAuth();
+  // Routing
+  const router = useRouter();
+  const { handleSignInWithGoogle, handleLogin } = useAuth();
 
-  const handleSignIn = async() => {
-    // Sign in with email and password
-    const userCredential = await signInWithEmailAndPassword(auth, emailInput, passwordInput);
-    const user = userCredential.user;
-
-    // Check if the user exists in the Realtime Database
-    const userRef = ref(database, `users/${user.uid}`);
-    const userSnapshot = await get(userRef);
-
-    if (userSnapshot.exists()) {
-      console.log(`user ${user.uid} exists`)
-      // User exists in the "users" bucket
-      // Redirect or perform other actions for authenticated users
-    } else {
-      console.log('user not authorized')
-      // User does not exist in the "users" bucket
-      // Handle the case where the user is not authorized
-    }
+  const handleSignIn = async () => {
+    await handleLogin(emailInput, passwordInput);
   }
 
   return (
@@ -52,13 +40,6 @@ export default function Login() {
         subSection="Forgot your password?" 
         isLoading={isLoading}
       >
-        <button onClick={handleSignInWithGoogle} className={styles.login_option}> 
-          <Image src={googleIcon} className={styles.icon} alt="Google's icon"/> 
-          <p className={styles.button_label}> Sign in using Google </p>
-          <div className={styles.empty} />
-        </button>
-        
-        <p> or sign in with email</p>
           <InputForm 
             name='Your Email'
             value={emailInput}
@@ -83,4 +64,12 @@ export default function Login() {
     </section>
   )
 }
+
+{/*         <button onClick={handleSignInWithGoogle} className={styles.login_option}> 
+          <Image src={googleIcon} className={styles.icon} alt="Google's icon"/> 
+          <p className={styles.button_label}> Sign in using Google </p>
+          <div className={styles.empty} />
+        </button>
+        
+        <p> or sign in with email</p> */}
 

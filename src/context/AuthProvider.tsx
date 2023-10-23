@@ -6,24 +6,30 @@ import { initFirebase } from '../../firebaseApp';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 // Next.js
 import { useRouter } from 'next/navigation';
+// Firebase Auth
+import { signInWithEmailAndPassword } from 'firebase/auth';
+// Firebase 
+import { database, auth } from '../../firebaseApp';
+import { ref, get } from 'firebase/database';
 
 
 // TypeScript and Auth setup
 export interface User {
-    id: any,
+    uid: any,
     username: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     email: string,
     bio: string,
-    phoneNumber: string | number,
-    profile_image_url: string,
-    dateOfBirth: string | number,
+    challenges: object,
+    profilePicture: any,
+    totalPointsOverall: object,
 }
 
 interface AuthContextState {
   user: User | null;
   newUser: boolean | null;
-  handleLogin: (formData: any) => void;
+  handleLogin: (email: string, password: string) => void;
   handleSignInWithGoogle: () => void;
   handleLogout: () => void;
   handleSignup: (formData: any) => void;
@@ -66,17 +72,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-        try {
-            setUser(JSON.parse(storedUser));
-        } catch (error) {
-            console.error('Error parsing stored user data:', error);
-        }
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error('Error parsing stored user data:', error);
+      }
     }
   }, []);
 
-  const handleLogin = (userData: any) => {
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const loggedInUser = userCredential.user;
+      if (loggedInUser) {
+        // Check if the user exists in the Realtime Database
+        const userRef = ref(database, `users/${loggedInUser.uid}`);
+        const userSnapshot = await get(userRef);
 
-  };
+        if (userSnapshot.exists()) {
+          // User exists in the "users" bucket
+          console.log(`user ${loggedInUser.uid} exists`);
+          setUser(loggedInUser);
+          localStorage.setItem('user', JSON.stringify(loggedInUser));
+          router.replace(`/dashboard/${user.uid}`);
+        } else {
+          console.log('user not authorized');
+          // User does not exist in the "users" bucket
+          // Handle the case where the user is not authorized
+        }
+      }
+    } catch (error) {
+      console.error('Error signing in:', error);
+      // Handle authentication error here
+    }
+  }
 
   const handleSignInWithGoogle = async() => {
     try {
