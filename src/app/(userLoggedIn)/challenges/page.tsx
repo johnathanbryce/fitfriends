@@ -6,9 +6,14 @@ import { getCurrentMonth, getNextThreeMonths } from '@/utils/dateHelpers'
 // Internal Components
 import MonthChallengeCard from '@/components/Cards/MonthChallengeCard/MonthChallengeCard'
 
+import { useAuth } from '@/context/AuthProvider'
+
 export default function Challenges() {
   const currentMonth = getCurrentMonth();
   const nextThreeMonths = getNextThreeMonths();
+ 
+  const {user} = useAuth()
+  console.log(user)
 
   const handleChallengeClick = (isActive: boolean) => {
     if (isActive) {

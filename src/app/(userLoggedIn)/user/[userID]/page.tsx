@@ -8,17 +8,13 @@ import { useRouter } from 'next/navigation'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider';
 
-
 interface UserOverviewProps {
     params: any
 }
 
 // /user-overview/XXXXX
 export default function UserOverview({params}: UserOverviewProps) {
-
   const { user } = useAuth();
-
-
   const { handleLogout } = useAuth();
 
   useEffect(() => {

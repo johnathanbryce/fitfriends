@@ -1,19 +1,33 @@
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+admin.initializeApp();
+
 /**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ * Adds a new challenge to the Realtime Database.
+ * @async
+ * @function
+ * @throws {Error} Throws an error if there's an issue adding the challenge.
  */
+async function addNewChallenge() {
+  const database = admin.database();
 
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+  // Generate a new challenge (you can replace this with your own logic)
+  const newChallenge = {
+    text: "This is a new challenge",
+    timestamp: admin.database.ServerValue.TIMESTAMP,
+  };
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+  // Push the new challenge to the "challenges" node in your database
+  const challengesRef = database.ref("challenges");
+  challengesRef.push(newChallenge);
+}
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+// Create a scheduled function to run every 30 seconds
+exports.scheduledFunction = functions.pubsub
+    .schedule("*/30 * * * * *") // Run every 30 seconds
+    .timeZone("America/Vancouver") // Set to Pacific Time Zone (PST)
+    .onRun((context) => {
+      addNewChallenge();
+      return null;
+    });
+

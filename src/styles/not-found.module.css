@@ -1,0 +1,29 @@
+.not_found{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    padding: 5rem;
+    text-align: center;
+    height: 100vh;
+}
+
+.not_found h2{
+    color: var(--font-headers);
+}
+
+.sub_header_wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.icon{
+    font-size: 6.5rem;
+}
+
+.icon:hover{
+    color: var(--accent-primary);
+    transition: var(--hover-transition);
+}

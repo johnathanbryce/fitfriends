@@ -38,9 +38,16 @@ export default function DailyPointsInput({userID}: DailyPointsInputProps) {
               weightsPoints: newWeightsPoints,
               totalPoints: newCardioPoints + newWeightsPoints
             };
+
+            const updatedOverallPointsData = {
+                totalCardio: newCardioPoints,
+                totalWeights: newWeightsPoints,
+                totalPoints: newCardioPoints + newWeightsPoints
+            }
     
             // Update the user's data in the database
             update(ref(database, `users/${userID}/challenges/${challengeMonth}`), updatedData);
+            update(ref(database, `users/${userID}/totalPointsOverall`), updatedOverallPointsData);
 
             setCardio(0);
             setWeights(0);

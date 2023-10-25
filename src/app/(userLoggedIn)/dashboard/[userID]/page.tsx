@@ -15,9 +15,6 @@ import { getCurrentDay, getCurrentMonth } from '@/utils/dateHelpers'
 import { getChallengeMonthAndYear } from '@/utils/monthlyChallengeHelpers'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
-// Next.js
-import { useRouter } from 'next/navigation';
-import Link from 'next/link'
 
 const USERS_DUMMY_LIST = [
   {
@@ -70,9 +67,6 @@ export default function Dashboard() {
   // auth context
   const { user } = useAuth();
 
-  // routing
-  const router = useRouter();
-
   // util functions
   const currentDay = getCurrentDay()
   const displayChallengeMonth = getCurrentMonth()
@@ -121,6 +115,7 @@ export default function Dashboard() {
               {users.map((user: any) => (
                 <ParticipantCard
                   key={user.uid}
+                  userId={user.uid}
                   firstName={user.firstName}
                   lastName={user.lastName}
                   profilePicture={!user.profilePicture ? defaultUser : ''}

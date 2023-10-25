@@ -23,6 +23,23 @@ export const getCurrentMonth = () => {
     return months[monthIndex];
 };
 
+export const getCurrentMonthAndYear = () => {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth(); 
+  const currentYear = currentDate.getFullYear();
+
+  const months = [
+    'January', 'February', 'March', 'April',
+    'May', 'June', 'July', 'August',
+    'September', 'October', 'November', 'December'
+  ];
+
+  const formattedMonth = months[currentMonth]
+  const formattedName = `${formattedMonth} ${currentYear}`
+
+  return formattedName;
+}
+
 export const getNextThreeMonths = () => {
     const now = new Date();
     const nextMonths = [];
