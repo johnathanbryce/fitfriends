@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 // Firebase
 import { database } from '../../../../../firebaseApp';
-import { ref, get } from 'firebase/database';
+import { ref, get, push } from 'firebase/database';
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 // Loading
@@ -16,7 +16,62 @@ import {LuLogOut} from 'react-icons/lu'
 import {AiOutlineEdit} from 'react-icons/ai'
 import {IoIosArrowBack} from 'react-icons/io'
 
+import { getCurrentMonthAndYear } from '@/utils/dateHelpers';
+
 export default function UserProfile() {
+
+  /////////
+async function addNewChallenge() {
+  // get refs to "users" & "challenges" main data buckets in db
+  console.log('run')
+  const challengesRef = ref(database, `challenges`);
+  const usersRef = ref(database, 'users');
+
+  // gets a snapshot of all users in 'users'
+  const usersSnapshot = await get(usersRef);
+
+  // participants object to be added to each monthly challenge
+  const participants: any = {};
+
+  usersSnapshot.forEach((userSnapshot) => {
+    const userData = userSnapshot.val();
+    if (userData) {
+      // participant object to be added to "participants" for each monthly challenge
+      const participant = {
+        cardioPoints: 0,
+        weightsPoints: 0,
+        totalPoints: 0,
+      };
+      // add the participant to the participants object with the user's ID as the key
+      participants[userSnapshot.key] = participant;
+    } 
+  });
+
+  // get the current month and year to set the name of the challenge
+  const currMonthAndYear = getCurrentMonthAndYear();
+
+  try {
+    const newChallenge = {
+      name: currMonthAndYear,
+      participants: participants
+    };
+
+    // Push the new challenge to the 'challenges' node
+    push(challengesRef, newChallenge);
+  } catch (error) {
+    console.error("Error adding a new challenge:", error);
+  }
+}
+
+useEffect(() => {
+  addNewChallenge();
+}, [])
+
+
+
+
+////////////
+
   const [userData, setUserData] = useState<any>();
   const [isLoading, setIsLoading] = useState(false)
 
@@ -37,7 +92,6 @@ export default function UserProfile() {
             // If the user's data exists, set it in the state
             const userData = snapshot.val();
             setUserData(userData);
-            console.log(userData)
             setIsLoading(false)
           } else {
             // Handle the case where the user's data does not exist
@@ -62,7 +116,7 @@ export default function UserProfile() {
             <div className={styles.return_container}>
               <Link href={`/dashboard/${user?.uid}`}> 
                 <IoIosArrowBack className={styles.back_arrow}/> 
-                <p> return to dashboard  </p>
+                <p> return to dashboard </p>
               </Link>
             </div>
             <div className={styles.user_main_overview}>

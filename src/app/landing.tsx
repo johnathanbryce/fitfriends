@@ -17,16 +17,14 @@ export default function LandingPageRouter() {
     useEffect(() => {
       if (!user) {
         router.replace('/login'); 
-        console.log(user)
       } else {
         router.replace(`/dashboard/${userObject.uid}`); 
-        console.log(user)
       }
     }, [user, router]);
 
     return (
       <>
-          {user ? <UnauthorizedLoader /> : null}
+          {/* {user ? <UnauthorizedLoader /> : null} */}
       </>
     );
 }
