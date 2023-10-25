@@ -10,7 +10,8 @@
     border-radius: var(--border-radius);
     font-weight: bold;
     width: 10rem;
-    font-size: 2rem;
+    height: 4rem;
+    font-size: 1.6rem;
 }
 
 .button:hover{

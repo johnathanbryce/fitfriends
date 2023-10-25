@@ -1,0 +1,55 @@
+.user_profile{
+    display: flex;
+    flex-direction: column;
+    width: 55rem;
+}
+
+.return_container > *{
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    margin-bottom: 0.75rem;
+}
+
+.back_arrow, .return_container p {
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+}
+
+.user_main_overview{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    background-color: var(--accent-primary);
+}
+
+.user_main_overview > * {
+    color: var(--font-secondary);
+}
+
+.profile_pic {
+    width: 30%;
+    height: 100%;
+}
+
+.user_details_section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    border: 0.1rem solid var(--accent-primary);
+}
+
+.user_details_section button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 15rem;
+    cursor: pointer;
+}
+
+.icon {
+    font-weight: bold;
+    font-size: 2.5rem;
+}

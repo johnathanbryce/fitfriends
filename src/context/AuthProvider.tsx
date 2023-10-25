@@ -29,6 +29,8 @@ export interface User {
 interface AuthContextState {
   user: User | null;
   newUser: boolean | null;
+  authError: string | null;
+  isLoginLoading: boolean;
   handleLogin: (email: string, password: string) => void;
   handleSignInWithGoogle: () => void;
   handleLogout: () => void;
@@ -41,6 +43,8 @@ interface AuthContextState {
 const AuthContext = createContext<AuthContextState>({
   user: null,
   newUser: null,
+  authError: null,
+  isLoginLoading: false,
   handleLogin: () => {},
   handleSignInWithGoogle: () => {},
   handleLogout: () => {},
@@ -57,6 +61,9 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any | null>(null);
   const [newUser, setNewUser] = useState(null);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [isLoginLoading, setIsLoginLoading] = useState<boolean>(false)
+ 
 
   // Firebase Auth
   initFirebase(); // configures firebase in our app
@@ -83,28 +90,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const handleLogin = async (email: string, password: string) => {
     try {
+      setAuthError(null);
+      setIsLoginLoading(true)
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const loggedInUser = userCredential.user;
       if (loggedInUser) {
-        // Check if the user exists in the Realtime Database
+        // check if the user exists in the db
         const userRef = ref(database, `users/${loggedInUser.uid}`);
         const userSnapshot = await get(userRef);
 
         if (userSnapshot.exists()) {
-          // User exists in the "users" bucket
-          console.log(`user ${loggedInUser.uid} exists`);
+          // user exists in the "users" bucket so set user in Context state
           setUser(loggedInUser);
+          setIsLoginLoading(false);
           localStorage.setItem('user', JSON.stringify(loggedInUser));
           router.replace(`/dashboard/${user.uid}`);
         } else {
-          console.log('user not authorized');
-          // User does not exist in the "users" bucket
-          // Handle the case where the user is not authorized
+          setAuthError('User does not exist. Please sign up to register your account.')
         }
       }
-    } catch (error) {
-      console.error('Error signing in:', error);
-      // Handle authentication error here
+    } catch (error: any) {
+      if (error.code === 'auth/invalid-email') {
+        setIsLoginLoading(false);
+        setAuthError('Invalid email. Please check your email address.');
+      } else if (error.code === 'auth/missing-password') {
+        setIsLoginLoading(false);
+        setAuthError('Wrong or missing password. Please check your password.');
+      } else  if(error.code === 'auth/invalid-login-credentials'){
+        setIsLoginLoading(false);
+        setAuthError('Invalid credentials. Please check your email or password.');
+      } else {
+        setIsLoginLoading(false);
+        setAuthError('An unknown error occurred. Please try again.');
+      }
     }
   }
 
@@ -126,6 +144,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('logout')
     setUser(null);
     localStorage.removeItem('user');
+    //localStorage.clear();
+    router.replace('/')
   };
 
   const handleSignup = (userData: any) => {
@@ -148,6 +168,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider value={{ 
         user, 
         newUser,
+        authError,
+        isLoginLoading,
         handleLogin: handleLogin, 
         handleSignInWithGoogle: handleSignInWithGoogle,
         handleLogout: handleLogout, 

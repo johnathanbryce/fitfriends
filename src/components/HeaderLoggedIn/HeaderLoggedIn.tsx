@@ -8,26 +8,26 @@ import {BsPersonCircle, BsBell} from 'react-icons/bs'
 // Next.js
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
+// Auth Context
+import { useAuth } from '@/context/AuthProvider'
 
 export default function HeaderLoggedIn() {
   // Routing
   const router = useRouter();
 
+  // auth context
+  const { user } = useAuth();
+
   const onClickDisplayNotifications = () => {
     console.log('click')
   }
 
-  const onClickRouteToProfile = () => {
-    // routes to dashboard
-    router.replace('/profile');
-  }
-
   return (
     <header className={styles.header}>
-        <h1> FitFriends</h1>
+        <Link href='/'><h1> FitFriends</h1></Link>
         <div className={styles.icons_container}>
           <BsBell className={styles.icon} onClick={onClickDisplayNotifications } />
-          <Link href={'/profile'}><BsPersonCircle className={styles.icon} /></Link>
+          <Link href={`/user-profile/${user?.uid}`}><BsPersonCircle className={styles.icon} /></Link>
         </div>
 
     </header>

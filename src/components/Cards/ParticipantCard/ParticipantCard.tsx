@@ -6,6 +6,7 @@ import Link from 'next/link'
 import defaultUserImage from '../../../../public/images/default-user-img.png'
 
 interface ParticipantCardProps {
+    userId: string,
     firstName: string,
     lastName: string,
     userName: string,
@@ -15,9 +16,8 @@ interface ParticipantCardProps {
     total: number
 }
 
-export default function ParticipantCard({firstName, lastName, userName, profilePicture, cardio, weights, total}: ParticipantCardProps) {
+export default function ParticipantCard({userId, firstName, lastName, userName, profilePicture, cardio, weights, total}: ParticipantCardProps) {
   return (
-    <Link href="/"> {/*TODO: route this to user specific url ID: /user-overview/userID */}
         <div className={styles.participant_card}>
             <div>
                 <h5 className={styles.name}>{firstName} {lastName}</h5>
@@ -32,6 +32,5 @@ export default function ParticipantCard({firstName, lastName, userName, profileP
                 </div>
             </div>
         </div>
-    </Link>
   )
 }

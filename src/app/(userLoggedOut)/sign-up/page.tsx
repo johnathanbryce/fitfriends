@@ -53,6 +53,7 @@ export default function SignUp() {
         lastName: lastName,
         userName: userName,
         profilePicture: defaultUser,
+        /* isLoggedin: true, */
         challenges: {
           [challengeMonthAndYear]: {
             cardioPoints: 0,
