@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 // Next.js
 import { useRouter } from 'next/navigation';
 // Pages
-import Dashboard from './(userLoggedIn)/dashboard/[userID]/page';
+import Dashboard from './(userLoggedIn)/dashboard/[challengeID]/page';
 // Interal Components
 import UnauthorizedLoader from '@/components/UnauthorizedLoader/UnauthorizedLoader';
 

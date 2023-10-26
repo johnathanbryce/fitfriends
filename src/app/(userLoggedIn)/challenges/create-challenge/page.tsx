@@ -1,12 +1,16 @@
 'use client'
 import React, {useState} from 'react'
 import styles from './create-challenge.module.css'
+// Next.js
+import { useRouter } from 'next/navigation';
 // Internal Components
 import Input from '@/components/Input/Input';
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill';
 // Firebase
 import { database } from '../../../../../firebaseApp';
 import { ref, get, push, set} from 'firebase/database';
+// Auth Context
+import { useAuth } from '@/context/AuthProvider';
 
 export default function CreateChallenge() {
     const [challengeName, setChallengeName] = useState('');
@@ -14,6 +18,11 @@ export default function CreateChallenge() {
     const [weightsRules, setWeightsRules] = useState('');
     const [challengeStart, setChallengeStart] = useState('');
     const [challengeEnd, setChallengeEnd] = useState('');
+
+    // router
+    const router = useRouter();
+    // auth context
+    const {user} = useAuth();
 
     async function addNewChallenge() {
         // get refs to "users" & "challenges" main data buckets in db
@@ -26,7 +35,8 @@ export default function CreateChallenge() {
         // participants object to be added to each monthly challenge
         const participants: any = {};
     
-    /*     usersSnapshot.forEach((userSnapshot) => {
+        // adds ALL registered users from "users" bucket to this challenge 
+        usersSnapshot.forEach((userSnapshot) => {
           const userData = userSnapshot.val();
           if (userData) {
             // participant object to be added to "participants" for each monthly challenge
@@ -38,11 +48,12 @@ export default function CreateChallenge() {
             // add the participant to the participants object with the user's ID as the key
             participants[userSnapshot.key] = participant;
           } 
-        }); */
+        });
     
         try {
           const newChallenge: any = {
             id: '', 
+            creator: user?.uid,
             name: challengeName,
             participants: participants,
             rules: {
@@ -70,6 +81,8 @@ export default function CreateChallenge() {
           setWeightsRules('');
           setChallengeStart('');
           setChallengeEnd('');
+          // route to the challenge
+          router.replace(`/dashboard/${newChallengeId}`); 
         } catch (error) {
           console.error("Error adding a new challenge:", error);
         }
@@ -82,7 +95,7 @@ export default function CreateChallenge() {
             <h4> Challenge name </h4>
             <Input 
                 name='challengeName'
-                placeholder='write a fun and apt challenge name!'
+                placeholder=''
                 value={challengeName}
                 type='text'
                 onChange={(e) => setChallengeName(e)}

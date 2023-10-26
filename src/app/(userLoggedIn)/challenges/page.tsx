@@ -7,9 +7,7 @@ import Link from 'next/link'
 import { getCurrentMonth, getNextThreeMonths } from '@/utils/dateHelpers'
 // Internal Components
 import MonthChallengeCard from '@/components/Cards/MonthChallengeCard/MonthChallengeCard'
-// Firebase
-import { database } from '../../../../firebaseApp'
-import { ref, get, push, set} from 'firebase/database';
+
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 // External Libraries
@@ -29,58 +27,7 @@ export default function Challenges() {
     }
   };
 
-  async function addNewChallenge() {
-    // get refs to "users" & "challenges" main data buckets in db
-    const challengesRef = ref(database, `challenges`);
-    const usersRef = ref(database, 'users');
 
-    // gets a snapshot of all users in 'users'
-    const usersSnapshot = await get(usersRef);
-
-    // participants object to be added to each monthly challenge
-    const participants: any = {};
-
-/*     usersSnapshot.forEach((userSnapshot) => {
-      const userData = userSnapshot.val();
-      if (userData) {
-        // participant object to be added to "participants" for each monthly challenge
-        const participant = {
-          cardioPoints: 0,
-          weightsPoints: 0,
-          totalPoints: 0,
-        };
-        // add the participant to the participants object with the user's ID as the key
-        participants[userSnapshot.key] = participant;
-      } 
-    }); */
-
-    try {
-      const newChallenge: any = {
-        id: '', 
-        name: '',
-        participants: participants,
-        rules: {
-            cardioRules: '',
-            weightsRules: '',
-        },
-        challengeDuration: {
-          starts: '',
-          ends: ''
-        }
-      };
-  
-      // push the new challenge to the 'challenges' node
-      const newChallengeRef = push(challengesRef, newChallenge);
-      // get the generated ID from the reference
-      const newChallengeId = newChallengeRef.key;
-      // update the 'id' field in the newChallenge object with the generated ID
-      newChallenge.id = newChallengeId;
-      // update the challenge with the generated ID
-      set(newChallengeRef, newChallenge);
-    } catch (error) {
-      console.error("Error adding a new challenge:", error);
-    }
-  }
 
   return (
     <section className={styles.challenges}>
