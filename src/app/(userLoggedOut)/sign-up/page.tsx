@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './SignUp.module.css'
 // Internal Components
 import AuthCard from '@/components/Cards/AuthCard/AuthCard'
@@ -14,8 +14,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 // Firebase
 import { database, auth } from '../../../../firebaseApp'
 import {set, ref} from 'firebase/database'
-// Utility Functions
-import { getChallengeMonthAndYear } from '@/utils/monthlyChallengeHelpers'
+// Auth
+import { useAuth } from '@/context/AuthProvider'
 
 export default function SignUp() {
   // User input state
@@ -28,38 +28,41 @@ export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
   // Error state variables
   const [emailError, setEmailError] = useState(false);
+  const [emailErrorMsg, setEmailErrorMsg] = useState('')
   const [passwordError, setPasswordError] = useState(false);
   const [usernameError, setUsernameError] = useState(false);
   // Routing
   const router = useRouter();
+  // Auth
+  const { handleSignup, authError } = useAuth();
+
+  // Use useEffect to watch for changes in authError
+  useEffect(() => {
+    // Reset errors to false initially
+    setEmailError(false);
+    setPasswordError(false);
+    if (authError === 'Invalid or missing email address. Please input again.') {
+      setEmailError(true);
+    } else if (authError === 'Invalid or missing password') {
+      setPasswordError(true);
+    } else if (authError === 'This email is already registered. Please try another.') {
+      setEmailError(true);
+    }
+  }, [authError]);
 
   const handleUserSignUp = async() => {
     setIsLoading(true);
-    // resets errors to false
-    setUsernameError(false);
-    setEmailError(false); 
-    setPasswordError(false); 
-    
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      const challengeMonthAndYear = getChallengeMonthAndYear();
-
       const userData = {
-        uid: user.uid,
-        email: user.email,
+        email: email,
         firstName: firstName,
         lastName: lastName,
         userName: userName,
         profilePicture: defaultUser,
-        /* isLoggedin: true, */
+        isLoggedin: null,
         challenges: {
-          [challengeMonthAndYear]: {
-            cardioPoints: 0,
-            weightsPoints: 0,
-            totalPoints: 0
-          }
+          
         },
        totalPointsOverall: {
           totalWeights: 0,
@@ -68,19 +71,22 @@ export default function SignUp() {
        }
       };
 
-      const userRef = ref(database, `users/${user.uid}`);
-      await set(userRef, userData);
-
+      handleSignup(email, password, userData);
       setIsLoading(false);
-      router.replace(`/dashboard/${user.uid}`);
+      // reset errors to false 
+      setEmailError(false);
+      setPasswordError(false);
+     /*  router.replace(`/challenges`); */
     } catch (error: any) {
-      console.error('Error creating user:', error);
-      if (error.code === 'auth/invalid-email' || error.code === 'auth/missing-email') {
-        setEmailError(true);
-      } else if (error.code === 'auth/weak-password' || error.code === 'auth/missing-password') {
-        setPasswordError(true);
-      } 
-      setIsLoading(false);
+
+    }
+    // Set the appropriate error states based on the error message
+    if (authError === 'Invalid or missing email address. Please input again.') {
+      setEmailError(true);
+    } else if (authError === 'Invalid or missing password') {
+      setPasswordError(true);
+    } else if (authError === 'This email is already registered. Please try another.') {
+      setEmailError(true);
     }
   }
 
@@ -92,9 +98,11 @@ export default function SignUp() {
         isLoading={isLoading}
       >
          <p>Join the fitness challenge, conquer your goals, and seize the glory as you compete against friends to become the reigning fitness champion of the month</p>
-          {emailError && <p className={styles.error_text}>Invalid email address. </p>}
+          {emailError && <p className={styles.error_text}> {authError} </p>}
+          {passwordError && <p className={styles.error_text}> {authError} </p>}
           <InputForm 
             name='Your Email'
+            placeholder={'Your Email'}
             value={email}
             type='email'
             onChange={(newVal) => setEmail(newVal)}
@@ -102,9 +110,10 @@ export default function SignUp() {
             error={emailError}
             required={true}
           />
-          {passwordError && <p className={styles.error_text}> Your password must be at least 6 characters long. </p>}
+          
           <InputForm 
             name='Password'
+            placeholder={'Password'}
             value={password}
             type='password'
             onChange={(newVal) => setPassword(newVal)}
@@ -116,6 +125,7 @@ export default function SignUp() {
           <div className={styles.user_name_wrapper}>
             <InputForm 
                 name='First Name'
+                placeholder={'First Name'}
                 value={firstName}
                 type='text'
                 onChange={(newVal) => setFirstName(newVal)}
@@ -124,6 +134,7 @@ export default function SignUp() {
             />
             <InputForm 
                 name='Last Name'
+                placeholder={'Last Name'}
                 value={lastName}
                 type='text'
                 onChange={(newVal) => setLastName(newVal)}
@@ -133,6 +144,7 @@ export default function SignUp() {
         </div>
             <InputForm 
                 name='User Name'
+                placeholder={'Username'}
                 value={userName}
                 type='text'
                 onChange={(newVal) => setUserName(newVal)}

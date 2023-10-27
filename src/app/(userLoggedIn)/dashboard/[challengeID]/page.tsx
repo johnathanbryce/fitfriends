@@ -51,18 +51,18 @@ interface urlParamsProps {
 }
 
 export default function Dashboard({params}: urlParamsProps) {
-  const [challengeName, setChallengeName] = useState('')
-  const [participants, setParticipants] = useState<any>([]);
+  const [challengeData, setChallengeData] = useState<any>()
   const [participantsInfo, setParticipantsInfo] = useState<any[]>([]);
 
   // auth context
   const { user } = useAuth();
 
-  useEffect(() => {
+  const fetchParticipantsFromChallenge = () => {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
 
     onValue(challengeRef, (snapshot) => {
       const data = snapshot.val();
+      setChallengeData(data)
   
       if (data.participants) {
         const participantIds = Object.keys(data.participants);
@@ -93,11 +93,25 @@ export default function Dashboard({params}: urlParamsProps) {
         });
       }
     });
+  }
+
+  useEffect(() => {
+    fetchParticipantsFromChallenge();
   }, [params.challengeID]);
   
   return (
     <section className={styles.dashboard}>
-      <h2 className={styles.challenge_month}> challenge name  </h2>
+      <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
+
+      <div className={styles.challenge_overview}>
+        <h5> Review this challenge&apos;s rules and take note of the start and end dates: </h5>
+
+        <div className={styles.rules}>
+          <p> <b>Cardio points:</b> <span className={styles.rule}>{challengeData ? challengeData.rules.cardioRules : ''}</span></p>
+          <p> <b>Weight points:</b> <span className={styles.rule}>{challengeData ? challengeData.rules.weightsRules : ''}</span></p>
+        </div>
+      </div>
+
       <div className={styles.dashboard_section}>
         <h3> Points Input  </h3>
         <DailyPointsInput userID={user?.uid} />

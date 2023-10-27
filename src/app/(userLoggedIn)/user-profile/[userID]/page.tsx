@@ -59,9 +59,9 @@ export default function UserProfile() {
         {userData ? (
           <>
             <div className={styles.return_container}>
-              <Link href={`/dashboard/${user?.uid}`}> 
+              <Link href={`/challenges`}> 
                 <IoIosArrowBack className={styles.back_arrow}/> 
-                <p> return to dashboard </p>
+                <p> return to challenges </p>
               </Link>
             </div>
             <div className={styles.user_main_overview}>

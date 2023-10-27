@@ -7,11 +7,10 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 // Next.js
 import { useRouter } from 'next/navigation';
 // Firebase Auth
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 // Firebase 
 import { database, auth } from '../../firebaseApp';
-import { ref, get } from 'firebase/database';
-
+import { ref, get, set } from 'firebase/database';
 
 // TypeScript and Auth setup
 export interface User {
@@ -30,11 +29,11 @@ interface AuthContextState {
   user: User | null;
   newUser: boolean | null;
   authError: string | null;
-  isLoginLoading: boolean;
+  isLoading: boolean;
   handleLogin: (email: string, password: string) => void;
   handleSignInWithGoogle: () => void;
   handleLogout: () => void;
-  handleSignup: (formData: any) => void;
+  handleSignup: (email: string, password: string, userData: any) => void;
   resendConfirmation: (email: string) => void;
   resetPassword: (e: any) => void;
   forgotPassword: (email: string) => void; 
@@ -44,7 +43,7 @@ const AuthContext = createContext<AuthContextState>({
   user: null,
   newUser: null,
   authError: null,
-  isLoginLoading: false,
+  isLoading: false,
   handleLogin: () => {},
   handleSignInWithGoogle: () => {},
   handleLogout: () => {},
@@ -62,8 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any | null>(null);
   const [newUser, setNewUser] = useState(null);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [isLoginLoading, setIsLoginLoading] = useState<boolean>(false)
- 
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // Firebase Auth
   initFirebase(); // configures firebase in our app
@@ -76,6 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Routing
   const router = useRouter();
   
+  // restore user auth state after a page refresh
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -88,10 +87,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const handleSignup = async(email: string, password: string, userData: any) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      const userRef = ref(database, `users/${user.uid}`);
+
+      const userDataWithMatchingUID = {...userData, uid: user.uid}
+      await set(userRef, userDataWithMatchingUID);
+
+      setIsLoading(false);
+      setUser(user); // Set the user in the context
+      localStorage.setItem('user', JSON.stringify(user)); 
+      router.replace(`/challenges`);
+    } catch (error: any) {
+      if (error.code === 'auth/invalid-email' || error.code === 'auth/missing-email') {
+        setAuthError('Invalid or missing email address. Please input again.')
+      } else if (error.code === 'auth/weak-password' || error.code === 'auth/missing-password') {
+        setAuthError('Invalid or missing password')
+      } else if(error.code === 'auth/email-already-in-use') {
+         setAuthError('This email is already registered. Please try another.')
+      } 
+      setIsLoading(false);
+    }
+  };
+
   const handleLogin = async (email: string, password: string) => {
     try {
       setAuthError(null);
-      setIsLoginLoading(true)
+      setIsLoading(true)
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const loggedInUser = userCredential.user;
       if (loggedInUser) {
@@ -102,7 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (userSnapshot.exists()) {
           // user exists in the "users" bucket so set user in Context state
           setUser(loggedInUser);
-          setIsLoginLoading(false);
+          setIsLoading(false);
           localStorage.setItem('user', JSON.stringify(loggedInUser));
           router.replace(`/dashboard/${user.uid}`);
         } else {
@@ -111,16 +136,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (error: any) {
       if (error.code === 'auth/invalid-email') {
-        setIsLoginLoading(false);
+        setIsLoading(false);
         setAuthError('Invalid email. Please check your email address.');
       } else if (error.code === 'auth/missing-password') {
-        setIsLoginLoading(false);
+        setIsLoading(false);
         setAuthError('Wrong or missing password. Please check your password.');
       } else  if(error.code === 'auth/invalid-login-credentials'){
-        setIsLoginLoading(false);
+        setIsLoading(false);
         setAuthError('Invalid credentials. Please check your email or password.');
       } else {
-        setIsLoginLoading(false);
+        setIsLoading(false);
         setAuthError('An unknown error occurred. Please try again.');
       }
     }
@@ -141,15 +166,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
  
   const handleLogout = async () => {
+    if(user === null){
+      console.log('Not logged in')
+      return;
+    }
     console.log('logout')
     setUser(null);
     localStorage.removeItem('user');
     //localStorage.clear();
     router.replace('/')
-  };
-
-  const handleSignup = (userData: any) => {
-
   };
 
   const resendConfirmation = async (email: string) => {
@@ -169,7 +194,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user, 
         newUser,
         authError,
-        isLoginLoading,
+        isLoading,
         handleLogin: handleLogin, 
         handleSignInWithGoogle: handleSignInWithGoogle,
         handleLogout: handleLogout, 

@@ -3,30 +3,18 @@ import {useState} from 'react'
 import styles from './challenges.module.css'
 // Next.js
 import Link from 'next/link'
-// Utils
-import { getCurrentMonth, getNextThreeMonths } from '@/utils/dateHelpers'
-// Internal Components
-import MonthChallengeCard from '@/components/Cards/MonthChallengeCard/MonthChallengeCard'
-
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 // External Libraries
 import {AiOutlinePlusSquare} from 'react-icons/ai'
+// Firebase
+import { database } from '../../../../firebaseApp'
+import {ref, onValue, get} from 'firebase/database'
 
 export default function Challenges() {
-  const currentMonth = getCurrentMonth();
-  const nextThreeMonths = getNextThreeMonths();
- 
+  const [challenges, setChallenges] = useState<any>()
+
   const {user} = useAuth()
-
-  const handleChallengeClick = (isActive: boolean) => {
-    if (isActive) {
-      // handle routing to active challenge
-    } else {
-      // 
-    }
-  };
-
 
 
   return (

@@ -8,14 +8,10 @@ import {BsPersonCircle, BsBell} from 'react-icons/bs'
 import {GiStrong} from 'react-icons/gi'
 // Next.js
 import Link from 'next/link'
-import { useRouter } from 'next/navigation';
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 
 export default function HeaderLoggedIn() {
-  // Routing
-  const router = useRouter();
-
   // auth context
   const { user } = useAuth();
 
