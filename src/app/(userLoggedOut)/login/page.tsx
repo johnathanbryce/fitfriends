@@ -29,7 +29,7 @@ export default function Login() {
         subSection="Forgot your password?" 
         isLoading={isLoading}
       >   
-         <p className={styles.auth_error}>{authError}</p>
+        <p className={styles.auth_error}>{authError}</p>
         <InputForm 
           name='Your Email'
           placeholder={'Your Email'}

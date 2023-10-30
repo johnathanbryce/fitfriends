@@ -132,6 +132,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           router.replace(`/dashboard/${user.uid}`);
         } else {
           setAuthError('User does not exist. Please sign up to register your account.')
+          setIsLoading(false);
         }
       }
     } catch (error: any) {
@@ -170,10 +171,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.log('Not logged in')
       return;
     }
-    console.log('logout')
+    auth.signOut();
     setUser(null);
+    setIsLoading(false);
+    setAuthError('');
     localStorage.removeItem('user');
-    //localStorage.clear();
     router.replace('/')
   };
 

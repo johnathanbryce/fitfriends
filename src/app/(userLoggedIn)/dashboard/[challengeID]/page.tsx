@@ -5,6 +5,7 @@ import styles from './dashboard.module.css'
 import DailyPointsInput from '@/components/DailyPointsInput/DailyPointsInput'
 import LeaderboardCard from '@/components/Cards/LeaderboardCard/LeaderboardCard'
 import ParticipantCard from '@/components/Cards/ParticipantCard/ParticipantCard'
+import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 // Internal Assets
 import defaultUser from '../../../../../public/images/default-user-img.png'
 // Firebase
@@ -12,39 +13,8 @@ import { database } from '../../../../../firebaseApp'
 import {ref, onValue, get} from 'firebase/database'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
-
-const USERS_DUMMY_LIST = [
-  {
-    category: 'Overall',
-    name: 'John Bryce',
-    nickname: 'Johnny Squats',
-    points: 75,
-    cardio: 20,
-    weights: 15,
-    total: 35,
-    img: defaultUser,
-  },
-  {
-    category: 'Cardio',
-    name: 'Joel Busby',
-    nickname: 'Buzz Queen',
-    points: 34,
-    cardio: 20,
-    weights: 5,
-    total: 25,
-    img: defaultUser,
-  },
-  {
-    category: 'Weights',
-    name: 'Colin Stonier',
-    nickname: 'Stones',
-    points: 44,
-    cardio: 25,
-    weights: 20,
-    total: 45,
-    img: defaultUser,
-  }
-]
+// Util
+import { formatDateForChallenges } from '@/utils/dateHelpers'
 
 interface urlParamsProps {
   params: any
@@ -95,6 +65,11 @@ export default function Dashboard({params}: urlParamsProps) {
     });
   }
 
+  // TODO: create a function which adds/invites participants individually
+  const addParticipants = () => {
+    const challengeRef = ref(database, `challenges/${params.challengeID}`);
+  }
+
   useEffect(() => {
     fetchParticipantsFromChallenge();
   }, [params.challengeID]);
@@ -104,21 +79,40 @@ export default function Dashboard({params}: urlParamsProps) {
       <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
 
       <div className={styles.challenge_overview}>
-        <h5> Review this challenge&apos;s rules and take note of the start and end dates: </h5>
+        <p> Review this challenge&apos;s rules and take note of the start and end dates: </p>
+        <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
 
         <div className={styles.rules}>
-          <p> <b>Cardio points:</b> <span className={styles.rule}>{challengeData ? challengeData.rules.cardioRules : ''}</span></p>
-          <p> <b>Weight points:</b> <span className={styles.rule}>{challengeData ? challengeData.rules.weightsRules : ''}</span></p>
+          <p> <b>Cardio: </b>
+               <span className={styles.rule}>
+                {challengeData ? challengeData.rules.cardioMinutes : ''} = {challengeData ? challengeData.rules.cardioPoints : ''}
+              </span>
+          </p>
+          <p> <b>Weights: </b>
+               <span className={styles.rule}>
+                {challengeData ? challengeData.rules.weightsMinutes : ''} = {challengeData ? challengeData.rules.weightsPoints : ''}
+              </span>
+          </p>
         </div>
       </div>
 
       <div className={styles.dashboard_section}>
         <h3> Points Input  </h3>
-        <DailyPointsInput userID={user?.uid} />
+        <DailyPointsInput 
+          challengeId={params} 
+          user={user?.uid}   
+        />
       </div>
 
       <div className={styles.dashboard_section}>
-        <h4> Participants</h4>
+        <div className={styles.subheader_container}>
+          <h3> Participants </h3>
+{/*           <ButtonPill 
+            label='+Add Participants'
+            isLoading={false}
+            onClick={addParticipants}     
+          /> */}
+        </div>
         <div className={styles.participants_container}>
         {participantsInfo.length > 0 ? (
             <>
@@ -137,7 +131,9 @@ export default function Dashboard({params}: urlParamsProps) {
               ))}
             </>
           ) : (
-            <p> There are no active users for this challenge</p>
+            <div className={styles.no_users}>
+              <p> There are no active users for this challenge. Invite participants to this challenge! </p>
+            </div>
         )}
         </div>
       </div>

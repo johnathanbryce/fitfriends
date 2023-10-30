@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import HeaderLoggedIn from '@/components/HeaderLoggedIn/HeaderLoggedIn';
 import UnauthorizedLoader from '@/components/UnauthorizedLoader/UnauthorizedLoader';
 import Loading from '../loading';
+import PrivateRoutes from '@/components/PrivateRoutes/PrivateRoutes';
+import WavyUpSectionBreak from '@/components/WavesAnimationUp/WavesAnimationUp';
 // Layouts
 import LayoutLoggedIn from '@/layouts/LayoutLoggedIn/LayoutLoggedIn';
 // Auth Context
@@ -24,7 +26,7 @@ export default function LoggedInLayout({
   const router = useRouter();
 
   // redirect to login page if user not authorized
-/*   useEffect(() => {
+  useEffect(() => {
     if (!user || !user.uid) {
       router.replace('/login');
       
@@ -34,15 +36,16 @@ export default function LoggedInLayout({
   }, [user, router]);
 
   if (!user || !user.uid) {
-    return <UnauthorizedLoader />
-  } */
+    return <Loading />
+  }
 
   return (
     <>
-    <HeaderLoggedIn />
-    <LayoutLoggedIn>
-     {children}
-     </LayoutLoggedIn>
+      <HeaderLoggedIn />
+      <LayoutLoggedIn>
+      {children}
+      </LayoutLoggedIn>
+      <WavyUpSectionBreak color='#FF5722'/>
     </>
   )
 }

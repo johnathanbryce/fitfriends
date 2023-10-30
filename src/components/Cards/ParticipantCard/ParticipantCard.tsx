@@ -19,7 +19,7 @@ interface ParticipantCardProps {
 export default function ParticipantCard({userId, firstName, lastName, userName, profilePicture, cardio, weights, total}: ParticipantCardProps) {
   return (
         <div className={styles.participant_card}>
-            <div>
+            <div className={styles.name_container}>
                 <h5 className={styles.name}>{firstName} {lastName}</h5>
                 <p className={styles.nickname}> aka &quot;{userName}&quot; </p>
             </div>

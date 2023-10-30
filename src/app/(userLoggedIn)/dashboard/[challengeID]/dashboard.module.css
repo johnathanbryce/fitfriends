@@ -15,6 +15,7 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    text-align: center;
 }
 
 .rules{
@@ -22,8 +23,8 @@
     gap: 2rem;
 }
 
-.rule{
-    font-size: clamp(1.4rem, 2vw, 1.6rem);
+.rule, .challenge_overview p{
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
 }
 
 .dashboard_section{
@@ -32,26 +33,41 @@
     gap: 2rem;
 }
 
-.leaderboard_container {
+.subheader_container{
     display: flex;
     justify-content: space-between;
-    gap: 2rem;
 }
 
 .participants_container{
     display: flex;
+    justify-content: center;
     gap: 4rem;
     flex-wrap: wrap;
+}
+
+.no_users{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 }
 
 
 /* Mobile Devices (landscape) */
 @media (max-width: 775px) { 
     .dashboard{
-        width: 100%;
+        width: 90%;
     }
 
     .participants_container{
         justify-content: center;
+    }
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .challenge_overview h5{
+        font-size: 1.2rem;
+        text-align: center;
     }
 }

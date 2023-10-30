@@ -24,7 +24,7 @@ const ButtonPill = ({label, isLoading, secondary, onClick}: ButtonPillProps) => 
       type="submit"
       disabled={isLoading}
     >
-      {isLoading ? 'Loading...' : label}
+      <span className={styles.label}> {isLoading ? 'Loading...' : label} </span>
     </button>
   );
 };

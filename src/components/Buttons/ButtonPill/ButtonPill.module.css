@@ -20,7 +20,6 @@
     font-weight: bold;
 }
 
-
 .button_secondary{
     color: var(--button-secondary-text);
     background-color: var(--button-secondary-bg);
@@ -33,4 +32,8 @@
 .button_secondary:hover{
     background-color: var(--button-hover-bg-secondary);
     transition: var(--hover-transition);
+}
+
+.label {
+    width: 100%;
 }

@@ -14,15 +14,17 @@ interface InputFormProps {
 
 export default function Input({name, placeholder, value, type, theme, onChange, error=false, required=false}: InputFormProps) {
   return (
-    <input 
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className={`${theme === 'dark' ? styles.input : styles.input_light} ${
-          error ? styles.error : '' 
-        }`}
-    />
+      <input 
+          type={type}
+          placeholder={placeholder}
+          required={required}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          className={`
+          ${theme === 'dark' ? styles.input : styles.input_light} 
+          ${error ? styles.error : '' }
+          ${required ? styles.required : ''} 
+          `}
+      />
   )
 }

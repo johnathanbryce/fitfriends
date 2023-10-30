@@ -48,14 +48,30 @@
         /* width: 90vw; */
     }
     .participant_overview{
-
+        display: flex;
+        align-items: center;
         gap: 2rem;
-        justify-content: initial;
+        justify-content: space-around;
     }
     
     .img {
         width: 30%;
+    }
+}
 
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .participant_card{
+        flex-direction: row-reverse;
+    }
+
+    .participant_overview{
+        flex: 1;
+    }
+
+    .name_container{
+        flex: 0.5;
+        text-align: center;
     }
 }
 

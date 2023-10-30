@@ -24,7 +24,7 @@ export default function HeaderLoggedIn() {
         <Link href='/'><h1> FitFriends</h1></Link>
         <div className={styles.icons_container}>
           <Link href={`/challenges`}><GiStrong className={styles.icon} /></Link>
-          <BsBell className={styles.icon} onClick={onClickDisplayNotifications } />
+          {/* <BsBell className={styles.icon} onClick={onClickDisplayNotifications } /> */}
           <Link href={`/user-profile/${user?.uid}`}><BsPersonCircle className={styles.icon} /></Link>
         </div>
 

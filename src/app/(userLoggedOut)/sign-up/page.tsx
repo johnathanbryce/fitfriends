@@ -24,8 +24,6 @@ export default function SignUp() {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [userName, setUserName] = useState('')
-  // Loading state
-  const [isLoading, setIsLoading] = useState(false);
   // Error state variables
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMsg, setEmailErrorMsg] = useState('')
@@ -34,7 +32,7 @@ export default function SignUp() {
   // Routing
   const router = useRouter();
   // Auth
-  const { handleSignup, authError } = useAuth();
+  const { handleSignup, authError, isLoading } = useAuth();
 
   // Use useEffect to watch for changes in authError
   useEffect(() => {
@@ -51,8 +49,6 @@ export default function SignUp() {
   }, [authError]);
 
   const handleUserSignUp = async() => {
-    setIsLoading(true);
-
     try {
       const userData = {
         email: email,
@@ -72,7 +68,6 @@ export default function SignUp() {
       };
 
       handleSignup(email, password, userData);
-      setIsLoading(false);
       // reset errors to false 
       setEmailError(false);
       setPasswordError(false);

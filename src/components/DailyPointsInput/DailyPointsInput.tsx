@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './DailyPointsInput.module.css'
 // Internal Components
 import Input from '../Input/Input';
@@ -11,82 +11,86 @@ import { database } from '../../../firebaseApp';
 import {child, push, get, update, ref, onValue} from 'firebase/database'
 
 interface DailyPointsInputProps {
-    userID: any,
+    challengeId: any,
+    user: any,
 }
 
-export default function DailyPointsInput({userID}: DailyPointsInputProps) {
+export default function DailyPointsInput({challengeId, user}: DailyPointsInputProps) {
     const [cardio, setCardio] = useState<number | ''>(0);
     const [weights, setWeights] = useState<number | ''>(0);
-    const [challengeMonth, setChallengeMonth] = useState(getChallengeMonthAndYear)
- 
-    const updatePoints = async () => {
-        try {
-          const userRef = ref(database, `users/${userID}/challenges/${challengeMonth}`);
-          const userSnapshot = await get(userRef);
-    
-          if (userSnapshot.exists()) {
-            const userData = userSnapshot.val();
-            // get the current cardio and weights points
-            const currentCardioPoints = parseInt(userData.cardioPoints);
-            const currentWeightsPoints = parseInt(userData.weightsPoints);
-            // calculate new points based on the current data and the values in the input state
-            const newCardioPoints = currentCardioPoints + (parseInt(cardio as string));
-            const newWeightsPoints = currentWeightsPoints + (parseInt(weights as string));
-            // object with the updated data
-            const updatedData = {
-              cardioPoints: newCardioPoints,
-              weightsPoints: newWeightsPoints,
-              totalPoints: newCardioPoints + newWeightsPoints
-            };
+    const [isLoading, setIsLoading] = useState(false);
 
-            const updatedOverallPointsData = {
-                totalCardio: newCardioPoints,
-                totalWeights: newWeightsPoints,
-                totalPoints: newCardioPoints + newWeightsPoints
-            }
+    const updatePoints = async () => {
+        setIsLoading(true);
+        try {
+            const challengeRef = ref(database, `challenges/${challengeId.challengeID}`);
+            const challengeSnapshot = await get(challengeRef);
+            
     
-            // Update the user's data in the database
-            update(ref(database, `users/${userID}/challenges/${challengeMonth}`), updatedData);
-            update(ref(database, `users/${userID}/totalPointsOverall`), updatedOverallPointsData);
+            if (challengeSnapshot.exists()) {
+                const challengeData = challengeSnapshot.val();
+                // update the points for each participant
+                if (challengeData.participants) {
+                  for (const participantId in challengeData.participants) {
+                    const participant = challengeData.participants[participantId];
+        
+                    // calculate new points based on the current data and input values
+                    const currentCardioPoints = participant.cardioPoints || 0;
+                    const currentWeightsPoints = participant.weightsPoints || 0;
+                    const newCardioPoints = currentCardioPoints + parseInt(cardio as string);
+                    const newWeightsPoints = currentWeightsPoints + parseInt(weights as string);
+        
+                    // Update the participant's points
+                    await update(ref(database, `challenges/${challengeId.challengeID}/participants/${user}`), {
+                      cardioPoints: newCardioPoints,
+                      weightsPoints: newWeightsPoints,
+                      totalPoints: newCardioPoints + newWeightsPoints,
+                    });
+                  }
+                }
 
             setCardio(0);
             setWeights(0);
           }
         } catch (error) {
           console.error('Error updating points:', error);
+        } finally {
+            setIsLoading(false);
         }
       }
 
   return (
     <div className={styles.daily_points_input}>
-        <div className={styles.input}>
-            <h5 className={styles.input_category}>Cardio</h5>
-            <div className={styles.input_width_wrapper}>
-                <Input 
-                    name=''
-                    value={cardio}
-                    type='number'
-                    onChange={(e) => setCardio(e)}
-                    theme='light'
-                />
+        <div className={styles.inputs_container}>
+            <div className={styles.input}>
+                <h5 className={styles.input_category}>Cardio</h5>
+                <div className={styles.input_width_wrapper}>
+                    <Input 
+                        name=''
+                        value={cardio}
+                        type='number'
+                        onChange={(e) => setCardio(e)}
+                        theme='light'
+                    />
+                </div>
             </div>
-        </div>
-        <div className={styles.input}>
-            <h5 className={styles.input_category}>Weights</h5>
-            <div className={styles.input_width_wrapper}>
-                <Input 
-                    name=''
-                    value={weights}
-                    type='number'
-                    onChange={(e) => setWeights(e)}
-                    theme='light'
-                />
+            <div className={styles.input}>
+                <h5 className={styles.input_category}>Weights</h5>
+                <div className={styles.input_width_wrapper}>
+                    <Input 
+                        name=''
+                        value={weights}
+                        type='number'
+                        onChange={(e) => setWeights(e)}
+                        theme='light'
+                    />
+                </div>
             </div>
         </div>
         <div className={styles.button_width_wrapper}>
             <ButtonPill 
                 label='Submit'
-                isLoading={false}
+                isLoading={isLoading}
                 secondary={true}
                 onClick={updatePoints}
             />
