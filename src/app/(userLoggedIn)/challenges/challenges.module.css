@@ -13,6 +13,10 @@
     height: 65vh;
 }
 
+.empty_challenges_text{
+    padding-top: 4rem;
+}
+
 .create_challenge{
     display: flex;
     flex-direction: column;
@@ -26,6 +30,7 @@
     align-items: center;
     gap: 1.5rem;
     justify-self: center;
+    padding: 1rem;
     overflow-y: scroll; 
 }
 
@@ -39,6 +44,7 @@
         flex-direction: column;
         gap: 4rem;
     }
+    
     .challenge_section{
         height: 50vh;
     }

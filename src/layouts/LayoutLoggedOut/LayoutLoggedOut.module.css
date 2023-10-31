@@ -4,3 +4,17 @@
     align-items: center;
     padding: 0rem 2rem;
 }
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .main_container{
+        margin-top: 10%;
+    }
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .main_container{
+        margin-top: 15%;
+    }
+}

@@ -8,11 +8,16 @@ export default function HeaderLoggedOut() {
   return (
     <header className={styles.header}>
         <h1> FitFriends</h1>
-        <ButtonPillRoute 
-          label='Sign Up'
-          src='sign-up'
-        />
-
+        <div className={styles.routes_flex_wrapper}>
+          <ButtonPillRoute 
+            label='Sign Up'
+            src='sign-up'
+          />
+          <ButtonPillRoute 
+            label='Login'
+            src='login'
+          />
+        </div>
     </header>
   )
 }

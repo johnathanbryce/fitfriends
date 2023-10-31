@@ -9,6 +9,8 @@ interface ButtonPillRouteProps {
 }
   
 const ButtonPillRoute = ({ label, src }: ButtonPillRouteProps) => {
+  const href = src || '/';
+
     return (
       <Link href={src} className={styles.button} >
         {label} 

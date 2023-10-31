@@ -28,3 +28,23 @@
     width: 70%;
     padding: 2rem;
 }
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .auth_card{
+        gap: 1rem;
+        width: 32.5rem;
+    }
+
+    .form {
+        width: 100%;
+    }
+}
+
+/* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
+@media (max-width: 325px) {  
+    .auth_card{
+        width: 24.5rem;
+        gap: 0.5rem;
+    }
+}

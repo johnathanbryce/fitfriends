@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styles from './create-challenge.module.css'
 // Next.js
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ import { ref, get, push, set} from 'firebase/database';
 // Auth Context
 import { useAuth } from '@/context/AuthProvider';
 // External Libraries
-import { DateRangePicker } from 'react-date-range';
+import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 
@@ -43,7 +43,8 @@ export default function CreateChallenge() {
       setSelection([ranges.selection]);
     };
 
-    async function addNewChallenge() {
+    async function addNewChallenge(e: any) {
+        e.preventDefault();
         // get refs to "users" & "challenges" main data buckets in db
         const challengesRef = ref(database, `challenges`);
         const usersRef = ref(database, 'users');
@@ -110,7 +111,7 @@ export default function CreateChallenge() {
     }
 
   return (
-    <section className={styles.create_challenge}>
+    <form className={styles.create_challenge} onSubmit={addNewChallenge}>
         <h2> Create Your Fitness Challenge</h2>
         <div className={`${styles.input_container} ${styles.name_wrapper}`}>
             <h4> Challenge name </h4>
@@ -179,22 +180,23 @@ export default function CreateChallenge() {
         
         <div className={styles.input_container}>
             <h4> Challenge duration </h4>
-            <DateRangePicker
+
+            <DateRange
               ranges={selection}
               onChange={handleSelect}
               className={styles.date_range_picker}
               showMonthAndYearPickers={false}
               showDateDisplay={false}
               rangeColors={['#FF5722']}
+              style={{width: '70vw'}}
             />
         </div>
 
         <ButtonPill 
             label="Create Challenge"
-            onClick={addNewChallenge}
             isLoading={false}
             secondary={true}  
         />
-    </section>
+    </form>
   )
 }

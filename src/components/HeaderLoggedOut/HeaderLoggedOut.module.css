@@ -4,3 +4,8 @@
     align-items: center;
     padding: 2rem 5rem;
 }
+
+.routes_flex_wrapper{
+    display: flex;
+    gap: 3rem;
+}

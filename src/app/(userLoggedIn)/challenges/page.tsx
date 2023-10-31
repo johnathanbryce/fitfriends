@@ -36,12 +36,11 @@ export default function Challenges() {
     } finally {
       setIsLoading(false)
     }
-      
   }
 
   useEffect(() => {
-    fetchActiveChallenges()
-  }, [])
+    fetchActiveChallenges();
+  }, []);
 
   return (
     <section className={styles.challenges}>
@@ -51,7 +50,7 @@ export default function Challenges() {
           {isLoading ? (
               <Loading /> 
             ) : (
-              challenges ? (
+              challenges?.length > 0 ? (
                 challenges.map((challenge: any) => (
                   <ActiveChallenge
                     key={challenge.id}
@@ -60,7 +59,7 @@ export default function Challenges() {
                   />
                 ))
               ) : (
-                <p> You have no active challenges. Create one below! </p>
+                <p className={styles.empty_challenges_text}> You have no active challenges. Create one below! </p>
               )
           )}
         </ul>

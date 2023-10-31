@@ -6,9 +6,10 @@ interface ButtonPillProps {
   isLoading: boolean;
   onClick?: (e: any) => void;
   secondary?: boolean;
+  disabled?: boolean;
 }
 
-const ButtonPill = ({label, isLoading, secondary, onClick}: ButtonPillProps) => {
+const ButtonPill = ({label, isLoading, disabled, secondary, onClick}: ButtonPillProps) => {
   const buttonClassName = isLoading
     ? secondary
       ? styles.inactive_button
@@ -22,7 +23,7 @@ const ButtonPill = ({label, isLoading, secondary, onClick}: ButtonPillProps) => 
       onClick={onClick}
       className={buttonClassName}
       type="submit"
-      disabled={isLoading}
+      disabled={isLoading || disabled}
     >
       <span className={styles.label}> {isLoading ? 'Loading...' : label} </span>
     </button>
