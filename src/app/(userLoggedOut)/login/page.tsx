@@ -16,7 +16,7 @@ export default function Login() {
 
   // Routing
   const router = useRouter();
-  const { handleSignInWithGoogle, handleLogin, authError, isLoginLoading } = useAuth();
+  const { handleSignInWithGoogle, handleLogin, authError, isLoading } = useAuth();
 
   const handleSignIn = async () => {
     await handleLogin(emailInput, passwordInput);
@@ -27,11 +27,12 @@ export default function Login() {
       <AuthCard 
         title='Sign In' 
         subSection="Forgot your password?" 
-        isLoading={isLoginLoading}
+        isLoading={isLoading}
       >   
-         <p className={styles.auth_error}>{authError}</p>
+        <p className={styles.auth_error}>{authError}</p>
         <InputForm 
           name='Your Email'
+          placeholder={'Your Email'}
           value={emailInput}
           type='email'
           onChange={(newVal) => setEmailInput(newVal)}
@@ -40,6 +41,7 @@ export default function Login() {
 
         <InputForm 
           name='Password'
+          placeholder={'Password'}
           value={passwordInput}
           type='password'
           onChange={(newVal) => setPasswordInput(newVal)}
@@ -48,7 +50,7 @@ export default function Login() {
         <ButtonPill 
           label="Submit"
           onClick={handleSignIn}
-          isLoading={isLoginLoading}
+          isLoading={isLoading}
         />
       </AuthCard>   
     </section>

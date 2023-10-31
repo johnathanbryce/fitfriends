@@ -1,12 +1,12 @@
 .waves {
   position: relative;
   width: 100%;
-  height: 20vh;
+  height: 8.5vh;
   margin-bottom:-7px; /*Fix for safari gap*/
   min-height:100px;
 /*   max-height:150px; */
   transform: scaleY(-1);
-  z-index: -10;
+ z-index: -10;
  position: fixed;
  bottom: 0;
  pointer-events: none; 
@@ -18,10 +18,12 @@
   height:20vh;
   text-align:center;
   background-color: #F9F9F9;
+  z-index: -10;
 }
 
 /* Animation */
 .parallax > use {
+  z-index: -10;
   animation: move-forever 25s cubic-bezier(.55,.5,.45,.5)     infinite;
 }
 .parallax > use:nth-child(1) {
@@ -53,11 +55,11 @@
 }
 /*Shrinking for mobile*/
 @media (max-width: 768px) {
-  .waves {
-    height:40px;
-    min-height:40px;
+/*   .waves {
+    width: 100%;
+    height: 20vh;
   }
   .content {
     height:30vh;
-  }
+  } */
 }

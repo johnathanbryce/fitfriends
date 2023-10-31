@@ -13,6 +13,7 @@
 
 .input::placeholder{
     color: var(--input-text);
+    font-size: clamp(1rem, 2vw, 1.4rem);
 }
 
 .input_light {

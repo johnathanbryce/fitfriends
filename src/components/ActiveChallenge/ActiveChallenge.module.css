@@ -1,0 +1,15 @@
+.active_challenge{
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    background-color: var(--accent-secondary);
+    width: 100%;
+}
+
+.active_challenge:hover{
+    background-color: var(--button-hover-bg-secondary);
+    transition: var(--hover-transition);
+}
+
+.name{
+    color: var(--button-primary-text);
+}
