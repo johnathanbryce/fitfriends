@@ -59,8 +59,8 @@
     }
 }
 
-/* Mobile Devices up to 480px */
-@media (max-width: 480px) {  
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) {  
     .participant_card{
         flex-direction: row-reverse;
     }

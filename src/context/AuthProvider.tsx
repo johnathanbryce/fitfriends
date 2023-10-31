@@ -129,7 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(loggedInUser);
           setIsLoading(false);
           localStorage.setItem('user', JSON.stringify(loggedInUser));
-          router.replace(`/dashboard/${user.uid}`);
+          router.replace(`/challenges`);
         } else {
           setAuthError('User does not exist. Please sign up to register your account.')
           setIsLoading(false);

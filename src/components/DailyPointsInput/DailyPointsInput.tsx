@@ -16,49 +16,49 @@ interface DailyPointsInputProps {
 }
 
 export default function DailyPointsInput({challengeId, user}: DailyPointsInputProps) {
-    const [cardio, setCardio] = useState<number | ''>(0);
-    const [weights, setWeights] = useState<number | ''>(0);
+    const [cardio, setCardio] = useState<number | ''>('');
+    const [weights, setWeights] = useState<number | ''>('');
     const [isLoading, setIsLoading] = useState(false);
 
     const updatePoints = async () => {
         setIsLoading(true);
         try {
-            const challengeRef = ref(database, `challenges/${challengeId.challengeID}`);
-            const challengeSnapshot = await get(challengeRef);
-            
-    
-            if (challengeSnapshot.exists()) {
-                const challengeData = challengeSnapshot.val();
-                // update the points for each participant
-                if (challengeData.participants) {
-                  for (const participantId in challengeData.participants) {
-                    const participant = challengeData.participants[participantId];
-        
-                    // calculate new points based on the current data and input values
-                    const currentCardioPoints = participant.cardioPoints || 0;
-                    const currentWeightsPoints = participant.weightsPoints || 0;
-                    const newCardioPoints = currentCardioPoints + parseInt(cardio as string);
-                    const newWeightsPoints = currentWeightsPoints + parseInt(weights as string);
-        
-                    // Update the participant's points
-                    await update(ref(database, `challenges/${challengeId.challengeID}/participants/${user}`), {
-                      cardioPoints: newCardioPoints,
-                      weightsPoints: newWeightsPoints,
-                      totalPoints: newCardioPoints + newWeightsPoints,
-                    });
-                  }
-                }
-
-            setCardio(0);
-            setWeights(0);
+          const challengeRef = ref(database, `challenges/${challengeId.challengeID}`);
+          const challengeSnapshot = await get(challengeRef);
+      
+          if (challengeSnapshot.exists()) {
+            const challengeData = challengeSnapshot.val();
+            // update the points for the logged-in user
+            if (challengeData.participants && user) {
+              const participant = challengeData.participants[user];
+      
+              if (participant) {
+                // calculate new points based on the current data and input values
+                const currentCardioPoints = participant.cardioPoints || 0;
+                const currentWeightsPoints = participant.weightsPoints || 0;
+                const newCardioPoints = currentCardioPoints + parseInt(cardio as string, 10);
+                const newWeightsPoints = currentWeightsPoints + parseInt(weights as string, 10);
+      
+                // Update the logged-in user's points
+                const participantRef = ref(database, `challenges/${challengeId.challengeID}/participants/${user}`);
+                await update(participantRef, {
+                  cardioPoints: newCardioPoints,
+                  weightsPoints: newWeightsPoints,
+                  totalPoints: newCardioPoints + newWeightsPoints,
+                });
+      
+                setCardio('');
+                setWeights('');
+              }
+            }
           }
         } catch (error) {
           console.error('Error updating points:', error);
         } finally {
-            setIsLoading(false);
+          setIsLoading(false);
         }
-      }
-
+      };
+      
   return (
     <div className={styles.daily_points_input}>
         <div className={styles.inputs_container}>
@@ -100,21 +100,4 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
 }
 
 
-/*
-    const updateUserPoints = (uid: string, challengeMonth: any) => {
-        const newPoints = {
-        weightsPoints: weights,
-        cardioPoints: cardio
-        }
 
-        const newPointsKey = push(child(ref(database), 'users')).key;
-
-        // this updates at both "users" & "challenges"
-        const updates: { [key: string]: any } = {};
-        updates['/users/' + uid + newPointsKey] = newPoints;
-        updates['/challenges/' + newPointsKey] = newPoints;
-        return update(ref(database), updates);
-    }
-
-
-*/

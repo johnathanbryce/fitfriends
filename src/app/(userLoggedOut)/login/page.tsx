@@ -25,11 +25,11 @@ export default function Login() {
   return (
     <section className={styles.login}>
       <AuthCard 
-        title='Sign In' 
+        title='Login' 
         subSection="Forgot your password?" 
         isLoading={isLoading}
       >   
-        <p className={styles.auth_error}>{authError}</p>
+        {authError && <p className={styles.auth_error}>{authError}</p>}
         <InputForm 
           name='Your Email'
           placeholder={'Your Email'}
