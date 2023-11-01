@@ -4,9 +4,11 @@
     align-items: center;
     text-align: center;
     gap: 2rem;
-    width: 55rem;
+    width: 50rem;
+    max-width: 50rem;
     background-color: var(--background-secondary-light);
     color: var(--font-secondary);
+    margin-top: 5rem;
 }
 
 .auth_card * {
@@ -25,9 +27,23 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    width: 70%;
+    width: 80%;
     padding: 2rem;
 }
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .auth_card{
+        gap: 1rem;
+        width: 45rem;
+        margin-top: 0;
+    }
+
+    .form {
+        width: 100%;
+    }
+}
+
 
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
@@ -36,9 +52,6 @@
         width: 32.5rem;
     }
 
-    .form {
-        width: 100%;
-    }
 }
 
 /* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */

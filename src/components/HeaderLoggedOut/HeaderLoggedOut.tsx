@@ -46,8 +46,8 @@ export default function HeaderLoggedOut() {
       {isDropdownActive && 
         <nav className={styles.navbar_dropdown}>
           <ul>
-              <li className={styles.link}><Link href='/sign-up' onClick={onClickCloseDropdown} > Sign Up </Link></li> 
-              <li className={styles.link}><Link href='/login' onClick={onClickCloseDropdown} > Login </Link></li>   
+            <li className={styles.link}><Link href='/login' onClick={onClickCloseDropdown} > Login </Link></li>   
+            <li className={styles.link}><Link href='/sign-up' onClick={onClickCloseDropdown} > Sign Up </Link></li> 
           </ul>
         </nav>
       }
