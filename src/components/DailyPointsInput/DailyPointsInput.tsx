@@ -16,8 +16,8 @@ interface DailyPointsInputProps {
 }
 
 export default function DailyPointsInput({challengeId, user}: DailyPointsInputProps) {
-    const [cardio, setCardio] = useState<number | ''>('');
-    const [weights, setWeights] = useState<number | ''>('');
+    const [cardio, setCardio] = useState<number | ''>(0);
+    const [weights, setWeights] = useState<number | ''>(0);
     const [isLoading, setIsLoading] = useState(false);
 
     const updatePoints = async () => {
@@ -47,8 +47,8 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
                   totalPoints: newCardioPoints + newWeightsPoints,
                 });
       
-                setCardio('');
-                setWeights('');
+                setCardio(0);
+                setWeights(0);
               }
             }
           }
