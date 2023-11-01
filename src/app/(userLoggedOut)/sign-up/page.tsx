@@ -92,7 +92,7 @@ export default function SignUp() {
         subSection="Forgot your password?" 
         isLoading={isLoading}
       >
-         <p>Join the fitness challenge, conquer your goals, and seize the glory as you compete against friends to become the reigning fitness champion of the month</p>
+         <p>Create or join a fitness challenge, conquer goals, and become the reigning champion amongst your friends!</p>
           {emailError && <p className={styles.error_text}> {authError} </p>}
           {passwordError && <p className={styles.error_text}> {authError} </p>}
           <InputForm 
