@@ -53,8 +53,9 @@ export default function HeaderLoggedIn() {
           </li>
           {/* <BsBell className={styles.icon} onClick={onClickDisplayNotifications } /> */}
           <li>
-            <Link href={`/user-profile/${user?.uid}`}>
+            <Link href={`/user-profile/${user?.uid}`} className={styles.nav_item}>
               <BsPersonCircle className={styles.icon} />
+              <span className={styles.nav_item_text}> profile </span>
             </Link>
           </li>
         </ul>

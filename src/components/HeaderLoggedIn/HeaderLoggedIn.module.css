@@ -15,23 +15,28 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    border: 1px solid red;
+    margin-top: 2rem;
+    gap: 1rem; 
+    height: 6rem;
 }
 
 .nav_item_text {
     font-size: 1rem;
+    opacity: 0;
+    color: var(--font-headers);
 }
 
+.nav_item:hover .nav_item_text {
+    opacity: 1;
+} 
+
+
 .icon{
-    font-size: clamp(2rem, 2vw, 3.25rem);
+    font-size: clamp(2rem, 3vw, 3.55rem);
+    color: var(--font-headers);
     cursor: pointer;
 }
 
-.icon:hover{
-    color: var(--font-headers);
-    transition: var(--hover-transition);
-}
 
 /* DROPDOWN MENU NAVBAR STYLES */
 .navbar_dropdown{
@@ -66,22 +71,7 @@
     background-color: var(--font-headers);;
 }
   
-.navbar li::before, .navbar_dropdown li::before {
-    content: '';
-    position: absolute;
-    bottom: -0.75rem;
-    left: 0;
-    width: 100%;
-    height: 0.2rem;
-    background-color: var(--font-headers);
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: var(--hover-transition);
-}
-  
-.navbar li:hover::before, .navbar_dropdown li:hover:before {
-    transform: scaleX(1);
-}
+
 
 /* Ensures dropdown nav closes if larger screen re-size from activation */
 @media (min-width: 776px) { 
