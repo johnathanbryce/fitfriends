@@ -4,6 +4,7 @@ import styles from './challenges.module.css'
 // Next.js
 import Link from 'next/link'
 // Internal Components
+import { Carousel } from '@/components/Carousel/Carousel'
 import ActiveChallenge from '@/components/ActiveChallenge/ActiveChallenge'
 import Loading from '@/app/loading'
 // External Libraries
@@ -28,6 +29,7 @@ export default function Challenges() {
       // convert the challenges object into an array of objects
       const challengesArray = Object.values(challengesData || {});
       setActiveChallenges(challengesArray);
+      
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching challenges:', error);
@@ -43,13 +45,17 @@ export default function Challenges() {
 
   useEffect(() => {
     fetchActiveChallenges();
+    console.log(activeChallenges)
+  
+    
   }, []);
 
   return (
     <section className={styles.challenges}>
       <div className={styles.challenge_section}>
-        <h2> Active challenges: </h2>
-        <ul className={styles.active_challenges_container}>
+        <h2> Your challenges: </h2>
+         <p> This feature is coming soon... </p>
+{/*         <ul className={styles.active_challenges_container}>
           {isLoading ? (
               <Loading /> 
             ) : (
@@ -59,16 +65,45 @@ export default function Challenges() {
                     key={challenge.id}
                     id={challenge.id}
                     name={challenge.name}
+                    creatorName={challenge.creatorName}
                   />
                 ))
               ) : (
                 <p className={styles.empty_challenges_text}> You have no active challenges. Create one and invite your friends! </p>
               )
           )}
-        </ul>
+        </ul> */}
       </div>
       <div className={styles.challenge_section}>
-        <Link href="challenges/create-challenge" className={styles.create_challenge}>
+        <h2> Active challenges: </h2>
+          <ul className={styles.active_challenges_container}>
+            {/* <Carousel> */}
+              {isLoading ? (
+                  <Loading /> 
+                ) : (
+                  activeChallenges?.length > 0 ? (
+                    activeChallenges.map((challenge: any) => (
+                      <ActiveChallenge
+                        key={challenge.id}
+                        id={challenge.id}
+                        name={challenge.name}
+                        creatorName={challenge.creatorName}
+                      />
+                    ))
+                  ) : (
+                    <>
+                      <p className={styles.empty_challenges_text}> You have no active challenges. </p>
+                      <p><Link href="/create-challenge"> <span className={styles.underline}>Create one</span>   and invite your friends! </Link></p>
+                    </>
+   
+                  )
+              )}
+            {/* </Carousel> */}
+          </ul>
+        
+      </div>
+      <div className={styles.challenge_section}>
+        <Link href="/create-challenge" className={styles.create_challenge}>
           <h2> Create a challenge</h2>
           <AiOutlinePlusSquare className={styles.icon} />
         </Link>
@@ -77,18 +112,4 @@ export default function Challenges() {
   )
 }
 
-{/*       <div className={styles.challenge_options_container}>
-        <MonthChallengeCard
-          month={currentMonth}
-          isActive={true}
-          handleChallengeClick={handleChallengeClick}
-        />
-        {nextThreeMonths.map((month, index) => (   
-            <MonthChallengeCard 
-                key={month}
-                index={index}
-                month={month}
-                isActive={false}
-                handleChallengeClick={handleChallengeClick}
-            />
-        ))} */}
+

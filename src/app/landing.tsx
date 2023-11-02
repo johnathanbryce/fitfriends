@@ -15,7 +15,7 @@ export default function LandingPageRouter() {
     if (!user) {
       router.replace('/login');
     } else {
-      router.replace('/challenges');
+      router.replace('/challenges-dashboard');
     }
     setLoading(false);
   }, [router]);

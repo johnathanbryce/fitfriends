@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import Input from '@/components/Input/Input';
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill';
 // Firebase
-import { database } from '../../../../../firebaseApp';
+import { database } from '../../../../firebaseApp';
 import { ref, get, push, set} from 'firebase/database';
 // Auth Context
 import { useAuth } from '@/context/AuthProvider';
@@ -69,11 +69,12 @@ export default function CreateChallenge() {
             participants[userSnapshot.key] = participant;
           } 
         });
-    
+
         try {
           const newChallenge: any = {
             id: '', 
             creator: user?.uid,
+            creatorName: user?.userName || 'unknown user',
             name: challengeName,
             participants: participants,
             rules: {
@@ -104,7 +105,7 @@ export default function CreateChallenge() {
           setWeightsPoints('');
           setWeightsMinutes('');
           // route to the challenge
-          router.replace(`/dashboard/${newChallengeId}`); 
+          router.replace(`/challenge/${newChallengeId}`); 
         } catch (error) {
           console.error("Error adding a new challenge:", error);
         }

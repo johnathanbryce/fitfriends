@@ -46,7 +46,7 @@ export default function HeaderLoggedIn() {
 
         <ul className={styles.navbar}>
           <li>
-            <Link href={`/challenges`} className={styles.nav_item}>
+            <Link href={`/challenges-dashboard`} className={styles.nav_item}>
               <GiStrong className={styles.icon} />
               <span className={styles.nav_item_text}> challenges </span>
             </Link>

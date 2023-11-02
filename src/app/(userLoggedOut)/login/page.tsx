@@ -21,9 +21,6 @@ export default function Login() {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  // Routing
-  const router = useRouter();
-
   // Auth
   const { handleSignInWithGoogle, handleLogin, authError, isLoading } = useAuth();
 
@@ -32,7 +29,6 @@ export default function Login() {
     // Reset errors to false initially
     setEmailError(false);
     setPasswordError(false);
-    console.log(authError)
     if (authError === 'Invalid email. Please check your email address.') {
       setEmailError(true);
     } else if (authError === 'Wrong or missing password. Please check your password.') {
@@ -56,14 +52,14 @@ export default function Login() {
         navigateTo='/forgot-password'
         subSection="Forgot your password?" 
         isLoading={isLoading}
-      >   
-        <button type="button" onClick={handleSignInWithGoogle} className={styles.login_option}> 
+      >  
+{/*         <button type="button" onClick={handleSignInWithGoogle} className={styles.login_option}> 
           <Image src={googleIcon} className={styles.icon} alt="Google's icon"/> 
           <p className={styles.button_label}> Sign in using Google </p>
           <div className={styles.empty} />
         </button>
         
-        <p> or sign in with email</p>
+        <p> or sign in with email</p> */}
         {authError && <p className={styles.auth_error}>{authError}</p>}
         <InputForm 
           name='Your Email'

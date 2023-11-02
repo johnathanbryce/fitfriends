@@ -16,6 +16,7 @@ body {
     -moz-osx-font-smoothing: grayscale; 
     overflow-x: hidden; 
     background-color: var(--background-primary);
+    letter-spacing: 0.08rem;
 }
  
 main {

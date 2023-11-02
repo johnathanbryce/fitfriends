@@ -36,8 +36,6 @@ export default function Dashboard({params}: urlParamsProps) {
   // routing
   const router = useRouter();
 
-  console.log(challengeData)
-
   useEffect(() => {
     const confirmUserCreatedChallenge = () => {
       const challengeRef = ref(database, `challenges/${params.challengeID}`);
@@ -119,7 +117,7 @@ export default function Dashboard({params}: urlParamsProps) {
       .then(() => {
         setIsChallengeActive(false);
         setIsDeleteConfirmationVisible(false); 
-        router.replace('/challenges')
+        router.replace('/challenges-dashboard')
       })
       .catch((error) => {
         // Handle errors
@@ -238,11 +236,15 @@ export default function Dashboard({params}: urlParamsProps) {
                   </div>
                 </div>
               ) : (
-                <ButtonPill 
-                  label={'Leave this challenge'}
-                  isLoading={isLoading}
-                  onClick={confirmLeaveChallenge}
-                />
+                <>
+                  {participantsInfo.length > 0 &&  
+                    <ButtonPill 
+                      label={'Leave this challenge'}
+                      isLoading={isLoading}
+                      onClick={confirmLeaveChallenge}
+                    /> 
+                  }
+                </>  
               )}
               {isDeleteConfirmationVisible ? (
                 <div className={styles.delete_challenge_confirm}>
@@ -262,7 +264,7 @@ export default function Dashboard({params}: urlParamsProps) {
                 </div>
               ) : (
                 <>
-                  {isDeleteButtonVisible && 
+                  {isDeleteButtonVisible && participantsInfo.length > 0 && 
                     <ButtonPill 
                       label={'Delete this challenge'}
                       isLoading={isLoading}

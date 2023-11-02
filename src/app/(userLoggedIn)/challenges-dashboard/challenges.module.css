@@ -1,7 +1,9 @@
 .challenges{
     display: flex;
+    flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 4rem;
     width: 100vw;
     justify-content: space-evenly;
 }
@@ -10,11 +12,6 @@
     display: flex;
     flex-direction: column;
     gap: 2rem; 
-    height: 65vh;
-}
-
-.empty_challenges_text{
-    padding-top: 4rem;
 }
 
 .create_challenge{
@@ -26,34 +23,37 @@
 
 .active_challenges_container{
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 1.5rem;
-    justify-self: center;
     padding: 1rem;
-    overflow-y: scroll; 
+    overflow: hidden;
+
 }
 
 .icon {
     font-size: 5rem;
 }
 
+.underline{
+    text-decoration: underline;
+}
+
 
 /* Tablets (portrait) */
 @media (max-width: 950px) { 
     .challenges{
-        flex-direction: column;
-        gap: 4rem;
+
     }
     
     .challenge_section{
-        height: 50vh;
+
     }
 }
 
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .challenge_section{
-        height: 40vh;
+
     }
 }

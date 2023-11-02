@@ -15,7 +15,7 @@ import { ref, get, set } from 'firebase/database';
 // TypeScript and Auth setup
 export interface User {
     uid: any,
-    username: string,
+    userName: string,
     firstName: string,
     lastName: string,
     email: string,
@@ -89,18 +89,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
       await sendEmailVerification(user);
 
       const userRef = ref(database, `users/${user.uid}`);
 
-      const userDataWithMatchingUID = {...userData, uid: user.uid}
-      await set(userRef, userDataWithMatchingUID);
+      const mergedUserData = {...userData, uid: user.uid}
+      await set(userRef, mergedUserData);
 
       setIsLoading(false);
-      setUser(user); // Set the user in the context
-      localStorage.setItem('user', JSON.stringify(user)); 
-      router.replace(`/challenges`);
+      setUser(mergedUserData); // set the user in the context
+      localStorage.setItem('user', JSON.stringify(mergedUserData)); 
+      router.replace(`/challenges-dashboard`);
     } catch (error: any) {
       if (error.code === 'auth/invalid-email' || error.code === 'auth/missing-email') {
         setAuthError('Invalid or missing email address. Please input again.')
@@ -129,7 +128,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(loggedInUser);
           setIsLoading(false);
           localStorage.setItem('user', JSON.stringify(loggedInUser));
-          router.replace(`/challenges`);
+          router.replace(`/challenges-dashboard`);
         } else {
           setAuthError('User does not exist. Please sign up to register your account.')
           setIsLoading(false);
@@ -158,7 +157,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const loginResult = await signInWithPopup(googleAuth, googleProvider);
       const googleUser = loginResult.user;
   
-      // Check if the user's email exists in your database
+      // check if the user's email exists in your database
       const userRef = ref(database, `users`);
       const userSnapshot = await get(userRef);
   
@@ -169,24 +168,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const userData = childSnapshot.val();
         if (userData.email === userEmail) {
           userExists = true;
-          return; // Stop iterating if a matching email is found
+          return; // stop iterating if a matching email is found
         }
       });
   
       if (userExists) {
-        // The user exists in your database, proceed with authentication
+        // user exists in your database, proceed with authentication
         setUser(googleUser);
         localStorage.setItem('user', JSON.stringify(googleUser)); 
-        router.replace('/challenges');
+        router.replace('/challenges-dashboard');
       } else {
-        // The user does not exist in your database, show an error or redirect as needed
+        // user doesn't exist in your database, prevent Firebase Authentication
+        await googleAuth.signOut(); // Sign out the Google user
+        setAuthError('Your Google account is not registered. Please sign-up.')
         console.log('Error: User not found in the database');
-        // You can set an error message or redirect the user to a different page
       }
     } catch (error: any) {
+      if (error.code === 'auth/invalid-email') {
+        setIsLoading(false);
+        setAuthError('Invalid email. Please check your email address.');
+      }
       console.log('error', error.code);
     }
   }
+  
   
 
  
