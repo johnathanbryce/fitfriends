@@ -1,6 +1,8 @@
 'use client'
-import {useState, useEffect, useLayoutEffect} from 'react'
+import {useState, useEffect} from 'react'
 import styles from './dashboard.module.css'
+// Next.js
+import { useRouter } from 'next/navigation'
 // Internal Components
 import DailyPointsInput from '@/components/DailyPointsInput/DailyPointsInput'
 import LeaderboardCard from '@/components/Cards/LeaderboardCard/LeaderboardCard'
@@ -10,7 +12,7 @@ import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 import defaultUser from '../../../../../public/images/default-user-img.png'
 // Firebase
 import { database } from '../../../../../firebaseApp'
-import {ref, onValue, get} from 'firebase/database'
+import {ref, onValue, get, remove, set} from 'firebase/database'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 // Util
@@ -23,11 +25,44 @@ interface urlParamsProps {
 export default function Dashboard({params}: urlParamsProps) {
   const [challengeData, setChallengeData] = useState<any>()
   const [participantsInfo, setParticipantsInfo] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState(false)
+  const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] = useState(false);
+  const [isLeaveConfirmationVisible, setIsLeaveConfirmationVisible] = useState(false);
+  const [isChallengeActive, setIsChallengeActive] = useState(true)
 
   // auth context
   const { user } = useAuth();
+  // routing
+  const router = useRouter();
 
-  const fetchParticipantsFromChallenge = () => {
+  console.log(challengeData)
+
+  useEffect(() => {
+    const confirmUserCreatedChallenge = () => {
+      const challengeRef = ref(database, `challenges/${params.challengeID}`);
+      // fetch the challenge data
+      get(challengeRef)
+        .then((challengeSnapshot) => {
+          if (challengeSnapshot.exists()) {
+            const challengeData = challengeSnapshot.val();    
+            // check if the current user is the creator to show or hide delete btn
+            if (challengeData.creator === user?.uid) {
+              setIsDeleteButtonVisible(true)
+            } else {
+              setIsDeleteButtonVisible(false);
+            }
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching challenge data:', error);
+        });
+    };
+
+    confirmUserCreatedChallenge();
+  }, [])
+  
+  const addAllActiveUsersToChallenge = () => {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
 
     onValue(challengeRef, (snapshot) => {
@@ -70,88 +105,180 @@ export default function Dashboard({params}: urlParamsProps) {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
   }
 
-  useEffect(() => {
-    fetchParticipantsFromChallenge();
-  }, [params.challengeID]);
+  const confirmDeleteChallenge = () => {
+    setIsDeleteConfirmationVisible((prev) => !prev)
+  }
+
+  const confirmLeaveChallenge = () => {
+    setIsLeaveConfirmationVisible((prev) => !prev)
+  }
+
+  const deleteChallenge = () => {
+    const challengeRef = ref(database, `challenges/${params.challengeID}`);
+      remove(challengeRef)
+      .then(() => {
+        setIsChallengeActive(false);
+        setIsDeleteConfirmationVisible(false); 
+        router.replace('/challenges')
+      })
+      .catch((error) => {
+        // Handle errors
+        setIsChallengeActive(true);
+        console.error('Error deleting challenge:', error);
+      });
+  }
+
+  const leaveChallenge = () => {
+    const challengeRef = ref(database, `challenges/${params.challengeID}`);
+    get(challengeRef)
+      .then((challengeSnapshot) => {
+        if (challengeSnapshot.exists()) {
+          const challengeData = challengeSnapshot.val();
+          // check if the user is a participant in the challenge
+          if (challengeData.participants && challengeData.participants[user?.uid]) {
+            // removes user from participants obj
+            delete challengeData.participants[user?.uid];
+            // update the challenge data in the database
+            set(ref(database, `challenges/${params.challengeID}`), challengeData)
+              .then(() => {
+                // user leaves challenge successfully
+                setIsLeaveConfirmationVisible(false); 
+              })
+              .catch((error) => {
+                console.error('Error updating challenge data:', error);
+              });
+          }
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching challenge data:', error);
+      });
+  };
   
+
+  //TODO: remove this when invite participants logic is live
+  useEffect(() => {
+    addAllActiveUsersToChallenge();
+  }, [params.challengeID]);
+
   return (
     <section className={styles.dashboard}>
-      <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
+      {isChallengeActive ? (
+        <>
+          <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
+          <div className={styles.challenge_overview}>
+            <p> Review this challenge&apos;s rules and take note of the start and end dates: </p>
+            <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
 
-      <div className={styles.challenge_overview}>
-        <p> Review this challenge&apos;s rules and take note of the start and end dates: </p>
-        <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
-
-        <div className={styles.rules}>
-          <p> <b>Cardio: </b>
-               <span className={styles.rule}>
-                {challengeData ? challengeData.rules.cardioMinutes : ''} = {challengeData ? challengeData.rules.cardioPoints : ''}
-              </span>
-          </p>
-          <p> <b>Weights: </b>
-               <span className={styles.rule}>
-                {challengeData ? challengeData.rules.weightsMinutes : ''} = {challengeData ? challengeData.rules.weightsPoints : ''}
-              </span>
-          </p>
-        </div>
-      </div>
-
-      <div className={styles.dashboard_section}>
-        <h3> Points Input  </h3>
-        <DailyPointsInput 
-          challengeId={params} 
-          user={user?.uid}   
-        />
-      </div>
-
-      <div className={styles.dashboard_section}>
-        <div className={styles.subheader_container}>
-          <h3> Participants </h3>
-{/*           <ButtonPill 
-            label='+Add Participants'
-            isLoading={false}
-            onClick={addParticipants}     
-          /> */}
-        </div>
-        <div className={styles.participants_container}>
-        {participantsInfo.length > 0 ? (
-            <>
-              {participantsInfo.map((user: any) => (
-                <ParticipantCard
-                  key={user.uid}
-                  userId={user.uid}
-                  firstName={user.firstName}
-                  lastName={user.lastName}
-                  profilePicture={!user.profilePicture ? defaultUser : ''}
-                  userName={user.userName}
-                  cardio={user.cardioPoints}
-                  weights={user.weightsPoints}
-                  total={user.cardioPoints + user.weightsPoints}
-                />
-              ))}
-            </>
-          ) : (
-            <div className={styles.no_users}>
-              <p> There are no active users for this challenge. Invite participants to this challenge! </p>
+            <div className={styles.rules}>
+              <p> <b>Cardio: </b>
+                  <span className={styles.rule}>
+                    {challengeData ? challengeData.rules.cardioMinutes : ''} = {challengeData ? challengeData.rules.cardioPoints : ''}
+                  </span>
+              </p>
+              <p> <b>Weights: </b>
+                  <span className={styles.rule}>
+                    {challengeData ? challengeData.rules.weightsMinutes : ''} = {challengeData ? challengeData.rules.weightsPoints : ''}
+                  </span>
+              </p>
             </div>
-        )}
-        </div>
-      </div>
+          </div>
+
+          <div className={styles.dashboard_section}>
+            <h3> Points Input  </h3>
+            <DailyPointsInput 
+              challengeId={params} 
+              user={user?.uid}   
+            />
+          </div>
+
+          <div className={styles.dashboard_section}>
+            <div className={styles.subheader_container}>
+              <h3> Participants </h3>
+            </div>
+            <div className={styles.participants_container}>
+              {participantsInfo.length > 0 ? (
+                  <>
+                    {participantsInfo.map((user: any) => (
+                      <ParticipantCard
+                        key={user.uid}
+                        userId={user.uid}
+                        firstName={user.firstName}
+                        lastName={user.lastName}
+                        profilePicture={!user.profilePicture ? defaultUser : ''}
+                        userName={user.userName}
+                        cardio={user.cardioPoints}
+                        weights={user.weightsPoints}
+                        total={user.cardioPoints + user.weightsPoints}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <div className={styles.no_users}>
+                    <p> There are no active users for this challenge. Invite participants to this challenge! </p>
+                  </div>
+              )}
+            </div>
+
+            <div className={styles.btns_container}>
+            {isLeaveConfirmationVisible ? (
+                <div className={styles.delete_challenge_confirm}>
+                  <p className={styles.warning}> Are you sure you want to leave this challenge? </p>
+                  <div className={styles.btns_flex_wrapper}>
+                    <ButtonPill 
+                      label={'Yes'}
+                      isLoading={isLoading}
+                      onClick={leaveChallenge}
+                    />
+                    <ButtonPill 
+                      label={'No'}
+                      isLoading={isLoading}
+                      onClick={confirmLeaveChallenge}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <ButtonPill 
+                  label={'Leave this challenge'}
+                  isLoading={isLoading}
+                  onClick={confirmLeaveChallenge}
+                />
+              )}
+              {isDeleteConfirmationVisible ? (
+                <div className={styles.delete_challenge_confirm}>
+                  <p className={styles.warning}> Are you sure you want to delete this challenge? </p>
+                  <div className={styles.btns_flex_wrapper}>
+                    <ButtonPill 
+                      label={'Confirm'}
+                      isLoading={isLoading}
+                      onClick={deleteChallenge}
+                    />
+                    <ButtonPill 
+                      label={'Decline'}
+                      isLoading={isLoading}
+                      onClick={confirmDeleteChallenge}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {isDeleteButtonVisible && 
+                    <ButtonPill 
+                      label={'Delete this challenge'}
+                      isLoading={isLoading}
+                      onClick={confirmDeleteChallenge}
+                    />
+                  }
+                </>
+              )}
+            </div>
+          </div>
+        </>
+      ): (
+        <h3 className={styles.inactive_challenge_msg}> This challenge is no longer active.</h3>
+      )}
+
     </section>
   )
 }
 
-{/*       <div className={styles.dashboard_section}>
-        <h4> Leaderboard</h4>
-        <div className={styles.leaderboard_container}>
-          { USERS_DUMMY_LIST.map((user) => (
-            <LeaderboardCard
-              key={user.name} 
-              category={user.category}
-              name={user.name}
-              points={user.points}
-              img={user.img}
-            />
-          ))}
-        </div>
-      </div> */}

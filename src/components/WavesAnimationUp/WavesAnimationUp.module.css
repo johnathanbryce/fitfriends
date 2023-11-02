@@ -15,7 +15,7 @@
 
 .content {
   position:relative;
-  height:20vh;
+  /* height:20vh; */
   text-align:center;
   background-color: #F9F9F9;
   z-index: -10;

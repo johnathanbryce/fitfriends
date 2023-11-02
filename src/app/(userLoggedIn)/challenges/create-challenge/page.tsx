@@ -87,7 +87,7 @@ export default function CreateChallenge() {
               ends: selection[0].endDate.toString()
             }
           };
-      
+ 
           // push the new challenge to the 'challenges' node
           const newChallengeRef = push(challengesRef, newChallenge);
           // get the generated ID from the reference
@@ -180,7 +180,6 @@ export default function CreateChallenge() {
         
         <div className={styles.input_container}>
             <h4> Challenge duration </h4>
-
             <DateRange
               ranges={selection}
               onChange={handleSelect}
@@ -188,7 +187,7 @@ export default function CreateChallenge() {
               showMonthAndYearPickers={false}
               showDateDisplay={false}
               rangeColors={['#FF5722']}
-              style={{width: '70vw'}}
+              style={{width: '28.5rem'}}
             />
         </div>
 
