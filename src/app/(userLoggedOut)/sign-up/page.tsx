@@ -7,13 +7,8 @@ import InputForm from '@/components/Input/Input'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 // Internal Assets
 import defaultUser from '../../../../public/images/default-user-img.png'
-// Next.js
+
 import { useRouter } from 'next/navigation';
-// Firebase Auth
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-// Firebase
-import { database, auth } from '../../../../firebaseApp'
-import {set, ref} from 'firebase/database'
 // Auth
 import { useAuth } from '@/context/AuthProvider'
 
@@ -48,7 +43,8 @@ export default function SignUp() {
     }
   }, [authError]);
 
-  const handleUserSignUp = async() => {
+  const handleUserSignUp = async(e: any) => {
+    e.preventDefault();
     try {
       const userData = {
         email: email,
@@ -60,7 +56,8 @@ export default function SignUp() {
         challenges: {
           
         },
-       totalPointsOverall: {
+        challengesCreatedLimit: 0,
+        totalPointsOverall: {
           totalWeights: 0,
           totalCardio: 0,
           totalPoints: 0
@@ -71,7 +68,6 @@ export default function SignUp() {
       // reset errors to false 
       setEmailError(false);
       setPasswordError(false);
-     /*  router.replace(`/challenges`); */
     } catch (error: any) {
 
     }
@@ -89,7 +85,8 @@ export default function SignUp() {
     <section className={styles.login}>
       <AuthCard 
         title='Create Your Account' 
-        subSection="Forgot your password?" 
+        navigateTo='/login'
+        subSection="Already have an account?" 
         isLoading={isLoading}
       >
          <p>Create or join a fitness challenge, conquer goals, and become the reigning champion amongst your friends!</p>

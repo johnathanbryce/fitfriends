@@ -1,4 +1,6 @@
 import styles from './AuthCard.module.css'
+// Next.js
+import Link from 'next/link';
 // Internal Components
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 import HorizontalLineBreak from '@/components/HorizontalLineBreak/HorizontalLineBreak'
@@ -8,25 +10,28 @@ interface AuthCardProps {
     title: string,
     isLoading: boolean,
     buttonLabel?: string,
-    onClick?: (email: any) => void;
+    onClick?: (e: any) => void;
     subSection?: string,
+    navigateTo?: any,
 }
 
-export default function AuthCard({children, title, subSection, buttonLabel, onClick, isLoading}: AuthCardProps) {
+export default function AuthCard({children, title, subSection, buttonLabel, onClick, isLoading, navigateTo}: AuthCardProps) {
+  
+  
   return (
     <div className={styles.auth_card}>
       <h2 className={styles.title}> {title} </h2>
-      <div className={styles.form} >
+      <form className={styles.form} onClick={onClick} >
         {children}
-        { buttonLabel ? <ButtonPill label={buttonLabel} onClick={onClick} isLoading={isLoading}/> : (null) }
+        { buttonLabel ? <ButtonPill label={buttonLabel} isLoading={isLoading}/> : (null) }
         { subSection ? (
           <>
             <HorizontalLineBreak />
-            <p> {subSection} </p>
+            <Link href={navigateTo}> {subSection} </Link>
           </>
         ) : (null)
         }
-      </div>
+      </form>
     </div>
   )
 }

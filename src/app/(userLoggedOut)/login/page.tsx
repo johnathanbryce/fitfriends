@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import styles from './login.module.css'
 // Internal Components
 import AuthCard from '@/components/Cards/AuthCard/AuthCard'
@@ -9,6 +9,10 @@ import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 import { useAuth } from '@/context/AuthProvider'
 // Next.js
 import { useRouter } from 'next/navigation';
+import Image from 'next/image'
+// Internal Assets
+import googleIcon from '../../../../public/images/google-icon.png'
+import appleIcon from '../../../../public/images/apple-icon.png'
 
 export default function Login() {
   const [emailInput, setEmailInput] = useState('')
@@ -26,9 +30,17 @@ export default function Login() {
     <section className={styles.login}>
       <AuthCard 
         title='Login' 
+        navigateTo='/forgot-password'
         subSection="Forgot your password?" 
         isLoading={isLoading}
       >   
+        <button type="button" onClick={handleSignInWithGoogle} className={styles.login_option}> 
+          <Image src={googleIcon} className={styles.icon} alt="Google's icon"/> 
+          <p className={styles.button_label}> Sign in using Google </p>
+          <div className={styles.empty} />
+        </button>
+        
+        <p> or sign in with email</p>
         {authError && <p className={styles.auth_error}>{authError}</p>}
         <InputForm 
           name='Your Email'
@@ -57,26 +69,4 @@ export default function Login() {
   )
 }
 
-{/*      
-
-// Next.js
-import Image from 'next/image'
-// Internal Assets
-import googleIcon from '../../../../public/images/google-icon.png'
-import appleIcon from '../../../../public/images/apple-icon.png'
-// Firebase Auth
-import { signInWithEmailAndPassword } from 'firebase/auth';
-// Firebase 
-import { database, auth } from '../../../../firebaseApp'
-import { ref, get } from 'firebase/database';
-
-
-
-<button onClick={handleSignInWithGoogle} className={styles.login_option}> 
-          <Image src={googleIcon} className={styles.icon} alt="Google's icon"/> 
-          <p className={styles.button_label}> Sign in using Google </p>
-          <div className={styles.empty} />
-        </button>
-        
-        <p> or sign in with email</p> */}
 

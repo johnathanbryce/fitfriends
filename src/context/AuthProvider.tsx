@@ -3,11 +3,11 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 // Firebase
 import { initFirebase } from '../../firebaseApp';
 // Firebase Auth for Google
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 // Next.js
 import { useRouter } from 'next/navigation';
 // Firebase Auth
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, confirmPasswordReset } from 'firebase/auth';
 // Firebase 
 import { database, auth } from '../../firebaseApp';
 import { ref, get, set } from 'firebase/database';
@@ -29,13 +29,12 @@ interface AuthContextState {
   user: User | null;
   newUser: boolean | null;
   authError: string | null;
+  isPasswordResetSent: boolean | null;
   isLoading: boolean;
   handleLogin: (email: string, password: string) => void;
-  handleSignInWithGoogle: () => void;
+  handleSignInWithGoogle: (e: any) => void;
   handleLogout: () => void;
   handleSignup: (email: string, password: string, userData: any) => void;
-  resendConfirmation: (email: string) => void;
-  resetPassword: (e: any) => void;
   forgotPassword: (email: string) => void; 
 }
 
@@ -44,14 +43,12 @@ const AuthContext = createContext<AuthContextState>({
   newUser: null,
   authError: null,
   isLoading: false,
+  isPasswordResetSent: false,
   handleLogin: () => {},
   handleSignInWithGoogle: () => {},
   handleLogout: () => {},
   handleSignup: () => {},
-  resendConfirmation: () => {},
-  resetPassword:  () => {},
   forgotPassword: () => {},
-  
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -62,6 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [newUser, setNewUser] = useState(null);
   const [authError, setAuthError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isPasswordResetSent, setPasswordResetSent] = useState(false);
 
   // Firebase Auth
   initFirebase(); // configures firebase in our app
@@ -91,6 +89,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+
+      await sendEmailVerification(user);
 
       const userRef = ref(database, `users/${user.uid}`);
 
@@ -152,18 +152,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const handleSignInWithGoogle = async() => {
+  const handleSignInWithGoogle = async (e: any) => {
+    e.preventDefault();
     try {
-        const loginResult = await signInWithPopup(googleAuth, googleProvider);
-        setUser(loginResult.user)
-        // sets local storage for routing 
-        localStorage.setItem('user', JSON.stringify(loginResult.user)); 
-        // routes to dashboard
-        router.replace('/dashboard');
-    } catch (error) {
-        console.log('error', error)
+      const loginResult = await signInWithPopup(googleAuth, googleProvider);
+      const googleUser = loginResult.user;
+  
+      // Check if the user's email exists in your database
+      const userRef = ref(database, `users`);
+      const userSnapshot = await get(userRef);
+  
+      const userEmail = googleUser.email;
+      let userExists = false;
+  
+      userSnapshot.forEach((childSnapshot) => {
+        const userData = childSnapshot.val();
+        if (userData.email === userEmail) {
+          userExists = true;
+          return; // Stop iterating if a matching email is found
+        }
+      });
+  
+      if (userExists) {
+        // The user exists in your database, proceed with authentication
+        setUser(googleUser);
+        localStorage.setItem('user', JSON.stringify(googleUser)); 
+        router.replace('/challenges');
+      } else {
+        // The user does not exist in your database, show an error or redirect as needed
+        console.log('Error: User not found in the database');
+        // You can set an error message or redirect the user to a different page
+      }
+    } catch (error: any) {
+      console.log('error', error.code);
     }
   }
+  
 
  
   const handleLogout = async () => {
@@ -179,17 +203,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     router.replace('/')
   };
 
-  const resendConfirmation = async (email: string) => {
-   
-  }
-
   const forgotPassword = async (email: string) => {
+    /* setPasswordResetSent(true) */
+    setIsLoading(true);
+    try {
+      setPasswordResetSent(true)
+      setIsLoading(false);
+      await sendPasswordResetEmail(auth, email);
+    } catch (error: any) {
+      if (error.code === 'auth/invalid-email') {
+        setAuthError('Invalid email address. Please try again.')
+      } else if (error.code === 'auth/user-not-found') {
+        setAuthError('This email address is not registered. Please try again.')
+      } 
+      setPasswordResetSent(false)
+      setIsLoading(false)
+      // Handle errors
+      console.error('Error sending password reset email:', error.message);
+    }
+  };
   
-  }
-
-  const resetPassword = async (email: any) => {
-
-  }
 
   return (
     <AuthContext.Provider value={{ 
@@ -197,14 +230,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         newUser,
         authError,
         isLoading,
+        isPasswordResetSent,
         handleLogin: handleLogin, 
         handleSignInWithGoogle: handleSignInWithGoogle,
         handleLogout: handleLogout, 
         handleSignup: handleSignup,
-        resendConfirmation: resendConfirmation,
         forgotPassword: forgotPassword,
-        resetPassword: resetPassword,
-
         }}>
       {children}
     </AuthContext.Provider>
