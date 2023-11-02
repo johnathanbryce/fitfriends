@@ -59,7 +59,7 @@ export default function Challenges() {
                   />
                 ))
               ) : (
-                <p className={styles.empty_challenges_text}> You have no active challenges. Create one below! </p>
+                <p className={styles.empty_challenges_text}> You have no active challenges. Create one and invite your friends! </p>
               )
           )}
         </ul>

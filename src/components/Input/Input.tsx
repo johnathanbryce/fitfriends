@@ -7,12 +7,13 @@ interface InputFormProps {
     type: string,
     placeholder?: string,
     onChange: (e: any) => void,
+    onClick?: (e: any) => void,
     theme: 'dark' | 'light',
     error?: boolean,
     required?: boolean
 }
 
-export default function Input({name, placeholder, value, type, theme, onChange, error=false, required=false}: InputFormProps) {
+export default function Input({name, onClick, placeholder, value, type, theme, onChange, error=false, required=false}: InputFormProps) {
   return (
       <input 
           type={type}
@@ -20,6 +21,7 @@ export default function Input({name, placeholder, value, type, theme, onChange, 
           required={required}
           value={value}
           onChange={(event) => onChange(event.target.value)}
+          onClick={onClick}
           className={`
           ${theme === 'dark' ? styles.input : styles.input_light} 
           ${error ? styles.error : '' }
