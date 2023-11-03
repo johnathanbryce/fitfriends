@@ -8,8 +8,6 @@ import { Carousel } from '@/components/Carousel/Carousel'
 import ActiveChallenge from '@/components/ActiveChallenge/ActiveChallenge'
 import Loading from '@/app/loading'
 import ButtonPillRoute from '@/components/Buttons/ButtonPillRoute/ButtonPillRoute'
-// External Libraries
-import {AiOutlinePlusSquare} from 'react-icons/ai'
 // Firebase
 import { database } from '../../../../firebaseApp'
 import {ref, onValue, get} from 'firebase/database'
@@ -46,9 +44,6 @@ export default function Challenges() {
 
   useEffect(() => {
     fetchActiveChallenges();
-    console.log(activeChallenges)
-  
-    
   }, []);
 
   return (

@@ -9,6 +9,8 @@ import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 import defaultUser from '../../../../public/images/default-user-img.png'
 // Auth
 import { useAuth } from '@/context/AuthProvider'
+// Util Functions
+import { capitalizeFirstLetter } from '@/utils/stringHelpers'
 
 export default function SignUp() {
   // User input state
@@ -43,8 +45,8 @@ export default function SignUp() {
     try {
       const userData = {
         email: email,
-        firstName: firstName,
-        lastName: lastName,
+        firstName: capitalizeFirstLetter(firstName),
+        lastName: capitalizeFirstLetter(lastName),
         userName: userName,
         profilePicture: defaultUser,
         isLoggedin: null,
@@ -118,6 +120,7 @@ export default function SignUp() {
                 onChange={(newVal) => setFirstName(newVal)}
                 theme='dark'
                 required={true}
+                maxLength={20}
             />
             <InputForm 
                 name='Last Name'
@@ -127,6 +130,7 @@ export default function SignUp() {
                 onChange={(newVal) => setLastName(newVal)}
                 theme='dark'
                 required={true}
+                maxLength={30}
             />
         </div>
             <InputForm 
@@ -137,6 +141,7 @@ export default function SignUp() {
                 onChange={(newVal) => setUserName(newVal)}
                 theme='dark'
                 required={true}
+                maxLength={20}
             />
           <ButtonPill 
             label="Submit"

@@ -12,7 +12,7 @@ import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 import defaultUser from '../../../../../public/images/default-user-img.png'
 // Firebase
 import { database } from '../../../../../firebaseApp'
-import {ref, onValue, get, remove, set} from 'firebase/database'
+import {ref, onValue, get, remove, set, update} from 'firebase/database'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 // Util
@@ -103,7 +103,7 @@ export default function Dashboard({params}: urlParamsProps) {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
   }
 
-  const toggleConfirmDeleteChallenge = () => {
+  const toggleConfirmDeleteChallenge =  () => {
     setIsDeleteConfirmationVisible((prev) => !prev)
   }
 
@@ -111,21 +111,35 @@ export default function Dashboard({params}: urlParamsProps) {
     setIsLeaveConfirmationVisible((prev) => !prev)
   }
 
-  // TODO: decrease userChallengeLimit by 1 on successful deletion
-  const deleteChallenge = () => {
-    const challengeRef = ref(database, `challenges/${params.challengeID}`);
-      remove(challengeRef)
-      .then(() => {
-        setIsChallengeActive(false);
-        setIsDeleteConfirmationVisible(false); 
-        router.replace('/challenges-dashboard')
-      })
-      .catch((error) => {
-        // Handle errors
-        setIsChallengeActive(true);
-        console.error('Error deleting challenge:', error);
+
+  const deleteChallenge = async () => {
+    try {
+      // Delete the challenge
+      const challengeRef = ref(database, `challenges/${params.challengeID}`);
+      await remove(challengeRef);
+  
+      setIsChallengeActive(false);
+      setIsDeleteConfirmationVisible(false);
+      router.replace('/challenges-dashboard');
+  
+      // Decrease the user's challengesCreatedLimit by the number of challenges deleted
+      const userRef = ref(database, `users/${user?.uid}`);
+      const userSnapshot = await get(userRef);
+      const userUpdateData = userSnapshot.val(); 
+      // update challengesCreatedLimit in user data
+      const updatedChallengesCreatedLimit = userUpdateData.challengesCreatedLimit - 1;
+      await update(userRef, {
+        challengesCreatedLimit: updatedChallengesCreatedLimit
       });
-  }
+  
+    } catch (error) {
+      setIsChallengeActive(true);
+      console.error('Error deleting challenge:', error);
+    }
+  };
+  
+
+  
 
   const leaveChallenge = () => {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);

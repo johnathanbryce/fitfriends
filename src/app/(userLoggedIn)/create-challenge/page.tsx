@@ -42,32 +42,40 @@ export default function CreateChallenge() {
       },
     ]);
     // react-date-range fn
-    const handleSelect = (ranges: any) => {
+    const handleSelect = async (ranges: any) => {
       setSelection([ranges.selection]);
+
+
+
+
     };
 
     async function addNewChallenge(e: any) {
       e.preventDefault();
-        // get refs to "users" & "challenges" main data buckets in db
-        const challengesRef = ref(database, `challenges`);
-        const usersRef = ref(database, 'users');
-        // get the user ref to check and increase challengesCreatedLimit
-        const userRef = ref(database, `users/${userData?.uid}`);
+      // get refs to "users" & "challenges" main data buckets in db
+      const challengesRef = ref(database, `challenges`);
+      const usersRef = ref(database, 'users');
+      // get the user ref to check and increase challengesCreatedLimit
+      const userRef = ref(database, `users/${userData?.uid}`);
     
       try {
-        // fetches a snapshot of all users in 'users'
+        // fetches a snapshot the user
         const userSnapshot = await get(userRef);
         if (userSnapshot.exists()) {
-          const userData = userSnapshot.val();
-          // check if user has exceeded the limit
-          if (userData.challengesCreatedLimit >= maxChallenges) {
+          const userUpdateData = userSnapshot.val(); 
+          
+          // check if the user has exceeded the limit
+          if (userUpdateData.challengesCreatedLimit >= maxChallenges) {
             console.log('Too many challenges');
-            setLimitExceeded(true)
+            setLimitExceeded(true);
             return;
           }
+          
           // update challengesCreatedLimit in user data
-          const updatedChallengesCreatedLimit = userData.challengesCreatedLimit + 1;
-          update(userRef, { challengesCreatedLimit: updatedChallengesCreatedLimit });
+          const updatedChallengesCreatedLimit = parseInt(userUpdateData.challengesCreatedLimit + 1);
+          await update(userRef, {
+            challengesCreatedLimit: updatedChallengesCreatedLimit
+          });
         } else {
           console.log('User data not found in the database');
           return;
@@ -145,6 +153,7 @@ export default function CreateChallenge() {
                 onChange={(e) => setChallengeName(e)}
                 theme='dark'
                 required={true}
+                maxLength={20}
             />
         </div>
 
@@ -161,6 +170,7 @@ export default function CreateChallenge() {
                       onChange={(e) => setCardioMinutes(e)}
                       theme='dark'
                       required={true}
+                      maxLength={35}
                   />
                   <p> equals </p>
                   <Input 
@@ -171,6 +181,7 @@ export default function CreateChallenge() {
                       onChange={(e) => setCardioPoints(e)}
                       theme='dark'
                       required={true}
+                      maxLength={15}
                   />
                  </div>
             </div>
@@ -185,6 +196,7 @@ export default function CreateChallenge() {
                       onChange={(e) => setWeightsMinutes(e)}
                       theme='dark'
                       required={true}
+                      maxLength={35}
                   />
                   <p> equals </p>
                   <Input 
@@ -195,6 +207,7 @@ export default function CreateChallenge() {
                       onChange={(e) => setWeightsPoints(e)}
                       theme='dark'
                       required={true}
+                      maxLength={15}
                   />
                 </div>
             </div>

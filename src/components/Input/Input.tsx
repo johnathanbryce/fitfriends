@@ -10,16 +10,18 @@ interface InputFormProps {
     onClick?: (e: any) => void,
     theme: 'dark' | 'light',
     error?: boolean,
-    required?: boolean
+    required?: boolean,
+    maxLength?: number;
 }
 
-export default function Input({name, onClick, placeholder, value, type, theme, onChange, error=false, required=false}: InputFormProps) {
+export default function Input({name, onClick, placeholder, value, type, theme, onChange, error=false, required=false, maxLength}: InputFormProps) {
   return (
       <input 
           type={type}
           placeholder={placeholder}
           required={required}
           value={value}
+          maxLength={maxLength}
           onChange={(event) => onChange(event.target.value)}
           onClick={onClick}
           className={`

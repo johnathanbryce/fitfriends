@@ -4,25 +4,29 @@ import styles from './user-profile.module.css'
 // Next.js
 import Image from 'next/image';
 import Link from 'next/link';
-// Firebase
-import { database } from '../../../../../firebaseApp';
-import { ref, get } from 'firebase/database';
 // Custom Hooks
 import { useFetchUserData } from '@/hooks/useFetchUserData';
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
-// Loading
+// Components
+import ImageFileUploadButton from '@/components/ImageFileUploadButton/ImageFileUploadButton';
 import Loading from '@/app/loading';
 // External Libraries 
 import {LuLogOut} from 'react-icons/lu'
 import {AiOutlineEdit} from 'react-icons/ai'
 import {IoIosArrowBack} from 'react-icons/io'
+import {GoPerson} from 'react-icons/go'
 
 export default function UserProfile() {
+  const [profilePic, setProfilePic] = useState(null)
   // auth context
-  const { user, handleLogout } = useAuth();
+  const { handleLogout } = useAuth();
   // custom hook
   const {userData, isLoading} = useFetchUserData()
+
+  const handleFileChange = (file: any) => {
+    setProfilePic(file);
+  };
 
   if(isLoading){
     return <Loading />
@@ -39,10 +43,28 @@ export default function UserProfile() {
               </Link>
             </div>
             <div className={styles.user_main_overview}>
-                <Image src={userData.profilePicture.src} width={100} height={100} className={styles.profile_pic} alt='Your profile picture' />
-                <h4>{userData.firstName} {userData.lastName}</h4>
+                {profilePic ? (
+                    <Image
+                      src={URL.createObjectURL(profilePic)}
+                      width={100}
+                      height={100}
+                      className={styles.profile_pic}
+                      alt='Your profile picture'
+                    />
+                  ) : (
+                    // default backup
+                    <GoPerson className={styles.profile_pic} />
+                )}
+                {/* <ImageFileUploadButton onFileChange={handleFileChange} /> */}
+                <h3>{userData.firstName} {userData.lastName}</h3>
                 <p> &quot;{userData.userName}&quot; </p>
-                <h5> Overall points {userData.totalPointsOverall.totalPoints}</h5>
+                <h5> Total Points</h5>
+                <div className={styles.points_container}>
+                  <p> Cardio {userData.totalPointsOverall.totalCardio}</p>
+                  <h5>Overall {userData.totalPointsOverall.totalPoints}</h5>
+                  <p> Weights {userData.totalPointsOverall.totalWeights}</p>
+                </div>
+
             </div>
             <div className={styles.user_details_section}>
                 <p> {userData.email} </p>
