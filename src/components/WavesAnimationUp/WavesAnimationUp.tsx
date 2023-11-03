@@ -8,7 +8,7 @@ interface WavesAnimationUpProps {
 
 const WavesAnimationUp = ({ color }: WavesAnimationUpProps) => {
     return (
-        <div>
+        <div className={styles.waves_container}>
             <svg
                 className={styles.waves}
                 xmlns="http://www.w3.org/2000/svg"

@@ -48,3 +48,10 @@
     40%, 60% { transform: translateX(5px); }
     100% { transform: translateX(0); }
 }
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .input {
+        height: 4rem;
+    }
+}

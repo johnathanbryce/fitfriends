@@ -1,5 +1,5 @@
 .login p {
-    font-size: 1.4rem;
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
 }
 
 .user_name_wrapper{

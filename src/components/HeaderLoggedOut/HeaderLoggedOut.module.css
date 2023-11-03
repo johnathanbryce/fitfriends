@@ -4,6 +4,8 @@
     align-items: center;
     padding: 2rem 5rem;
     height: 10rem; 
+    width: 100vw;
+    position: relative;
 }
 
 .routes_flex_wrapper{

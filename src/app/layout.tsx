@@ -8,6 +8,8 @@ import Head from 'next/head';
 // Auth Context
 import { AuthProvider } from '@/context/AuthProvider';
 
+import FooterLoggedIn from '@/components/Footers/FooterLoggedIn/FooterLoggedIn';
+
 const lato = Lato({
   weight: '400',
   subsets: ['latin'],

@@ -10,8 +10,8 @@ import {AiFillGithub, AiFillLinkedin, AiOutlineMail} from 'react-icons/ai'
 export default function FooterLoggedIn() {
   return (
     <>
-    <WavesAnimationUp color='#FF5722'/>
     <footer className={styles.footer}>
+        <WavesAnimationUp color='#FF5722'/>
         <p> designed & developed by johnathan bryce</p>
         <ul className={styles.socials_container}>
             <li>

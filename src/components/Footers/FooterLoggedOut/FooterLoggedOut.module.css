@@ -5,6 +5,9 @@
     gap: 3rem;
     padding: 4rem 10rem;
     background-color: var(--footer-bg);
+    width: 100vw;
+    text-align: center;
+    position: relative; /* FOR WAVES ANIMATION */
 }
 
 .footer > * {
@@ -19,4 +22,12 @@
 .icon {
     font-size: clamp(2.5rem, 2vw, 3rem);
     color: var(--font-secondary);
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .footer {
+        gap: 1rem;
+        padding: 2rem 2rem;
+    }
 }

@@ -6,7 +6,7 @@ import ButtonPillRoute from '@/components/Buttons/ButtonPillRoute/ButtonPillRout
 import Image from 'next/image'
 import Link from 'next/link'
 // Internal Assets
-import logoTransparent from '../../../public/images/logo-transparent.png'
+import logoTransparent from '../../../../public/images/logo-transparent.png'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 
