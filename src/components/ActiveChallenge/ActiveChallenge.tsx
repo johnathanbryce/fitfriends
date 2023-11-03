@@ -6,14 +6,17 @@ import Link from 'next/link'
 interface ActiveChallengeProps {
     name: string,
     id: string,
+    creatorName: string,
     rules?: object
 }
 
-export default function ActiveChallenge({name, id, rules}: ActiveChallengeProps) {
+export default function ActiveChallenge({name, id, creatorName, rules}: ActiveChallengeProps) {
   return (
-    <Link href={`/dashboard/${id}`} className={styles.active_challenge}>
-        <h5 className={styles.name}>{name}</h5>
-
+    <Link href={`/challenge/${id}`} className={styles.active_challenge}>
+      <li className={styles.link_container}>
+            <h5 className={styles.name}>{name}</h5>
+            <p className={styles.creator}> created by: {creatorName} </p>
+      </li>
     </Link>
   )
 }

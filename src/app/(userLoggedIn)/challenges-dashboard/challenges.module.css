@@ -1,0 +1,38 @@
+.challenges{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4rem;
+    width: 100vw;
+    justify-content: space-evenly;
+}
+
+.challenge_section{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; 
+}
+
+.active_challenges_container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem;
+    overflow: hidden;
+
+}
+
+.icon {
+    font-size: 5rem;
+}
+
+.underline{
+    text-decoration: underline;
+}
+
+.btn_wrapper{
+    margin-top: 2rem;
+}
+

@@ -7,8 +7,6 @@ import InputForm from '@/components/Input/Input'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 // Internal Assets
 import defaultUser from '../../../../public/images/default-user-img.png'
-
-import { useRouter } from 'next/navigation';
 // Auth
 import { useAuth } from '@/context/AuthProvider'
 
@@ -21,11 +19,8 @@ export default function SignUp() {
   const [userName, setUserName] = useState('')
   // Error state variables
   const [emailError, setEmailError] = useState(false);
-  const [emailErrorMsg, setEmailErrorMsg] = useState('')
   const [passwordError, setPasswordError] = useState(false);
-  const [usernameError, setUsernameError] = useState(false);
-  // Routing
-  const router = useRouter();
+
   // Auth
   const { handleSignup, authError, isLoading } = useAuth();
 

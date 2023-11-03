@@ -1,21 +1,21 @@
 'use client'
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import styles from './create-challenge.module.css'
 // Next.js
 import { useRouter } from 'next/navigation';
 // Internal Components
 import Input from '@/components/Input/Input';
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill';
+import Loading from '@/app/loading';
 // Firebase
-import { database } from '../../../../../firebaseApp';
-import { ref, get, push, set} from 'firebase/database';
-// Auth Context
-import { useAuth } from '@/context/AuthProvider';
+import { database } from '../../../../firebaseApp';
+import { ref, get, push, set, update} from 'firebase/database';
+// Custom Hooks
+import { useFetchUserData } from '@/hooks/useFetchUserData';
 // External Libraries
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
-
 
 export default function CreateChallenge() {
     const [challengeName, setChallengeName] = useState('');
@@ -23,11 +23,15 @@ export default function CreateChallenge() {
     const [cardioPoints, setCardioPoints] = useState('');
     const [weightsMinutes, setWeightsMinutes] = useState('');
     const [weightsPoints, setWeightsPoints] = useState('');
+    const [limitExceeded, setLimitExceeded] = useState(false);
+
+    // maximum allowable challenges cap
+    const maxChallenges = 3
 
     // router
     const router = useRouter();
-    // auth context
-    const {user} = useAuth();
+    // custom hook
+    const {userData, isLoading} = useFetchUserData();
 
     // react-date-range state
     const [selection, setSelection] = useState([
@@ -37,77 +41,95 @@ export default function CreateChallenge() {
         key: 'selection',
       },
     ]);
-
     // react-date-range fn
     const handleSelect = (ranges: any) => {
       setSelection([ranges.selection]);
     };
 
     async function addNewChallenge(e: any) {
-        e.preventDefault();
+      e.preventDefault();
         // get refs to "users" & "challenges" main data buckets in db
         const challengesRef = ref(database, `challenges`);
         const usersRef = ref(database, 'users');
+        // get the user ref to check and increase challengesCreatedLimit
+        const userRef = ref(database, `users/${userData?.uid}`);
     
-        // gets a snapshot of all users in 'users'
+      try {
+        // fetches a snapshot of all users in 'users'
+        const userSnapshot = await get(userRef);
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.val();
+          // check if user has exceeded the limit
+          if (userData.challengesCreatedLimit >= maxChallenges) {
+            console.log('Too many challenges');
+            setLimitExceeded(true)
+            return;
+          }
+          // update challengesCreatedLimit in user data
+          const updatedChallengesCreatedLimit = userData.challengesCreatedLimit + 1;
+          update(userRef, { challengesCreatedLimit: updatedChallengesCreatedLimit });
+        } else {
+          console.log('User data not found in the database');
+          return;
+        }
+    
         const usersSnapshot = await get(usersRef);
-    
-        // participants object to be added to each monthly challenge
         const participants: any = {};
     
         // adds ALL registered users from "users" bucket to this challenge 
         usersSnapshot.forEach((userSnapshot) => {
           const userData = userSnapshot.val();
           if (userData) {
-            // participant object to be added to "participants" for each monthly challenge
             const participant = {
               cardioPoints: 0,
               weightsPoints: 0,
               totalPoints: 0,
             };
-            // add the participant to the participants object with the user's ID as the key
             participants[userSnapshot.key] = participant;
-          } 
+          }
         });
     
-        try {
-          const newChallenge: any = {
-            id: '', 
-            creator: user?.uid,
-            name: challengeName,
-            participants: participants,
-            rules: {
-                cardioMinutes: cardioMinutes,
-                cardioPoints: cardioPoints,
-                weightsMinutes: weightsMinutes,
-                weightsPoints: weightsPoints,
-            },
-            challengeDuration: {
-              starts: selection[0].startDate.toString(),
-              ends: selection[0].endDate.toString()
-            }
-          };
-      
-          // push the new challenge to the 'challenges' node
-          const newChallengeRef = push(challengesRef, newChallenge);
-          // get the generated ID from the reference
-          const newChallengeId = newChallengeRef.key;
-          // update the 'id' field in the newChallenge object with the generated ID
-          newChallenge.id = newChallengeId;
-          // update the challenge with the generated ID
-          set(newChallengeRef, newChallenge);
-
-          // reset all inputs
-          setChallengeName('');
-          setCardioPoints('');
-          setCardioMinutes('');
-          setWeightsPoints('');
-          setWeightsMinutes('');
-          // route to the challenge
-          router.replace(`/dashboard/${newChallengeId}`); 
-        } catch (error) {
-          console.error("Error adding a new challenge:", error);
-        }
+        // create the new challenge data to send to db
+        const newChallenge: any = {
+          id: '',
+          creator: userData?.uid,
+          creatorName: userData?.userName || 'unknown user',
+          name: challengeName,
+          participants: participants,
+          rules: {
+            cardioMinutes: cardioMinutes,
+            cardioPoints: cardioPoints,
+            weightsMinutes: weightsMinutes,
+            weightsPoints: weightsPoints,
+          },
+          challengeDuration: {
+            starts: selection[0].startDate.toString(),
+            ends: selection[0].endDate.toString(),
+          },
+        };
+    
+        // push the new challenge to the 'challenges' node
+        const newChallengeRef = push(challengesRef, newChallenge);
+        // get the generated ID from the reference
+        const newChallengeId = newChallengeRef.key;
+        // update the 'id' field in the newChallenge object with the generated ID
+        newChallenge.id = newChallengeId;
+        // update the challenge with the generated ID
+        set(newChallengeRef, newChallenge);
+        // reset inputs 
+        setChallengeName('');
+        setCardioPoints('');
+        setCardioMinutes('');
+        setWeightsPoints('');
+        setWeightsMinutes('');
+        router.replace(`/challenge/${newChallengeId}`);
+      } catch (error) {
+        console.error('Error adding a new challenge:', error);
+      }
+    }
+    
+    if (isLoading) {
+      return <Loading />
     }
 
   return (
@@ -180,7 +202,6 @@ export default function CreateChallenge() {
         
         <div className={styles.input_container}>
             <h4> Challenge duration </h4>
-
             <DateRange
               ranges={selection}
               onChange={handleSelect}
@@ -188,15 +209,17 @@ export default function CreateChallenge() {
               showMonthAndYearPickers={false}
               showDateDisplay={false}
               rangeColors={['#FF5722']}
-              style={{width: '70vw'}}
+              style={{width: '28.5rem'}}
             />
         </div>
-
-        <ButtonPill 
-            label="Create Challenge"
-            isLoading={false}
-            secondary={true}  
-        />
+        <div className={styles.btn_and_warning_container}>
+          {limitExceeded && <p className={styles.warning}> Maximum active challenges per user: {maxChallenges}. To create this challenge, please delete or finish one of your active challenges. </p>}
+          <ButtonPill 
+              label="Create Challenge"
+              isLoading={false}
+              secondary={true}  
+          />
+        </div>
     </form>
   )
 }

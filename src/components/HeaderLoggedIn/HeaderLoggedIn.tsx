@@ -43,10 +43,11 @@ export default function HeaderLoggedIn() {
           <div className={styles.bar} ></div>
           <div className={styles.bar} ></div>
       </div>
-
+      
+      <nav>
         <ul className={styles.navbar}>
           <li>
-            <Link href={`/challenges`} className={styles.nav_item}>
+            <Link href={`/challenges-dashboard`} className={styles.nav_item}>
               <GiStrong className={styles.icon} />
               <span className={styles.nav_item_text}> challenges </span>
             </Link>
@@ -59,8 +60,9 @@ export default function HeaderLoggedIn() {
             </Link>
           </li>
         </ul>
-
-        {isDropdownActive && 
+      </nav>
+      
+      {isDropdownActive && 
         <nav className={styles.navbar_dropdown}>
           <ul>
               <li className={styles.link}><Link href='/challenges' onClick={onClickCloseDropdown} > Challenges </Link></li> 

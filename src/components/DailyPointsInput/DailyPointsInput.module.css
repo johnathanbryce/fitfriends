@@ -33,13 +33,16 @@
     flex: 0.3;
 }
 
-/* Mobile Devices up to 480px */
-@media (max-width: 480px) {  
+/* Mobile Devices (landscape) */
+@media (max-width: 775px){
     .daily_points_input{
         flex-direction: column; 
         gap: 2rem;
     }
+}
 
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
     .inputs_container{
         justify-content: space-evenly;
         width: 100%;

@@ -1,0 +1,20 @@
+.embla {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    width: 100%;
+}
+
+.embla__container {
+  display: flex;
+  gap: 5rem;
+  border: 1px solid red;
+}
+
+.arrow_left, .arrow_right {
+  /* font-size: 3rem; */
+/*   position: absolute;
+  z-index: 10; */
+}
+
+

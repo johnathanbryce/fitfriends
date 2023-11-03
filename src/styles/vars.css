@@ -26,7 +26,7 @@
     --button-secondary-text:#F9F9F9;
     --button-hover-bg: rgba(255, 87, 34, 0.8);
     --button-hover-bg-secondary: rgba(0, 189, 157, 0.8);
-    --button-padding: 1rem;
+    --button-padding: 1rem 2rem;
 
     /* borders */
     --border-radius: 0.5rem;
@@ -46,8 +46,8 @@
     --input-focus-transition: 0.15s ease-in-out;
     
     /* header/footer */
-    --header-bg: #263238;
-    --footer-bg: #263238;
+    --header-bg: white;
+    --footer-bg: #FF5722;
 
     /* hover */
     --hover-transition: 0.3s ease-in-out;

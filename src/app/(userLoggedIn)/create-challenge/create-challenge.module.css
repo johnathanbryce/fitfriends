@@ -3,6 +3,9 @@
     flex-direction: column;
     align-items: center;
     gap: 2.5rem;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    background-color: var(--background-primary);
 }
 
 .create_challenge h2 {
@@ -15,6 +18,13 @@
     flex-direction: column;
     gap: 1rem;
     width: 80%;
+}
+
+.btn_and_warning_container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 50%;
 }
 
 .input_container h4 {
@@ -42,6 +52,12 @@
 .date_range_picker {
     display: grid;
     place-items: center;
+}
+
+.warning{ 
+    text-align: center;
+    font-weight: 600;
+    color: var(--error-color);
 }
 
 /* Mobile Devices up to 480px */
