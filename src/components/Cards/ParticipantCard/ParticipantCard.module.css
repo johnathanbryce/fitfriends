@@ -31,11 +31,15 @@
     color: var(--accent-secondary);
 }
 
-.img {
+.profile_pic {
     width: 40%;
     height: 100%; 
     object-fit: cover;
     border-radius: 50%;
+}
+
+.default_img{
+    filter: brightness(0) invert(1) grayscale(1);
 }
 
 /* Mobile Devices (landscape) */
@@ -54,7 +58,7 @@
         justify-content: space-around;
     }
     
-    .img {
+    .profile_pic {
         width: 30%;
     }
 }

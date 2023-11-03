@@ -205,7 +205,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
     setAuthError('');
     localStorage.removeItem('user');
-    router.replace('/')
+    router.replace('/login')
   };
 
   const forgotPassword = async (email: string) => {
