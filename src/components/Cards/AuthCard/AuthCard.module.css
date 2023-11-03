@@ -8,7 +8,7 @@
     max-width: 50rem;
     background-color: var(--background-secondary-light);
     color: var(--font-secondary);
-    margin-top: 5rem;
+    /* margin: 6.5rem 0; */
 }
 
 .auth_card * {
@@ -34,7 +34,7 @@
 /* Mobile Devices (landscape) */
 @media (max-width: 775px) { 
     .auth_card{
-        gap: 1rem;
+        gap: 0rem;
         width: 45rem;
         margin-top: 0;
     }
@@ -44,15 +44,15 @@
     }
 }
 
-
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .auth_card{
-        gap: 1rem;
-        width: 32.5rem;
+        width: 85vw;
+        margin-top: 0;
     }
-
 }
+
+
 
 /* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
 @media (max-width: 325px) {  

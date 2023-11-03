@@ -43,7 +43,7 @@ export default function LoggedInLayout({
     <>
       <HeaderLoggedIn />
       <LayoutLoggedIn>
-      {children}
+        {children}
       </LayoutLoggedIn>
       <FooterLoggedIn />
     </>

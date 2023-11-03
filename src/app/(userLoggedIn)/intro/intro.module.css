@@ -6,6 +6,7 @@
     text-align: center;
     gap: 2rem;
     padding: 4rem 15rem;
+    overflow-y: hidden;
 }
 
 .logo_wrapper{
@@ -32,4 +33,19 @@
     flex-direction: column;
     gap: 2rem;
     margin-top: 3.5rem;
+}
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .intro{
+        padding: 0rem 2rem;
+    }
+
+    .logo_wrapper{
+        height: 15rem;
+     }
+
+    .get_started_section{
+        margin-top: 1.5rem;
+    }
 }

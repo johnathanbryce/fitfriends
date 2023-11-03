@@ -64,3 +64,19 @@
     font-weight: bold;
     font-size: 2.5rem;
 }
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .user_profile {
+        width: auto;
+    }
+
+    .points_container {
+        gap: 2.5rem;
+    }
+}
+
+/* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
+@media (max-width: 325px) {  
+
+}

@@ -34,7 +34,7 @@ export default function HeaderLoggedIn() {
 
   return (
     <header className={styles.header}>
-      <Link href='/'>
+      <Link href='/challenges-dashboard'>
         <h1> Fit Friends </h1>
       </Link>
 
@@ -65,7 +65,7 @@ export default function HeaderLoggedIn() {
       {isDropdownActive && 
         <nav className={styles.navbar_dropdown}>
           <ul>
-              <li className={styles.link}><Link href='/challenges' onClick={onClickCloseDropdown} > Challenges </Link></li> 
+              <li className={styles.link}><Link href='/challenges-dashboard' onClick={onClickCloseDropdown} > Challenges </Link></li> 
               <li className={styles.link}><Link href={`/user-profile/${user?.uid}`} onClick={onClickCloseDropdown} > Profile </Link></li>   
           </ul>
         </nav>
