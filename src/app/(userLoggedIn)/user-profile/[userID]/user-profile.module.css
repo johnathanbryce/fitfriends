@@ -61,6 +61,7 @@
 }
 
 .icon {
+    color: var(--font-primary);
     font-weight: bold;
     font-size: 2.5rem;
 }

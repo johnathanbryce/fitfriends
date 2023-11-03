@@ -4,7 +4,7 @@
     justify-content: center;  
     align-items: center;
     gap: 2rem;
-    padding: 0rem 2rem;
+    padding: 2rem 2rem;
     min-height: 100vh;
 }
 
@@ -14,4 +14,7 @@
 
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
+    .main_container {
+        min-height: 70vh;
+    }
 }

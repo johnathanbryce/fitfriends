@@ -46,6 +46,11 @@
      }
 
     .get_started_section{
-        margin-top: 1.5rem;
+        margin: 2rem 0;
     }
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+
 }
