@@ -27,7 +27,7 @@ export default function AuthCard({children, title, subSection, buttonLabel, onCl
         { subSection ? (
           <>
             <HorizontalLineBreak />
-            <Link href={navigateTo}> {subSection} </Link>
+            <Link href={navigateTo}>{subSection} </Link>
           </>
         ) : (null)
         }

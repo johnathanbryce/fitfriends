@@ -8,11 +8,6 @@
     max-width: 50rem;
     background-color: var(--background-secondary-light);
     color: var(--font-secondary);
-    /* margin: 6.5rem 0; */
-}
-
-.auth_card * {
-    color: var(--font-secondary);
 }
 
 .title{

@@ -86,7 +86,7 @@ export default function SignUp() {
         subSection="Already have an account?" 
         isLoading={isLoading}
       >
-         <p>Create or join a fitness challenge, conquer goals, and become the reigning champion amongst your friends!</p>
+         <p className={styles.headline}>Create or join a fitness challenge, conquer goals, and become the reigning champion amongst your friends!</p>
           {emailError && <p className={styles.error_text}> {authError} </p>}
           {passwordError && <p className={styles.error_text}> {authError} </p>}
           <InputForm 
