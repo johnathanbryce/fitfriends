@@ -185,7 +185,7 @@ export default function Dashboard({params}: urlParamsProps) {
           </div>
 
           <div className={styles.dashboard_section}>
-            <h3> Points Input  </h3>
+            <h3> Submit points  </h3>
             <DailyPointsInput 
               challengeId={params} 
               user={user?.uid}   
@@ -215,7 +215,7 @@ export default function Dashboard({params}: urlParamsProps) {
                   </>
                 ) : (
                   <div className={styles.no_users}>
-                    <p> There are no active users for this challenge. Invite participants to this challenge! </p>
+                    <p> There are no active users. Invite participants to this challenge! </p>
                   </div>
               )}
             </div>

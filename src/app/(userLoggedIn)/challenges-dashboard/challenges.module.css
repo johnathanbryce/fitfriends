@@ -14,13 +14,6 @@
     gap: 2rem; 
 }
 
-.create_challenge{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-}
-
 .active_challenges_container{
     display: flex;
     justify-content: center;
@@ -39,21 +32,7 @@
     text-decoration: underline;
 }
 
-
-/* Tablets (portrait) */
-@media (max-width: 950px) { 
-    .challenges{
-
-    }
-    
-    .challenge_section{
-
-    }
+.btn_wrapper{
+    margin-top: 2rem;
 }
 
-/* Mobile Devices up to 480px */
-@media (max-width: 480px) {  
-    .challenge_section{
-
-    }
-}

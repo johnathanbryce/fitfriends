@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Carousel } from '@/components/Carousel/Carousel'
 import ActiveChallenge from '@/components/ActiveChallenge/ActiveChallenge'
 import Loading from '@/app/loading'
+import ButtonPillRoute from '@/components/Buttons/ButtonPillRoute/ButtonPillRoute'
 // External Libraries
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 // Firebase
@@ -53,7 +54,7 @@ export default function Challenges() {
   return (
     <section className={styles.challenges}>
       <div className={styles.challenge_section}>
-        <h2> Your challenges: </h2>
+        <h2> Your challenges </h2>
          <p> This feature is coming soon... </p>
 {/*         <ul className={styles.active_challenges_container}>
           {isLoading ? (
@@ -75,7 +76,7 @@ export default function Challenges() {
         </ul> */}
       </div>
       <div className={styles.challenge_section}>
-        <h2> Active challenges: </h2>
+        <h2> Active challenges </h2>
           <ul className={styles.active_challenges_container}>
             {/* <Carousel> */}
               {isLoading ? (
@@ -102,11 +103,11 @@ export default function Challenges() {
           </ul>
         
       </div>
-      <div className={styles.challenge_section}>
-        <Link href="/create-challenge" className={styles.create_challenge}>
-          <h2> Create a challenge</h2>
-          <AiOutlinePlusSquare className={styles.icon} />
-        </Link>
+      <div className={styles.btn_wrapper}>
+        <ButtonPillRoute 
+          label="Create a challenge"
+          src="/create-challenge"
+        />
       </div>
     </section>
   )

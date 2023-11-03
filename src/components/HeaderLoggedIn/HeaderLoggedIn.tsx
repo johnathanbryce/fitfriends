@@ -43,7 +43,8 @@ export default function HeaderLoggedIn() {
           <div className={styles.bar} ></div>
           <div className={styles.bar} ></div>
       </div>
-
+      
+      <nav>
         <ul className={styles.navbar}>
           <li>
             <Link href={`/challenges-dashboard`} className={styles.nav_item}>
@@ -59,8 +60,9 @@ export default function HeaderLoggedIn() {
             </Link>
           </li>
         </ul>
-
-        {isDropdownActive && 
+      </nav>
+      
+      {isDropdownActive && 
         <nav className={styles.navbar_dropdown}>
           <ul>
               <li className={styles.link}><Link href='/challenges' onClick={onClickCloseDropdown} > Challenges </Link></li> 

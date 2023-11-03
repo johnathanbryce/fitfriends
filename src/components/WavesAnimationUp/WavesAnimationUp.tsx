@@ -2,11 +2,11 @@ import React from 'react';
 import styles from './WavesAnimationUp.module.css'
 
 // string, number
-interface WavyUpSectionBreakProps {
+interface WavesAnimationUpProps {
     color: string,
 }
 
-const WavyUpSectionBreak = ({ color }: WavyUpSectionBreakProps) => {
+const WavesAnimationUp = ({ color }: WavesAnimationUpProps) => {
     return (
         <div>
             <svg
@@ -36,4 +36,4 @@ const WavyUpSectionBreak = ({ color }: WavyUpSectionBreakProps) => {
 
 }
 
-export default WavyUpSectionBreak;
+export default WavesAnimationUp;

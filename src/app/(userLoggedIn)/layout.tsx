@@ -8,7 +8,7 @@ import HeaderLoggedIn from '@/components/HeaderLoggedIn/HeaderLoggedIn';
 import UnauthorizedLoader from '@/components/UnauthorizedLoader/UnauthorizedLoader';
 import Loading from '../loading';
 import PrivateRoutes from '@/components/PrivateRoutes/PrivateRoutes';
-import WavyUpSectionBreak from '@/components/WavesAnimationUp/WavesAnimationUp';
+import FooterLoggedIn from '@/components/Footers/FooterLoggedIn/FooterLoggedIn';
 // Layouts
 import LayoutLoggedIn from '@/layouts/LayoutLoggedIn/LayoutLoggedIn';
 // Auth Context
@@ -45,7 +45,7 @@ export default function LoggedInLayout({
       <LayoutLoggedIn>
       {children}
       </LayoutLoggedIn>
-      <WavyUpSectionBreak color='#FF5722'/>
+      <FooterLoggedIn />
     </>
   )
 }
