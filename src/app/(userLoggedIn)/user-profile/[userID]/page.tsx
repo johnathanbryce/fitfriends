@@ -7,6 +7,8 @@ import Link from 'next/link';
 // Firebase
 import { database } from '../../../../../firebaseApp';
 import { ref, get } from 'firebase/database';
+// Custom Hooks
+import { useFetchUserData } from '@/hooks/useFetchUserData';
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 // Loading
@@ -17,38 +19,10 @@ import {AiOutlineEdit} from 'react-icons/ai'
 import {IoIosArrowBack} from 'react-icons/io'
 
 export default function UserProfile() {
-  const [userData, setUserData] = useState<any>();
-  const [isLoading, setIsLoading] = useState(false)
-
   // auth context
   const { user, handleLogout } = useAuth();
-
-  // updates and display's user information based on user.uid
-  useEffect(() => {
-    setIsLoading(true)
-    if (user) {
-      // Define the reference to the user's data in the database using their uid
-      const userRef = ref(database, `users/${user.uid}`);
-
-      // Fetch the user's data from the database
-      get(userRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            // If the user's data exists, set it in the state
-            const userData = snapshot.val();
-            setUserData(userData);
-            setIsLoading(false)
-          } else {
-            // Handle the case where the user's data does not exist
-            console.log('User data not found in the database');
-          }
-        })
-        .catch((error) => {
-          // Handle any errors that occur during the data retrieval
-          console.error('Error fetching user data:', error);
-        });
-    }
-  }, [user]);
+  // custom hook
+  const {userData, isLoading} = useFetchUserData()
 
   if(isLoading){
     return <Loading />

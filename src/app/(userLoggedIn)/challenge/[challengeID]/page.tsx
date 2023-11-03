@@ -103,14 +103,15 @@ export default function Dashboard({params}: urlParamsProps) {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
   }
 
-  const confirmDeleteChallenge = () => {
+  const toggleConfirmDeleteChallenge = () => {
     setIsDeleteConfirmationVisible((prev) => !prev)
   }
 
-  const confirmLeaveChallenge = () => {
+  const toggleConfirmLeaveChallnege = () => {
     setIsLeaveConfirmationVisible((prev) => !prev)
   }
 
+  // TODO: decrease userChallengeLimit by 1 on successful deletion
   const deleteChallenge = () => {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
       remove(challengeRef)
@@ -140,6 +141,7 @@ export default function Dashboard({params}: urlParamsProps) {
             set(ref(database, `challenges/${params.challengeID}`), challengeData)
               .then(() => {
                 // user leaves challenge successfully
+                router.replace('/challenges-dashboard')
                 setIsLeaveConfirmationVisible(false); 
               })
               .catch((error) => {
@@ -231,7 +233,7 @@ export default function Dashboard({params}: urlParamsProps) {
                     <ButtonPill 
                       label={'No'}
                       isLoading={isLoading}
-                      onClick={confirmLeaveChallenge}
+                      onClick={toggleConfirmLeaveChallnege}
                     />
                   </div>
                 </div>
@@ -241,7 +243,7 @@ export default function Dashboard({params}: urlParamsProps) {
                     <ButtonPill 
                       label={'Leave this challenge'}
                       isLoading={isLoading}
-                      onClick={confirmLeaveChallenge}
+                      onClick={toggleConfirmLeaveChallnege}
                     /> 
                   }
                 </>  
@@ -258,7 +260,7 @@ export default function Dashboard({params}: urlParamsProps) {
                     <ButtonPill 
                       label={'Decline'}
                       isLoading={isLoading}
-                      onClick={confirmDeleteChallenge}
+                      onClick={toggleConfirmDeleteChallenge}
                     />
                   </div>
                 </div>
@@ -268,7 +270,7 @@ export default function Dashboard({params}: urlParamsProps) {
                     <ButtonPill 
                       label={'Delete this challenge'}
                       isLoading={isLoading}
-                      onClick={confirmDeleteChallenge}
+                      onClick={toggleConfirmDeleteChallenge}
                     />
                   }
                 </>
