@@ -19,14 +19,13 @@
 
 /* Mobile Devices (landscape) */
 @media (max-width: 775px) { 
-    .container{
-        padding: 1rem 2rem;
-    }
+
 }
 
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
-    .container{
-        padding: 0.5rem 1rem;
+    .container {
+        text-align: center;
+        padding: 2rem 5rem;
     }
 }

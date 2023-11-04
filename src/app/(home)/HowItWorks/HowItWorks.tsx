@@ -32,28 +32,28 @@ export default function HowItWorks() {
             <figure className={styles.content_wrapper}>
                 <div className={styles.step_wrapper}>
                     <p className={styles.number}> 1 </p>
-                    <h5> Name your challenge and define point metrics. </h5>
+                    <h5> Define point metrics. </h5>
                 </div>
                 <Image src={createChallenge1} className={styles.create_challenge_img} alt="How to create a challenge"/>
             </figure>
             <figure className={styles.content_wrapper}>
                 <div className={styles.step_wrapper}>
                     <p className={styles.number}> 2 </p>
-                    <h5> Add your challenge duration. </h5>
+                    <h5> Add challenge duration. </h5>
                 </div>
                 <Image src={createChallenge2} className={styles.create_challenge_img} alt="How to create a challenge"/>
             </figure>
             <figure className={styles.content_wrapper}>
                 <div className={styles.step_wrapper}>
                     <p className={styles.number}> 3 </p>
-                    <h5> Join challenges in your dashboard to compete. </h5>
+                    <h5> Join created challenges. </h5>
                 </div>
                 <Image src={challengesDashboard} className={styles.create_challenge_img} alt="Challenges dashboard."/>
             </figure>
             <figure className={styles.content_wrapper}>
                 <div className={styles.step_wrapper}>
                     <p className={styles.number}> 4 </p>
-                    <h5> Enter your points to compete. </h5>
+                    <h5> Enter points to compete. </h5>
                 </div>
                 <Image src={challenge} className={styles.create_challenge_img} alt="Challenges dashboard."/>
             </figure>

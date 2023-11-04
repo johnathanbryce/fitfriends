@@ -12,7 +12,7 @@ export default function LayoutSections({children, title, bgColor}: LayoutSection
 
   // Check the bgColor prop and set the corresponding background color
   if (bgColor === 'white') {
-    containerStyle.backgroundColor = '#F9F9F9';
+    containerStyle.backgroundColor = '#FFFFFF';
   } else if (bgColor === 'orange') {
     containerStyle.backgroundColor = '#FF5722';
   } else if (bgColor === 'dark') {

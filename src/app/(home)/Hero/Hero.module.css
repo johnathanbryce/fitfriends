@@ -3,7 +3,6 @@
     flex-direction: column;
     align-items: center;
     gap: 3rem;
-    /* width: 100%; */
     min-height: 85vh;
 }
 
@@ -28,4 +27,23 @@
     justify-content: space-between;
     gap: 4rem;
     width: 25rem;
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .hero {
+        padding: 0 2rem;
+        justify-content: center;
+
+    }
+
+    .subheader{
+        text-align: center;
+        width: 100%;
+        padding: 0 2rem;
+    }
+
+    .btn_container{
+        justify-content: center;
+    }
 }
