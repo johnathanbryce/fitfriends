@@ -1,0 +1,112 @@
+.header{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 2rem 5rem;
+    height: 10rem; 
+    width: 100vw;
+    position: relative;
+}
+
+.routes_flex_wrapper{
+    display: flex;
+    gap: 3rem;
+}
+
+/* DROPDOWN MENU NAVBAR STYLES */
+.navbar_dropdown{
+    display: none;
+    z-index: 10;
+}
+
+.link {
+    color: var(--font-headers);
+    font-size: 3rem;
+    z-index: 10;
+}
+  
+.hamburger, .hamburger_active{
+    display: none;
+    position: absolute;
+    top: 3.5rem;
+    right: 4rem;
+    cursor: pointer;
+    z-index: 9999;
+    color: var(--font-headers);
+}
+  
+.bar {
+    display: block;
+    z-index: 9999;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--font-headers);;
+}
+  
+
+
+/* Ensures dropdown nav closes if larger screen re-size from activation */
+@media (min-width: 776px) { 
+    .navbar_dropdown{
+        display: none;
+    }
+}
+  
+/* Mobile Devices (landscape) */
+@media (max-width: 775px){
+    .header{
+        justify-content: flex-start;
+        gap: 1rem;
+        padding: 2rem 0rem;
+    }
+
+    .header h1{
+       padding-left: 4rem;
+    }
+
+    .routes_flex_wrapper{
+        display: none;
+    }
+
+    .hamburger{
+        display: block;
+    }
+
+    .navbar_dropdown{
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        height: 100%;
+        background-color: var(--background-primary);
+        z-index: 10;
+
+    }
+
+    .navbar_dropdown ul{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+        border-bottom: 0.1rem solid white;
+        width: 100%;
+        padding: 4rem;
+    }
+
+    .hamburger_active .bar:nth-child(2){
+        opacity: 0;
+    }
+
+    .hamburger_active .bar:nth-child(1){
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger_active .bar:nth-child(3){
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}

@@ -6,14 +6,17 @@ import Link from 'next/link';
 interface ButtonPillRouteProps {
   label: string,
   src: string,
+  secondary?: boolean
 }
   
-const ButtonPillRoute = ({ label, src }: ButtonPillRouteProps) => {
-  const href = src || '/';
-
+const ButtonPillRoute = ({ label, src, secondary }: ButtonPillRouteProps) => {
     return (
-      <Link href={src} className={styles.button} >
-        {label} 
+      <Link href={src} >
+        {secondary ?
+          <button className={styles.button_secondary}> {label} </button>
+          :
+          <button className={styles.button}> {label} </button>
+        } 
       </Link> 
     );
 };

@@ -1,20 +1,37 @@
 
-.button{
+.button, .button_secondary{
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+
+}
+
+.button {
     color: var(--button-primary-text);
     background-color: var(--button-primary-bg);
     padding: var(--button-padding);
     border-radius: var(--border-radius);
     font-weight: bold;
-    /* width: 12rem; */
     height: 4rem;
     font-size: 1.6rem;
 }
 
 .button:hover{
     background-color: var(--button-hover-bg);
+    transition: var(--hover-transition);
+}
+
+.button_secondary {
+    color: var(--button-secondary-text);
+    background-color: var(--button-secondary-bg);
+    padding: var(--button-padding);
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    width: 100%;
+}
+
+.button_secondary:hover{
+    background-color: var(--button-hover-bg-secondary);
     transition: var(--hover-transition);
 }

@@ -3,7 +3,7 @@ import styles from './layout.module.css'
 // Next.js
 import { Metadata } from 'next';
 // Internal Components
-import HeaderLoggedOut from '@/components/HeaderLoggedOut/HeaderLoggedOut';
+import HeaderLoggedOut from '@/components/Headers/HeaderLoggedOut/HeaderLoggedOut';
 import FooterLoggedOut from '@/components/Footers/FooterLoggedOut/FooterLoggedOut';
 
 // Layout
