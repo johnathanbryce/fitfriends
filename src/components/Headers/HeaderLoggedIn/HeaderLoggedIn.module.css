@@ -32,7 +32,7 @@
 
 
 .icon{
-    font-size: clamp(2rem, 3vw, 3.55rem);
+    font-size: clamp(2rem, 3.5vw, 3.55rem);
     color: var(--font-headers);
     cursor: pointer;
 }

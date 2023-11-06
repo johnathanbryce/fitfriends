@@ -5,7 +5,9 @@ import styles from './HeaderLoggedIn.module.css'
 import ButtonPillRoute from '../../Buttons/ButtonPillRoute/ButtonPillRoute'
 // External Libraries
 import {BsPersonCircle, BsBell} from 'react-icons/bs'
+import {MdOutlineDashboardCustomize} from 'react-icons/md'
 import {GiStrong} from 'react-icons/gi'
+import {PiUserListFill} from 'react-icons/pi'
 // Next.js
 import Link from 'next/link'
 // Auth Context
@@ -48,11 +50,16 @@ export default function HeaderLoggedIn() {
         <ul className={styles.navbar}>
           <li>
             <Link href={`/challenges-dashboard`} className={styles.nav_item}>
-              <GiStrong className={styles.icon} />
+              <MdOutlineDashboardCustomize className={styles.icon} />
               <span className={styles.nav_item_text}> challenges </span>
             </Link>
           </li>
-          {/* <BsBell className={styles.icon} onClick={onClickDisplayNotifications } /> */}
+          <li>
+            <Link href={`/users`} className={styles.nav_item}>
+              <PiUserListFill className={styles.icon} />
+              <span className={styles.nav_item_text}> users </span>
+            </Link>
+          </li>
           <li>
             <Link href={`/user-profile/${user?.uid}`} className={styles.nav_item}>
               <BsPersonCircle className={styles.icon} />
@@ -66,6 +73,7 @@ export default function HeaderLoggedIn() {
         <nav className={styles.navbar_dropdown}>
           <ul>
               <li className={styles.link}><Link href='/challenges-dashboard' onClick={onClickCloseDropdown} > Challenges </Link></li> 
+              <li className={styles.link}><Link href='/users' onClick={onClickCloseDropdown} > Users </Link></li> 
               <li className={styles.link}><Link href={`/user-profile/${user?.uid}`} onClick={onClickCloseDropdown} > Profile </Link></li>   
           </ul>
         </nav>
