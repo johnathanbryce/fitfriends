@@ -181,7 +181,7 @@ export default function Dashboard({params}: urlParamsProps) {
         <>
           <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
           <div className={styles.challenge_overview}>
-            <p> Review this challenge&apos;s rules and take note of the start and end dates: </p>
+            {/* <p> Review this challenge&apos;s rules and take note of the start and end dates: </p> */}
             <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
 
             <div className={styles.rules}>

@@ -22,18 +22,20 @@
 .steps_container {
     display: flex;
     justify-content: center;
-    padding: 2rem 2rem;
+   /*  padding: 2rem 2rem; */
 }
+
   
 .content_wrapper{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4rem;
+    flex: 0 0 100%;
 }
 
 .create_challenge_img {
-    width: 100%;
+    width: 40%;
     height: 100%;
     object-fit: contain;
 }
@@ -53,37 +55,10 @@
     padding: 0.55rem;
 }
 
-/* Tablets (landscape) / Small Laptops) */
-@media (max-width: 1200px) { 
-    .steps_container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Two columns of equal width */
-        grid-template-rows: repeat(2, 1fr); /* Two rows of equal height */
-        justify-items: center;
-        align-items: center;
-    }
-}
-
 /* Mobile Devices (landscape) */
 @media (max-width: 775px) { 
-    .steps_container {
-        display: flex;
-        flex-direction: column;
-        gap: 2.5rem;
-    }
-
-    .content_wrapper{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4rem;
-        width: 50vw;
-    }
-
-    .step_wrapper{
-        gap: 0;
-        justify-content: space-evenly;
-        width: 100%;
+    .create_challenge_img {
+        width: 80%;
     }
 
 }
@@ -95,10 +70,6 @@
     }
     .btn_container{
         margin-top: 1rem;
-    }
-
-    .content_wrapper{
-        width: 100%;
     }
 }
 

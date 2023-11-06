@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     gap: 3rem;
-    min-height: 85vh;
+    min-height: 90vh;
 }
 
 .hero h1 {

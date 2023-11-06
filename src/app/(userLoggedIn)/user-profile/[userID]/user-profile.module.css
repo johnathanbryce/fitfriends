@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 55rem;
+    margin-bottom: 8rem;
 }
 
 .return_container > *{
@@ -41,6 +42,7 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    text-align: center;
     width: 100%;
 }
 
@@ -66,10 +68,18 @@
     font-size: 2.5rem;
 }
 
+/* Tablets (landscape) / Small Laptops) */
+@media (max-width: 1200px) { 
+    .user_profile {
+        width: 40rem;
+    }
+}
+
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .user_profile {
-        width: auto;
+        width: 30rem;
+        margin-bottom: 1rem;
     }
 
     .points_container {
@@ -79,5 +89,7 @@
 
 /* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
 @media (max-width: 325px) {  
-
+    .user_profile {
+        width: 24rem;
+    }
 }
