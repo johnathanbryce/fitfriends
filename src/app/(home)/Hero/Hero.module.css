@@ -1,0 +1,49 @@
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    min-height: 90vh;
+}
+
+.hero h1 {
+    color: var(--font-primary);
+    text-align: center;
+}
+
+.subheader{
+    text-align: center;
+    width: 75%;
+}
+
+.logo {
+    width: 40rem;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btn_container{
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
+    width: 25rem;
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .hero {
+        padding: 0 2rem;
+        justify-content: center;
+
+    }
+
+    .subheader{
+        text-align: center;
+        width: 100%;
+        padding: 0 2rem;
+    }
+
+    .btn_container{
+        justify-content: center;
+    }
+}

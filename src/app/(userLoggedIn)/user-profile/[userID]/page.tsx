@@ -39,7 +39,7 @@ export default function UserProfile() {
             <div className={styles.return_container}>
               <Link href={`/challenges-dashboard`}> 
                 <IoIosArrowBack className={styles.back_arrow}/> 
-                <p> challenges </p>
+                <p> challenges dashboard </p>
               </Link>
             </div>
             <div className={styles.user_main_overview}>

@@ -1,0 +1,31 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2.5rem 10rem;
+}
+
+.section_title{
+/*     text-align: center;
+    border: 1px solid white; */
+}
+
+.section_title_white{
+    color: var(--font-secondary);
+/*     text-align: center;
+    padding: 1.5rem 0; */
+}
+
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .container {
+        text-align: center;
+        padding: 2rem 5rem;
+    }
+}

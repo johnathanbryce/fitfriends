@@ -9,7 +9,6 @@ import {AiFillGithub, AiFillLinkedin, AiOutlineMail} from 'react-icons/ai'
 
 export default function FooterLoggedIn() {
   return (
-    <>
     <footer className={styles.footer}>
         <WavesAnimationUp color='#FF5722'/>
         <p> designed & developed by johnathan bryce</p>
@@ -31,6 +30,5 @@ export default function FooterLoggedIn() {
             </li>          
         </ul>
     </footer>
-    </>
   )
 }

@@ -153,7 +153,7 @@ export default function CreateChallenge() {
                 onChange={(e) => setChallengeName(e)}
                 theme='dark'
                 required={true}
-                maxLength={20}
+                maxLength={35}
             />
         </div>
 

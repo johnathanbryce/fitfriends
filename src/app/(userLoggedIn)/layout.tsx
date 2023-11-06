@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react';
 // Next.js
 import { useRouter } from 'next/navigation';
 // Internal Components
-import HeaderLoggedIn from '@/components/HeaderLoggedIn/HeaderLoggedIn';
+import HeaderLoggedIn from '@/components/Headers/HeaderLoggedIn/HeaderLoggedIn';
 import UnauthorizedLoader from '@/components/UnauthorizedLoader/UnauthorizedLoader';
 import Loading from '../loading';
 import PrivateRoutes from '@/components/PrivateRoutes/PrivateRoutes';

@@ -13,6 +13,8 @@ import Image from 'next/image'
 // Internal Assets
 import googleIcon from '../../../../public/images/google-icon.png'
 import appleIcon from '../../../../public/images/apple-icon.png'
+// Custom Hook
+import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect'
 
 export default function Login() {
   const [emailInput, setEmailInput] = useState('')
@@ -20,6 +22,9 @@ export default function Login() {
   // Error state variables
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  // Custom hook
+  useAuthenticationRedirect('/login', 'challenges-dashboard');
 
   // Auth
   const { handleSignInWithGoogle, handleLogin, authError, isLoading } = useAuth();

@@ -2,7 +2,7 @@
 import React, {useState} from 'react'
 import styles from './HeaderLoggedIn.module.css'
 // Internal Components
-import ButtonPillRoute from '../Buttons/ButtonPillRoute/ButtonPillRoute'
+import ButtonPillRoute from '../../Buttons/ButtonPillRoute/ButtonPillRoute'
 // External Libraries
 import {BsPersonCircle, BsBell} from 'react-icons/bs'
 import {GiStrong} from 'react-icons/gi'

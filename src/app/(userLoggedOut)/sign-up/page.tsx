@@ -11,6 +11,8 @@ import defaultUser from '../../../../public/images/default-user-img.png'
 import { useAuth } from '@/context/AuthProvider'
 // Util Functions
 import { capitalizeFirstLetter } from '@/utils/stringHelpers'
+// Custom Hook
+import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect';
 
 export default function SignUp() {
   // User input state
@@ -22,7 +24,8 @@ export default function SignUp() {
   // Error state variables
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-
+  // Custom hook
+  useAuthenticationRedirect('/sign-up', 'challenges-dashboard');
   // Auth
   const { handleSignup, authError, isLoading } = useAuth();
 
@@ -68,7 +71,7 @@ export default function SignUp() {
     } catch (error: any) {
 
     }
-    // Set the appropriate error states based on the error message
+    
     if (authError === 'Invalid or missing email address. Please input again.') {
       setEmailError(true);
     } else if (authError === 'Invalid or missing password') {

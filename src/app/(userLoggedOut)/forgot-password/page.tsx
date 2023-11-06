@@ -7,10 +7,14 @@ import InputForm from '@/components/Input/Input'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 // Auth Provider Context
 import { useAuth } from '@/context/AuthProvider'
+// Custom Hook
+import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect'
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('')
-
+  // Custom hook
+  useAuthenticationRedirect('/forgot-password', 'challenges-dashboard');
+  // Auth context
   const { forgotPassword, isLoading, authError, isPasswordResetSent} = useAuth()
 
   const handleResetPassword = (e: any) => {
@@ -43,7 +47,7 @@ export default function ForgotPassword() {
             isLoading={isLoading}
             onClick={handleResetPassword}
           >
-            {authError ? <p className={styles.auth_error}>{authError}</p> : <p>Enter the email associated with your account for a password reset email. </p>}
+            {authError ? <p className={styles.auth_error}>{authError}</p> : <p className={styles.text}>Enter the email associated with your account for a password reset email. </p>}
             <InputForm 
                 name='Your Email'
                 value={email}
