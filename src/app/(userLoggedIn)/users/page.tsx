@@ -21,7 +21,7 @@ export default function Users() {
         const fetchedUsers = await fetchAllUsers();
         // sort the users array by totalPointsOverall in descending order
         fetchedUsers.sort((a: any, b: any) =>
-            b.totalPointsOverall.totalPoints - a.totalPointsOverall.totalPoints
+            b.challengesWon - a.challengesWon
         );
         setUsers(fetchedUsers);
         setIsLoading(false)
@@ -34,6 +34,7 @@ export default function Users() {
     getUsers();
     setErrorFetch(false)
   }, []);
+
 
   if (errorFetch) {
     <h2>There was an error fetching user data...</h2>
@@ -48,32 +49,29 @@ export default function Users() {
             <th>Rank </th>
             <th>Username </th>
             <th>Name</th>
-            <th>Total Points</th>
-            <th>Total Cardio</th>
-            <th>Total Weights</th>
+            <th>Total Wins</th>
           </tr>
         </thead>
         <tbody>
-          {isLoading ? 
-            (<Loading />) 
-            : 
-              (
-              users?.map((user: any, index) => (
-                <tr key={user.uid}>
-                  <td>{`${index + 1}.`} </td>
-                  <td className={styles.username_cell}>
-                    {index === 0 && (
-                        <GiPodiumWinner className={styles.icon} />
-                    )}
-                    {user.userName}
-                  </td>
-                  <td>{user.firstName} {user.lastName[0]}</td>
-                  <td>{user.totalPointsOverall.totalPoints}</td>
-                  <td>{user.totalPointsOverall.totalCardio}</td>
-                  <td>{user.totalPointsOverall.totalWeights}</td>
-                </tr>
-              )
-          ))}
+            {isLoading ? (
+            <tr>
+              <td colSpan={3}>
+                <Loading />
+              </td>
+            </tr>
+          ) : (
+            users?.map((user: any, index) => (
+              <tr key={user.uid}>
+                <td>{`${index + 1}.`}</td>
+                <td className={styles.username_cell}>
+                  {index === 0 && <GiPodiumWinner className={styles.icon} />}
+                  {user.userName}
+                </td>
+                <td>{`${user.firstName} ${user.lastName[0]}`}</td>
+                <td>{user.challengesWon}</td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </section>

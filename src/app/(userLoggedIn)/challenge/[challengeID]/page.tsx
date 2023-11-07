@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 // Internal Components
 import DailyPointsInput from '@/components/DailyPointsInput/DailyPointsInput'
 import LeaderboardCard from '@/components/Cards/LeaderboardCard/LeaderboardCard'
+import ParticipantsModal from '@/components/Modals/ParticipantsModal/ParticipantsModal'
 import ParticipantCard from '@/components/Cards/ParticipantCard/ParticipantCard'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 // Internal Assets
@@ -26,6 +27,7 @@ export default function Dashboard({params}: urlParamsProps) {
   const [challengeData, setChallengeData] = useState<any>()
   const [participantsInfo, setParticipantsInfo] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAddParticipantsModalOpen, setIsAddParticipantsModalOpen] = useState(false)
   const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState(false)
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] = useState(false);
   const [isLeaveConfirmationVisible, setIsLeaveConfirmationVisible] = useState(false);
@@ -101,8 +103,14 @@ export default function Dashboard({params}: urlParamsProps) {
   // TODO: create a function which adds/invites participants individually
   const addParticipants = () => {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
+
+    setIsAddParticipantsModalOpen(false);
   }
 
+  // toggle functions
+  const toggleAddParticipantsModal = () => {
+    setIsAddParticipantsModalOpen((prev) => !prev)
+  }
   const toggleConfirmDeleteChallenge =  () => {
     setIsDeleteConfirmationVisible((prev) => !prev)
   }
@@ -181,7 +189,6 @@ export default function Dashboard({params}: urlParamsProps) {
         <>
           <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
           <div className={styles.challenge_overview}>
-            {/* <p> Review this challenge&apos;s rules and take note of the start and end dates: </p> */}
             <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
 
             <div className={styles.rules}>
@@ -209,6 +216,11 @@ export default function Dashboard({params}: urlParamsProps) {
           <div className={styles.dashboard_section}>
             <div className={styles.subheader_container}>
               <h3> Participants </h3>
+              <ButtonPill
+                label='Add Participants'
+                onClick={toggleAddParticipantsModal}
+                isLoading={isLoading}
+              />
             </div>
             <div className={styles.participants_container}>
               {participantsInfo.length > 0 ? (
@@ -296,6 +308,11 @@ export default function Dashboard({params}: urlParamsProps) {
         <h3 className={styles.inactive_challenge_msg}> This challenge is no longer active.</h3>
       )}
 
+      {isAddParticipantsModalOpen && 
+        <ParticipantsModal 
+          onClose={toggleAddParticipantsModal} 
+          />
+        }
     </section>
   )
 }

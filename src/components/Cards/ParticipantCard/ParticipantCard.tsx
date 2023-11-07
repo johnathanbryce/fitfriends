@@ -23,8 +23,8 @@ export default function ParticipantCard({userId, firstName, lastName, userName, 
     return (
         <div className={styles.participant_card}>
             <div className={styles.name_container}>
-                <h5 className={styles.name}>{firstName} {lastName}</h5>
-                <p className={styles.nickname}> &quot;{userName}&quot; </p>
+                <h5 className={styles.name}>{firstName} {lastName[0]}</h5>
+                <h5 className={styles.nickname}> {userName} </h5>
             </div>
             <div className={styles.participant_overview}>
                 {profilePicture ? (

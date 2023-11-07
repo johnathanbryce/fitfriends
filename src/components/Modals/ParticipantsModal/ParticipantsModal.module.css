@@ -1,0 +1,121 @@
+.participants_modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.modal_background{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    cursor: pointer;
+}
+
+.modal_content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    padding: 2rem;
+    background-color: var(--background-primary);
+    border-radius: var(--border-radius);
+    z-index: 10;
+    position: relative; /* for close btn */
+}
+
+.close {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    font-size: 5rem;
+    z-index: 10;
+    cursor: pointer;
+    color: var(--background-secondary);
+}
+
+.close:hover{
+    transition: var(--hover-transition);
+    color: var(--background-secondary-light);
+}
+
+.icon {
+    cursor: pointer;
+    font-size: 2rem;
+}
+
+.selected{
+    color: red;
+}
+
+.table_container {
+    width: 50vw;
+    border-collapse: collapse;
+    text-align: left;
+    overflow-x: auto;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+}
+  
+.table_container th {
+    background-color: var(--background-secondary);
+    color: #fff;
+    padding: 1rem;
+}
+
+.table_container tbody tr:first-child td:first-child::before {
+
+}
+
+.username_cell{
+    position: relative;
+}
+
+.icon {
+    position: absolute;
+    left: 1rem;
+    font-size: 2.5rem;
+}
+  
+
+.table_container tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+  
+
+.table_container td {
+    padding: 0.25rem;
+    border: 1px solid #ddd;
+    width: 15%;
+  /*   height: 7rem; */
+}
+  
+  
+.table_container td,
+.table_container th {
+    text-align: center;
+}
+   
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) {
+    .users{
+        padding: 2rem 2rem;
+    }
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .users{
+        padding: 2rem 0;;
+    }
+}
