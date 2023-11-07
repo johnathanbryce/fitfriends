@@ -10,14 +10,15 @@ import {AiFillCloseCircle, AiOutlineUserAdd} from 'react-icons/ai'
 
 interface ParticipantsModalProps{
     onClose: () => void,
+    challengeId: string,
 }
 
-export default function ParticipantsModal({onClose}: ParticipantsModalProps) {
+export default function ParticipantsModal({onClose, challengeId}: ParticipantsModalProps) {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [errorFetch, setErrorFetch] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
-    const [selectedUsers, setSelectedUsers] = useState([]);
+    const [selectedUsers, setSelectedUsers] = useState<any>([]);
 
     const toggleInviteSelection = (userId: any) => {
         setIsSelected(userId)   
@@ -54,6 +55,7 @@ export default function ParticipantsModal({onClose}: ParticipantsModalProps) {
     }, []);
 
     const handleAddParticipants = () => {
+        // challengeId -- add to database
         // You can now use the selectedUsers array for further processing
         console.log('Selected Users:', selectedUsers);
         // Add your logic here to do something with the selected users
@@ -68,45 +70,22 @@ export default function ParticipantsModal({onClose}: ParticipantsModalProps) {
         ) : (
             <div className={styles.modal_content}>
                 <AiFillCloseCircle className={styles.close} onClick={onClose} />
-                <h2>Users</h2>
-                <table className={styles.table_container}>
-                    <thead>
-                        <tr>
-                            <th>Rank </th>
-                            <th>Username </th>
-                            <th>Total Wins</th>
-                            <th>Invite</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {isLoading ? (
-                            <tr>
-                            <td colSpan={3}>
-                                <Loading />
-                            </td>
-                            </tr>
-                        ) : (
-                            users?.map((user: any, index: number) => (
-                            <tr key={user.uid}>
-                                <td>{`${index + 1}.`}</td>
-                                <td className={styles.username_cell}>
+                <h2> Select users to invite </h2>
+                    <div className={styles.users_container}>
+                            {users?.map((user: any, index: number) => (
+                            <div key={user.uid} onClick={() => toggleInviteSelection(user.uid)} className={`${styles.user} ${
+                                selectedUsers.includes(user.uid) ? styles.selected : ''
+                            }`} >
+                                <p className={styles.username_cell}>
                                     {user.userName}
-                                </td>
-                                <td>{user.challengesWon}</td>
-                                <td onClick={() => toggleInviteSelection(user.uid)}>
-                                    <AiOutlineUserAdd
-                                        className={`${styles.icon} ${
-                                            selectedUsers.includes(user.uid) ? styles.selected : ''
-                                        }`}
-                                    />
-                                </td>
-                            </tr>
+                                </p>
+                                <AiOutlineUserAdd className={styles.icon}/>
+                            </div>
                             ))
-                        )}
-                    </tbody>
-                </table>
+                        }
+                    </div>
                 <ButtonPill 
-                    label="Add Participants"
+                    label="Add Selected Users"
                     onClick={handleAddParticipants}
                     isLoading={isLoading}
                 />
