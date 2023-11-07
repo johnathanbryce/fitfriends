@@ -37,7 +37,7 @@
     position: absolute;
     top: -1rem;
     right: -1rem;
-    font-size: 5rem;
+    font-size: clamp(3.5rem, 3vw, 5rem);
     z-index: 10;
     cursor: pointer;
     color: var(--background-secondary);
@@ -63,7 +63,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 30rem;
+    width: clamp(20rem, 40vw, 30rem);
     padding: 1rem;
     cursor: pointer;
     border-radius: var(--border-radius);
@@ -82,4 +82,18 @@
 .selected > * {
     font-weight: 600;
     color: var(--font-secondary);
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .modal_content{
+        padding: 2rem;
+    }
+}
+
+/* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
+@media (max-width: 325px) {  
+    .modal_content{
+        padding: 0.5rem;
+    }
 }

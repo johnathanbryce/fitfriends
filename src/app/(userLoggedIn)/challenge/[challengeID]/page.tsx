@@ -1,6 +1,6 @@
 'use client'
 import {useState, useEffect} from 'react'
-import styles from './dashboard.module.css'
+import styles from './challenge.module.css'
 // Next.js
 import { useRouter } from 'next/navigation'
 // Internal Components
@@ -23,7 +23,7 @@ interface urlParamsProps {
   params: any
 }
 
-export default function Dashboard({params}: urlParamsProps) {
+export default function Challenge({params}: urlParamsProps) {
   const [challengeData, setChallengeData] = useState<any>()
   const [participantsInfo, setParticipantsInfo] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -217,7 +217,7 @@ export default function Dashboard({params}: urlParamsProps) {
             <div className={styles.subheader_container}>
               <h3> Participants </h3>
               <ButtonPill
-                label='Add Participants'
+                label='add-users'
                 onClick={toggleAddParticipantsModal}
                 isLoading={isLoading}
               />
@@ -310,7 +310,8 @@ export default function Dashboard({params}: urlParamsProps) {
 
       {isAddParticipantsModalOpen && 
         <ParticipantsModal 
-          onClose={toggleAddParticipantsModal} 
+          onClose={toggleAddParticipantsModal}
+          challengeId={params.challengeID} 
           />
         }
     </section>

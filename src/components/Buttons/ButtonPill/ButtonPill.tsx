@@ -1,8 +1,10 @@
 import React from 'react';
 import styles from './ButtonPill.module.css';
+// External Libraries
+import {AiOutlineUsergroupAdd} from 'react-icons/ai'
 
 interface ButtonPillProps {
-  label: string;
+  label: any;
   isLoading: boolean;
   onClick?: (e: any) => void;
   secondary?: boolean;
@@ -17,6 +19,10 @@ const ButtonPill = ({label, isLoading, disabled, secondary, onClick}: ButtonPill
     : secondary
     ? styles.button_secondary
     : styles.button;
+
+    if(label === 'add-users'){
+      label = <AiOutlineUsergroupAdd className={styles.icon} />
+    }
 
   return (
     <button

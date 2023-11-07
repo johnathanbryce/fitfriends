@@ -37,3 +37,8 @@
 .label {
     width: 100%;
 }
+
+.icon {
+    font-size: clamp(2rem, 2.5vw, 3rem);
+    font-weight: 900;
+}
