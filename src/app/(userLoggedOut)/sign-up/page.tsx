@@ -123,7 +123,7 @@ export default function SignUp() {
                 onChange={(newVal) => setFirstName(newVal)}
                 theme='dark'
                 required={true}
-                maxLength={20}
+                maxLength={15}
             />
             <InputForm 
                 name='Last Name'
@@ -133,7 +133,7 @@ export default function SignUp() {
                 onChange={(newVal) => setLastName(newVal)}
                 theme='dark'
                 required={true}
-                maxLength={30}
+                maxLength={15}
             />
         </div>
             <InputForm 
@@ -144,7 +144,7 @@ export default function SignUp() {
                 onChange={(newVal) => setUserName(newVal)}
                 theme='dark'
                 required={true}
-                maxLength={20}
+                maxLength={15}
             />
           <ButtonPill 
             label="Submit"

@@ -3,6 +3,9 @@ import styles from './ParticipantsModal.module.css'
 // Internal Components
 import Loading from '@/app/loading';
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill';
+// Firebase
+import { database } from '../../../../firebaseApp';
+import {ref, onValue, get, remove, set, update} from 'firebase/database'
 // API functions
 import { fetchAllUsers } from '@/api/fetchAllUsers'
 // External Libraries
@@ -14,7 +17,7 @@ interface ParticipantsModalProps{
 }
 
 export default function ParticipantsModal({onClose, challengeId}: ParticipantsModalProps) {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([]); // all of the users in the db
     const [isLoading, setIsLoading] = useState(false);
     const [errorFetch, setErrorFetch] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
@@ -54,12 +57,51 @@ export default function ParticipantsModal({onClose, challengeId}: ParticipantsMo
       setErrorFetch(false)
     }, []);
 
-    const handleAddParticipants = () => {
-        // challengeId -- add to database
-        // You can now use the selectedUsers array for further processing
-        console.log('Selected Users:', selectedUsers);
-        // Add your logic here to do something with the selected users
+    const handleAddParticipants = async () => {
+      setIsLoading(true);
+    
+      // Create an object to batch update operations
+      const updates: any = {};
+      selectedUsers.forEach((userId: any) => {
+        // TODO: create the data schema for participants being added 
+        const userData = {
+          cardioPoints: 0,
+          weightsPoints: 0,
+          totalPoints: 0,
+        }
+
+        // Set the path for the user being added to the challenge's participants
+        // This example assumes you're just setting the userID as true to indicate they are part of the challenge
+        updates[`challenges/${challengeId}/participants/${userId}`] = true;
+      });
+
+/*       // TODO: adds the invite participants with this data schema: 
+      usersSnapshot.forEach((userSnapshot) => {
+        const userData = userSnapshot.val();
+        if (userData) {
+          const participant = {
+            cardioPoints: 0,
+            weightsPoints: 0,
+            totalPoints: 0,
+          };
+          participants[userSnapshot.key] = participant;
+        }
+      }); */
+    
+      try {
+        // Perform the batch update
+        await update(ref(database), updates);
+        // Optionally, you can do something here after successful update
+        // For example, you can call a method to refresh the participant's list in the parent component
+      } catch (error) {
+        console.error('Error adding participants:', error);
+        // Handle errors, e.g., by setting an error state and showing a message to the user
+      }
+    
+      setIsLoading(false);
+      onClose(); // Close the modal after the operation
     };
+    
 
   return (
     <div className={styles.participants_modal}>

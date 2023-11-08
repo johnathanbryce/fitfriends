@@ -11,10 +11,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    /* gap: 2rem; */
 }
 
 .nickname, .points_container > * {
     color: var(--font-secondary);
+}
+
+.nickname{
+    font-size: 1.45rem;
+    font-weight: 900;
 }
 
 .name {
@@ -37,8 +43,12 @@
     color: var(--accent-secondary);
 }
 
+.profile_pic_small_screens{
+    display: none;
+}
+
 .profile_pic {
-    width: 40%;
+    width: 30%;
     height: 100%; 
     object-fit: cover;
     border-radius: 50%;
@@ -47,12 +57,50 @@
 .default_img{
     filter: brightness(0) invert(1) grayscale(1);
 }
+ 
 
-/* Tablets (portrait) */
+/* Mobile Devices (landscape) */
 @media (max-width: 950px) { 
-    .profile_pic {
-        width: 30%;
+    .participant_card{
+        gap: 1rem;
+        width: 30rem;
+        padding: 1rem;
     }
-} 
+
+    .profile_pic {
+        display: none;
+    }
+
+    .profile_pic_small_screens{
+        display: block;
+        width: 8%;
+        height: 100%; 
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .name_container {
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .points_container{
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        gap: 2rem;
+    }
+}
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+
+}
+
 
 

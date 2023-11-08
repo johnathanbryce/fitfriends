@@ -13,7 +13,7 @@ import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 import defaultUser from '../../../../../public/images/default-user-img.png'
 // Firebase
 import { database } from '../../../../../firebaseApp'
-import {ref, onValue, get, remove, set, update} from 'firebase/database'
+import {ref, onValue, get, remove, set, update, off} from 'firebase/database'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 // Util
@@ -61,8 +61,9 @@ export default function Challenge({params}: urlParamsProps) {
 
     confirmUserCreatedChallenge();
   }, [])
-  
-  const addAllActiveUsersToChallenge = () => {
+
+
+  const addInvitedParticipantsToChallenge = () => {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
 
     onValue(challengeRef, (snapshot) => {
@@ -78,20 +79,20 @@ export default function Challenge({params}: urlParamsProps) {
         // 2. loop through participant IDs and fetch user data and points for each
         // remember: Promise.all() waits for all promises to resolve (takes an array of promises and returns a new Promise)
         Promise.all(participantIds.map((participantID) => {
-          const userRef = ref(database, `users/${participantID}`);
+        const userRef = ref(database, `users/${participantID}`);
   
-          return get(userRef)
-            .then((userSnapshot) => {
-              if (userSnapshot.exists()) {
-                const userData = userSnapshot.val(); // data from "users"
-                const pointsData = data.participants[participantID]; // get points for this participant ** coming from "challenges" 
-                const participantWithPoints = { ...userData, ...pointsData }; 
-                participantsData.push(participantWithPoints);
-              }
-            })
-            .catch((error) => {
-              console.error('Error fetching user data:', error);
-            });
+        return get(userRef)
+          .then((userSnapshot) => {
+            if (userSnapshot.exists()) {
+              const userData = userSnapshot.val(); // data from "users"
+              const pointsData = data.participants[participantID]; // get points for this participant ** coming from "challenges" 
+              const participantWithPoints = { ...userData, ...pointsData }; 
+              participantsData.push(participantWithPoints);
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching user data:', error);
+          });
         })).then(() => {
           // 3. push this participantsData array from above to state to then map and render
           setParticipantsInfo(participantsData);
@@ -100,12 +101,9 @@ export default function Challenge({params}: urlParamsProps) {
     });
   }
 
-  // TODO: create a function which adds/invites participants individually
-  const addParticipants = () => {
-    const challengeRef = ref(database, `challenges/${params.challengeID}`);
-
-    setIsAddParticipantsModalOpen(false);
-  }
+  useEffect(() => {
+    addInvitedParticipantsToChallenge();
+  }, [params.challengeID]);
 
   // toggle functions
   const toggleAddParticipantsModal = () => {
@@ -179,9 +177,9 @@ export default function Challenge({params}: urlParamsProps) {
   
 
   //TODO: remove this when invite participants logic is live
-  useEffect(() => {
-    addAllActiveUsersToChallenge();
-  }, [params.challengeID]);
+/*   useEffect(() => {
+    addInvitedParticipantsToChallenge();
+  }, [params.challengeID]); */
 
   return (
     <section className={styles.dashboard}>
