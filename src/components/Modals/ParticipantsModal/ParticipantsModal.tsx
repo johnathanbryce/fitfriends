@@ -16,6 +16,8 @@ interface ParticipantsModalProps{
     challengeId: string,
 }
 
+// TODO: ADD THE USER WHO CREATED THE CHALLENGE TO THE CHALLENGE FROM "CREATE-CHALLENGE"
+
 export default function ParticipantsModal({onClose, challengeId}: ParticipantsModalProps) {
     const [users, setUsers] = useState([]); // all of the users in the db
     const [isLoading, setIsLoading] = useState(false);
@@ -60,42 +62,28 @@ export default function ParticipantsModal({onClose, challengeId}: ParticipantsMo
     const handleAddParticipants = async () => {
       setIsLoading(true);
     
-      // Create an object to batch update operations
+      // create an object to batch update operations
       const updates: any = {};
       selectedUsers.forEach((userId: any) => {
-        // TODO: create the data schema for participants being added 
+        // TODO: eventually, when I move to custom metrics, this will have to be first fetched from the db from challenge/rules
+        // and then set in this object below for each user:
+
+        // define what each user's metrics will be inside challengeId/participants obj
         const userData = {
-          cardioPoints: 0,
-          weightsPoints: 0,
+          cardioPoints: 0,      // will eventually be metricPoints1
+          weightsPoints: 0,     // will eventually be metricPoints2
           totalPoints: 0,
         }
-
-        // Set the path for the user being added to the challenge's participants
-        // This example assumes you're just setting the userID as true to indicate they are part of the challenge
-        updates[`challenges/${challengeId}/participants/${userId}`] = true;
+        updates[`challenges/${challengeId}/participants/${userId}`] = userData;
       });
 
-/*       // TODO: adds the invite participants with this data schema: 
-      usersSnapshot.forEach((userSnapshot) => {
-        const userData = userSnapshot.val();
-        if (userData) {
-          const participant = {
-            cardioPoints: 0,
-            weightsPoints: 0,
-            totalPoints: 0,
-          };
-          participants[userSnapshot.key] = participant;
-        }
-      }); */
-    
       try {
-        // Perform the batch update
-        await update(ref(database), updates);
-        // Optionally, you can do something here after successful update
-        // For example, you can call a method to refresh the participant's list in the parent component
+        // updates database with "updates" batch as constructed above
+        await update(ref(database), updates); 
+        // TODO: call a method to refresh the participant's list in the parent component
       } catch (error) {
         console.error('Error adding participants:', error);
-        // Handle errors, e.g., by setting an error state and showing a message to the user
+        // TODO: handle errors
       }
     
       setIsLoading(false);
