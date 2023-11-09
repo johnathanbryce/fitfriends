@@ -5,7 +5,7 @@ import Loading from '@/app/loading';
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill';
 // Firebase
 import { database } from '../../../../firebaseApp';
-import {ref, onValue, get, remove, set, update} from 'firebase/database'
+import {ref, update} from 'firebase/database'
 // API functions
 import { fetchAllUsers } from '@/api/fetchAllUsers'
 // External Libraries
@@ -25,15 +25,15 @@ export default function ParticipantsModal({onClose, challengeId}: ParticipantsMo
     const [isSelected, setIsSelected] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState<any>([]);
 
-    const toggleInviteSelection = (userId: any) => {
-        setIsSelected(userId)   
+    const toggleInviteSelection = (user: any) => {
+        setIsSelected(user)   
         setSelectedUsers((prevSelectedUsers: any) => {
-          if (prevSelectedUsers.includes(userId)) {
+          if (prevSelectedUsers.includes(user)) {
             // remove user if already selected
-            return prevSelectedUsers.filter((user: any) => user !== userId);
+            return prevSelectedUsers.filter((user: any) => user !== user);
           } else {
             // add user if not selected
-            return [...prevSelectedUsers, userId];
+            return [...prevSelectedUsers, user];
           }
         });
     };
@@ -64,17 +64,19 @@ export default function ParticipantsModal({onClose, challengeId}: ParticipantsMo
     
       // create an object to batch update operations
       const updates: any = {};
-      selectedUsers.forEach((userId: any) => {
+      selectedUsers.forEach((user: any) => {
         // TODO: eventually, when I move to custom metrics, this will have to be first fetched from the db from challenge/rules
         // and then set in this object below for each user:
-
+        
         // define what each user's metrics will be inside challengeId/participants obj
         const userData = {
+          name: user.firstName + ' ' + user.lastName[0],
+          username: user.userName,
           cardioPoints: 0,      // will eventually be metricPoints1
           weightsPoints: 0,     // will eventually be metricPoints2
           totalPoints: 0,
         }
-        updates[`challenges/${challengeId}/participants/${userId}`] = userData;
+        updates[`challenges/${challengeId}/participants/${user.uid}`] = userData;
       });
 
       try {
@@ -102,9 +104,9 @@ export default function ParticipantsModal({onClose, challengeId}: ParticipantsMo
                 <AiFillCloseCircle className={styles.close} onClick={onClose} />
                 <h2> Select users to invite </h2>
                     <div className={styles.users_container}>
-                            {users?.map((user: any, index: number) => (
-                            <div key={user.uid} onClick={() => toggleInviteSelection(user.uid)} className={`${styles.user} ${
-                                selectedUsers.includes(user.uid) ? styles.selected : ''
+                        {users?.map((user: any, index: number) => (
+                            <div key={user.uid} onClick={() => toggleInviteSelection(user/* .uid */)} className={`${styles.user} ${
+                                selectedUsers.includes(user/* .uid */) ? styles.selected : ''
                             }`} >
                                 <p className={styles.username_cell}>
                                     {user.userName}
