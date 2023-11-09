@@ -209,7 +209,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const forgotPassword = async (email: string) => {
-    /* setPasswordResetSent(true) */
     setIsLoading(true);
     try {
       setPasswordResetSent(true)

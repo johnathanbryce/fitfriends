@@ -11,15 +11,20 @@ import ButtonPillRoute from '@/components/Buttons/ButtonPillRoute/ButtonPillRout
 // Firebase
 import { database } from '../../../../firebaseApp'
 import {ref, onValue, get} from 'firebase/database'
+// Auth Context
+import { useAuth } from '@/context/AuthProvider'
 
 export default function Challenges() {
   const [activeChallenges, setActiveChallenges] = useState<any>();
   const [yourChallenges, setYourChallenges] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
 
+  // auth context
+  const { user } = useAuth();
+
   const fetchActiveChallenges = async () => {
-    setIsLoading(true)
     try {
+      setIsLoading(true)
       // get refs to all active challenges from db
       const challengesRef = ref(database, `challenges`);
       // gets a snapshot of all challenges in 'challenges'
@@ -28,7 +33,6 @@ export default function Challenges() {
       // convert the challenges object into an array of objects
       const challengesArray = Object.values(challengesData || {});
       setActiveChallenges(challengesArray);
-      
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching challenges:', error);
@@ -39,24 +43,42 @@ export default function Challenges() {
   }
 
   const fetchYourChallenges = async () => {
-    
+    try {
+      setIsLoading(true)
+      // get refs to all active challenges from db
+      const challengesRef = ref(database, `challenges`);
+      // gets a snapshot of all challenges in 'challenges'
+      const challengesSnapshot = await get(challengesRef);
+      const challengesData = challengesSnapshot.val();
+      // convert the challenges object into an array of objects
+      const challengesArray = Object.values(challengesData || {});
+      // filter challenges to only those that the user is a participant in
+      const filteredChallenges = challengesArray.filter((challenge: any) => user?.uid in challenge.participants);
+      setYourChallenges(filteredChallenges);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching challenges:', error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
     fetchActiveChallenges();
+    fetchYourChallenges()
   }, []);
 
   return (
     <section className={styles.challenges}>
       <div className={styles.challenge_section}>
         <h2> Your challenges </h2>
-         <p> This feature is coming soon... </p>
-{/*         <ul className={styles.active_challenges_container}>
+         <ul className={styles.active_challenges_container}>
           {isLoading ? (
               <Loading /> 
             ) : (
-              activeChallenges?.length > 0 ? (
-                activeChallenges.map((challenge: any) => (
+              yourChallenges?.length > 0 ? (
+                yourChallenges.map((challenge: any) => (
                   <ActiveChallenge
                     key={challenge.id}
                     id={challenge.id}
@@ -68,7 +90,7 @@ export default function Challenges() {
                 <p className={styles.empty_challenges_text}> You have no active challenges. Create one and invite your friends! </p>
               )
           )}
-        </ul> */}
+         </ul>
       </div>
       <div className={styles.challenge_section}>
         <h2> Active challenges </h2>
