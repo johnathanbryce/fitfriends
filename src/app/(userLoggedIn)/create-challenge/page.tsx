@@ -81,14 +81,20 @@ export default function CreateChallenge() {
           return;
         }
   
-        const participants: any = {};
         // create the new challenge data to send to db
         const newChallenge: any = {
           id: '',
           creator: userData?.uid,
           creatorName: userData?.userName || 'unknown user',
           name: challengeName,
-          participants: participants,
+          participants: {
+            [userData?.uid]: {  
+              cardioPoints: 0,  // TODO: change to pointsMetric1 when flexible metrics created
+              weightsPoints: 0,   // TODO: change to pointsMetric2 when flexible metrics created
+              //TODO: update to pointsMetric3 and onwards.... when flexible metrics is created
+              totalPoints: 0    
+            }
+          },
           rules: {
             cardioMinutes: cardioMinutes,
             cardioPoints: cardioPoints,
@@ -100,6 +106,8 @@ export default function CreateChallenge() {
             ends: selection[0].endDate.toString(),
           },
         };
+
+        console.log(newChallenge)
     
         // push the new challenge to the 'challenges' node
         const newChallengeRef = push(challengesRef, newChallenge);
