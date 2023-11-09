@@ -22,11 +22,20 @@ import { formatDateForChallenges } from '@/utils/dateHelpers'
 interface urlParamsProps {
   params: any
 }
+/*
+TODO:
+- implemenet challenge duration functionality
+- make sure that when a challenge ends, it gets moved to a new endpoint
+  in the databse: "completedChallenges { ... } "
+
+*/
 
 export default function Challenge({params}: urlParamsProps) {
   const [challengeData, setChallengeData] = useState<any>()
   const [participantsInfo, setParticipantsInfo] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  // state to track if a user is part of this challenge
+  const [isUserAParticipant, setIsUserAParticipant] = useState(false);
   // button / modal / challenge active visibility state
   const [isAddParticipantsButtonVisible, setIsAddParticipantsButtonVisible] = useState(false)
   const [isAddParticipantsModalOpen, setIsAddParticipantsModalOpen] = useState(false)
@@ -40,7 +49,6 @@ export default function Challenge({params}: urlParamsProps) {
   // routing
   const router = useRouter();
 
-  
   // checks if the user created the challenge to show or hide the
   // delete button and then add participants button
   useEffect(() => {
@@ -78,10 +86,12 @@ export default function Challenge({params}: urlParamsProps) {
 
     onValue(challengeRef, (snapshot) => {
       const data = snapshot.val();
-      setChallengeData(data)
+      setChallengeData(data);
   
       if (data.participants) {
         const participantIds = Object.keys(data.participants);
+        // Update the state to reflect whether the logged-in user is a participant
+        setIsUserAParticipant(participantIds.includes(user?.uid));
         // 1. create an array to store participants info from users who in this challenge
         const participantsData: any = [];
         // 2. loop through participant IDs and fetch user data and points for each
@@ -105,6 +115,8 @@ export default function Challenge({params}: urlParamsProps) {
           // 3. push this participantsData array from above to state to then map and render
           setParticipantsInfo(participantsData);
         });
+      } else {
+        setIsUserAParticipant(false);
       }
     });
   }
@@ -204,10 +216,14 @@ export default function Challenge({params}: urlParamsProps) {
 
           <div className={styles.dashboard_section}>
             <h3> Submit points  </h3>
-            <DailyPointsInput 
-              challengeId={params} 
-              user={user?.uid}   
-            />
+            {isUserAParticipant ? (
+              <DailyPointsInput 
+                challengeId={params} 
+                user={user?.uid}   
+              />
+            ) : (
+              <h5 className={styles.not_participant_text}> You are not a participant of this challenge.</h5>
+            )}
           </div>
 
           <div className={styles.dashboard_section}>
@@ -246,60 +262,60 @@ export default function Challenge({params}: urlParamsProps) {
             </div>
 
             <div className={styles.btns_container}>
-            {isLeaveConfirmationVisible ? (
-                <div className={styles.delete_challenge_confirm}>
-                  <p className={styles.warning}> Are you sure you want to leave this challenge? </p>
-                  <div className={styles.btns_flex_wrapper}>
-                    <ButtonPill 
-                      label={'Yes'}
-                      isLoading={isLoading}
-                      onClick={leaveChallenge}
-                    />
-                    <ButtonPill 
-                      label={'No'}
-                      isLoading={isLoading}
-                      onClick={toggleConfirmLeaveChallnege}
-                    />
+              {isLeaveConfirmationVisible  ? (
+                  <div className={styles.delete_challenge_confirm}>
+                    <p className={styles.warning}> Are you sure you want to leave this challenge? </p>
+                    <div className={styles.btns_flex_wrapper}>
+                      <ButtonPill 
+                        label={'Yes'}
+                        isLoading={isLoading}
+                        onClick={leaveChallenge}
+                      />
+                      <ButtonPill 
+                        label={'No'}
+                        isLoading={isLoading}
+                        onClick={toggleConfirmLeaveChallnege}
+                      />
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <>
-                  {participantsInfo.length > 0 &&  
-                    <ButtonPill 
-                      label={'Leave this challenge'}
-                      isLoading={isLoading}
-                      onClick={toggleConfirmLeaveChallnege}
-                    /> 
-                  }
-                </>  
-              )}
-              {isDeleteConfirmationVisible ? (
-                <div className={styles.delete_challenge_confirm}>
-                  <p className={styles.warning}> Are you sure you want to delete this challenge? </p>
-                  <div className={styles.btns_flex_wrapper}>
-                    <ButtonPill 
-                      label={'Confirm'}
-                      isLoading={isLoading}
-                      onClick={deleteChallenge}
-                    />
-                    <ButtonPill 
-                      label={'Decline'}
-                      isLoading={isLoading}
-                      onClick={toggleConfirmDeleteChallenge}
-                    />
+                ) : (
+                  <>
+                    {participantsInfo.length > 0 && isUserAParticipant &&  
+                      <ButtonPill 
+                        label={'Leave this challenge'}
+                        isLoading={isLoading}
+                        onClick={toggleConfirmLeaveChallnege}
+                      /> 
+                    }
+                  </>  
+                )}
+                {isDeleteConfirmationVisible ? (
+                  <div className={styles.delete_challenge_confirm}>
+                    <p className={styles.warning}> Are you sure you want to delete this challenge? </p>
+                    <div className={styles.btns_flex_wrapper}>
+                      <ButtonPill 
+                        label={'Confirm'}
+                        isLoading={isLoading}
+                        onClick={deleteChallenge}
+                      />
+                      <ButtonPill 
+                        label={'Decline'}
+                        isLoading={isLoading}
+                        onClick={toggleConfirmDeleteChallenge}
+                      />
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <>
-                  {isDeleteButtonVisible && participantsInfo.length > 0 && 
-                    <ButtonPill 
-                      label={'Delete this challenge'}
-                      isLoading={isLoading}
-                      onClick={toggleConfirmDeleteChallenge}
-                    />
-                  }
-                </>
-              )}
+                ) : (
+                  <>
+                    {isDeleteButtonVisible && participantsInfo.length > 0 && 
+                      <ButtonPill 
+                        label={'Delete this challenge'}
+                        isLoading={isLoading}
+                        onClick={toggleConfirmDeleteChallenge}
+                      />
+                    }
+                  </>
+                )}
             </div>
           </div>
         </>
