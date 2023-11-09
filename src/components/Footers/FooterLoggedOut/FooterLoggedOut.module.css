@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     gap: 3rem;
-    padding: 4rem 10rem;
+    padding: 8rem 10rem;
     background-color: var(--footer-bg);
     width: 100vw;
     text-align: center;
@@ -28,6 +28,6 @@
 @media (max-width: 480px) {  
     .footer {
         gap: 1rem;
-        padding: 2rem 2rem;
+        padding: 6.5rem 2rem;
     }
 }

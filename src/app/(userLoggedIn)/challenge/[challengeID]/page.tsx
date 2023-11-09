@@ -78,7 +78,6 @@ export default function Challenge({params}: urlParamsProps) {
     confirmUserCreatedChallenge();
   }, [])
 
-
   // fetches all the users included in the participants object in the challenge 
   // participants are invited via ParticipantsModal.tsx which houses this logic
   const fetchActiveChallengeParticipants = () => {

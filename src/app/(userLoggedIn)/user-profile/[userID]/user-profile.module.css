@@ -18,32 +18,27 @@
 
 .user_main_overview{
     display: flex;
-    flex-direction: column;
+    justify-content: space-evenly;
     align-items: center;
-    gap: 1rem;
+    width: 100%;
     padding: 2rem;
-    background-color: var(--accent-primary);
+    background-color: var(--background-secondary);
 }
 
-.user_main_overview > *, .points_container > * {
+.user_main_overview > *, .user_info_container > *{
     color: var(--font-secondary);
 }
 
-.points_container > *{
-    font-weight: 600;
+.user_info_container{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.25rem;
 }
 
 .profile_pic {
-    width: 30%;
+    width: 20%;
     height: 100%;
-}
-
-.points_container{
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    text-align: center;
-    width: 100%;
 }
 
 .user_details_section{
@@ -51,7 +46,7 @@
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    border: 0.1rem solid var(--accent-primary);
+    border: 0.1rem solid var(--background-secondary);
 }
 
 .user_details_section button{
@@ -77,13 +72,13 @@
 
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
+    .user_main_overview{
+        justify-content: space-between;
+    }
+
     .user_profile {
         width: 30rem;
         margin-bottom: 1rem;
-    }
-
-    .points_container {
-        gap: 2.5rem;
     }
 }
 
