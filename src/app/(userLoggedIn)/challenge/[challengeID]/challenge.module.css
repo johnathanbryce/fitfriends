@@ -34,6 +34,10 @@
     gap: 2rem;
 }
 
+.not_participant_text{
+    text-align: center;
+}
+
 .subheader_container{
     display: flex;
     justify-content: space-between;
