@@ -27,6 +27,8 @@ export default function Challenge({params}: urlParamsProps) {
   const [challengeData, setChallengeData] = useState<any>()
   const [participantsInfo, setParticipantsInfo] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  // button / modal / challenge active visibility state
+  const [isAddParticipantsButtonVisible, setIsAddParticipantsButtonVisible] = useState(false)
   const [isAddParticipantsModalOpen, setIsAddParticipantsModalOpen] = useState(false)
   const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState(false)
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] = useState(false);
@@ -38,6 +40,9 @@ export default function Challenge({params}: urlParamsProps) {
   // routing
   const router = useRouter();
 
+  
+  // checks if the user created the challenge to show or hide the
+  // delete button and then add participants button
   useEffect(() => {
     const confirmUserCreatedChallenge = () => {
       const challengeRef = ref(database, `challenges/${params.challengeID}`);
@@ -47,10 +52,13 @@ export default function Challenge({params}: urlParamsProps) {
           if (challengeSnapshot.exists()) {
             const challengeData = challengeSnapshot.val();    
             // check if the current user is the creator to show or hide delete btn
+            // and add participants btn
             if (challengeData.creator === user?.uid) {
-              setIsDeleteButtonVisible(true)
+              setIsDeleteButtonVisible(true);
+              setIsAddParticipantsButtonVisible(true);
             } else {
               setIsDeleteButtonVisible(false);
+              setIsAddParticipantsButtonVisible(false);
             }
           }
         })
@@ -205,11 +213,13 @@ export default function Challenge({params}: urlParamsProps) {
           <div className={styles.dashboard_section}>
             <div className={styles.subheader_container}>
               <h3> Participants </h3>
-              <ButtonPill
-                label='add-users'
-                onClick={toggleAddParticipantsModal}
-                isLoading={isLoading}
-              />
+              {isAddParticipantsButtonVisible && 
+                <ButtonPill
+                  label='add-users'
+                  onClick={toggleAddParticipantsModal}
+                  isLoading={isLoading}
+                />
+              }
             </div>
             <div className={styles.participants_container}>
               {participantsInfo.length > 0 ? (

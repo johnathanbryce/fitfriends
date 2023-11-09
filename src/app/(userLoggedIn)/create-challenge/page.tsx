@@ -89,6 +89,8 @@ export default function CreateChallenge() {
           name: challengeName,
           participants: {
             [userData?.uid]: {  
+              name: userData?.firstName + ' ' + userData?.lastName[0],
+              username: userData?.userName || 'unknown user',
               cardioPoints: 0,  // TODO: change to pointsMetric1 when flexible metrics created
               weightsPoints: 0,   // TODO: change to pointsMetric2 when flexible metrics created
               //TODO: update to pointsMetric3 and onwards.... when flexible metrics is created
