@@ -63,7 +63,9 @@ export default function Challenge({params}: urlParamsProps) {
   }, [])
 
 
-  const addInvitedParticipantsToChallenge = () => {
+  // fetches all the users included in the participants object in the challenge 
+  // participants are invited via ParticipantsModal.tsx which houses this logic
+  const fetchActiveChallengeParticipants = () => {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
 
     onValue(challengeRef, (snapshot) => {
@@ -72,10 +74,8 @@ export default function Challenge({params}: urlParamsProps) {
   
       if (data.participants) {
         const participantIds = Object.keys(data.participants);
-  
         // 1. create an array to store participants info from users who in this challenge
         const participantsData: any = [];
-
         // 2. loop through participant IDs and fetch user data and points for each
         // remember: Promise.all() waits for all promises to resolve (takes an array of promises and returns a new Promise)
         Promise.all(participantIds.map((participantID) => {
@@ -101,8 +101,9 @@ export default function Challenge({params}: urlParamsProps) {
     });
   }
 
+  // runs the fn to fetch all invited participant of this challenge
   useEffect(() => {
-    addInvitedParticipantsToChallenge();
+    fetchActiveChallengeParticipants();
   }, [params.challengeID]);
 
   // toggle functions
@@ -116,7 +117,6 @@ export default function Challenge({params}: urlParamsProps) {
   const toggleConfirmLeaveChallnege = () => {
     setIsLeaveConfirmationVisible((prev) => !prev)
   }
-
 
   const deleteChallenge = async () => {
     try {
@@ -144,9 +144,6 @@ export default function Challenge({params}: urlParamsProps) {
     }
   };
   
-
-  
-
   const leaveChallenge = () => {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
     get(challengeRef)
@@ -174,12 +171,6 @@ export default function Challenge({params}: urlParamsProps) {
         console.error('Error fetching challenge data:', error);
       });
   };
-  
-
-  //TODO: remove this when invite participants logic is live
-/*   useEffect(() => {
-    addInvitedParticipantsToChallenge();
-  }, [params.challengeID]); */
 
   return (
     <section className={styles.dashboard}>
