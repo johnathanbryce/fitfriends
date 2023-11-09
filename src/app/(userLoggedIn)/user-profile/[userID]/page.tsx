@@ -68,13 +68,14 @@ export default function UserProfile() {
             </div>
 
             <div className={styles.user_details_section}>
+               <span> (not yet active)</span>
                <button>
                 <p> Edit Profile </p>
                 <AiOutlineEdit className={styles.icon} />
                </button>
             </div>
 
-            <div className={styles.user_details_section}>
+            <div className={`${styles.user_details_section} ${styles.logout}`}>
                 <button onClick={handleLogout}>
                     <p> Log Out </p>
                     <LuLogOut className={styles.icon} />
