@@ -1,7 +1,7 @@
 .dashboard{
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 4rem;
     width: 65vw;
     padding: 2rem;
 }
@@ -42,7 +42,7 @@
 .participants_container{
     display: flex;
     justify-content: center;
-    gap: 4rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
 }
 
@@ -91,13 +91,14 @@
 
 
 /* Mobile Devices (landscape) */
-@media (max-width: 775px) { 
+@media (max-width: 950px) { 
     .dashboard{
-        width: 90%;
+        width: 100%;
     }
 
     .participants_container{
         justify-content: center;
+        gap: 1rem;
     }
 }
 

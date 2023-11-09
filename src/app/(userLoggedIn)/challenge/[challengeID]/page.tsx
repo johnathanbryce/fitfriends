@@ -1,18 +1,19 @@
 'use client'
 import {useState, useEffect} from 'react'
-import styles from './dashboard.module.css'
+import styles from './challenge.module.css'
 // Next.js
 import { useRouter } from 'next/navigation'
 // Internal Components
 import DailyPointsInput from '@/components/DailyPointsInput/DailyPointsInput'
 import LeaderboardCard from '@/components/Cards/LeaderboardCard/LeaderboardCard'
+import ParticipantsModal from '@/components/Modals/ParticipantsModal/ParticipantsModal'
 import ParticipantCard from '@/components/Cards/ParticipantCard/ParticipantCard'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 // Internal Assets
 import defaultUser from '../../../../../public/images/default-user-img.png'
 // Firebase
 import { database } from '../../../../../firebaseApp'
-import {ref, onValue, get, remove, set, update} from 'firebase/database'
+import {ref, onValue, get, remove, set, update, off} from 'firebase/database'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 // Util
@@ -22,10 +23,11 @@ interface urlParamsProps {
   params: any
 }
 
-export default function Dashboard({params}: urlParamsProps) {
+export default function Challenge({params}: urlParamsProps) {
   const [challengeData, setChallengeData] = useState<any>()
   const [participantsInfo, setParticipantsInfo] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAddParticipantsModalOpen, setIsAddParticipantsModalOpen] = useState(false)
   const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState(false)
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] = useState(false);
   const [isLeaveConfirmationVisible, setIsLeaveConfirmationVisible] = useState(false);
@@ -59,8 +61,9 @@ export default function Dashboard({params}: urlParamsProps) {
 
     confirmUserCreatedChallenge();
   }, [])
-  
-  const addAllActiveUsersToChallenge = () => {
+
+
+  const addInvitedParticipantsToChallenge = () => {
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
 
     onValue(challengeRef, (snapshot) => {
@@ -76,20 +79,20 @@ export default function Dashboard({params}: urlParamsProps) {
         // 2. loop through participant IDs and fetch user data and points for each
         // remember: Promise.all() waits for all promises to resolve (takes an array of promises and returns a new Promise)
         Promise.all(participantIds.map((participantID) => {
-          const userRef = ref(database, `users/${participantID}`);
+        const userRef = ref(database, `users/${participantID}`);
   
-          return get(userRef)
-            .then((userSnapshot) => {
-              if (userSnapshot.exists()) {
-                const userData = userSnapshot.val(); // data from "users"
-                const pointsData = data.participants[participantID]; // get points for this participant ** coming from "challenges" 
-                const participantWithPoints = { ...userData, ...pointsData }; 
-                participantsData.push(participantWithPoints);
-              }
-            })
-            .catch((error) => {
-              console.error('Error fetching user data:', error);
-            });
+        return get(userRef)
+          .then((userSnapshot) => {
+            if (userSnapshot.exists()) {
+              const userData = userSnapshot.val(); // data from "users"
+              const pointsData = data.participants[participantID]; // get points for this participant ** coming from "challenges" 
+              const participantWithPoints = { ...userData, ...pointsData }; 
+              participantsData.push(participantWithPoints);
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching user data:', error);
+          });
         })).then(() => {
           // 3. push this participantsData array from above to state to then map and render
           setParticipantsInfo(participantsData);
@@ -98,11 +101,14 @@ export default function Dashboard({params}: urlParamsProps) {
     });
   }
 
-  // TODO: create a function which adds/invites participants individually
-  const addParticipants = () => {
-    const challengeRef = ref(database, `challenges/${params.challengeID}`);
-  }
+  useEffect(() => {
+    addInvitedParticipantsToChallenge();
+  }, [params.challengeID]);
 
+  // toggle functions
+  const toggleAddParticipantsModal = () => {
+    setIsAddParticipantsModalOpen((prev) => !prev)
+  }
   const toggleConfirmDeleteChallenge =  () => {
     setIsDeleteConfirmationVisible((prev) => !prev)
   }
@@ -171,9 +177,9 @@ export default function Dashboard({params}: urlParamsProps) {
   
 
   //TODO: remove this when invite participants logic is live
-  useEffect(() => {
-    addAllActiveUsersToChallenge();
-  }, [params.challengeID]);
+/*   useEffect(() => {
+    addInvitedParticipantsToChallenge();
+  }, [params.challengeID]); */
 
   return (
     <section className={styles.dashboard}>
@@ -181,7 +187,6 @@ export default function Dashboard({params}: urlParamsProps) {
         <>
           <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
           <div className={styles.challenge_overview}>
-            {/* <p> Review this challenge&apos;s rules and take note of the start and end dates: </p> */}
             <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
 
             <div className={styles.rules}>
@@ -209,6 +214,11 @@ export default function Dashboard({params}: urlParamsProps) {
           <div className={styles.dashboard_section}>
             <div className={styles.subheader_container}>
               <h3> Participants </h3>
+              <ButtonPill
+                label='add-users'
+                onClick={toggleAddParticipantsModal}
+                isLoading={isLoading}
+              />
             </div>
             <div className={styles.participants_container}>
               {participantsInfo.length > 0 ? (
@@ -296,6 +306,12 @@ export default function Dashboard({params}: urlParamsProps) {
         <h3 className={styles.inactive_challenge_msg}> This challenge is no longer active.</h3>
       )}
 
+      {isAddParticipantsModalOpen && 
+        <ParticipantsModal 
+          onClose={toggleAddParticipantsModal}
+          challengeId={params.challengeID} 
+          />
+        }
     </section>
   )
 }

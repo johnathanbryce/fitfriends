@@ -50,11 +50,11 @@ export default function CreateChallenge() {
 
     };
 
+    // TODO: ADD THE USER WHO CREATED THE CHALLENGE TO THE CHALLENGE
     async function addNewChallenge(e: any) {
       e.preventDefault();
       // get refs to "users" & "challenges" main data buckets in db
       const challengesRef = ref(database, `challenges`);
-      const usersRef = ref(database, 'users');
       // get the user ref to check and increase challengesCreatedLimit
       const userRef = ref(database, `users/${userData?.uid}`);
     
@@ -80,23 +80,8 @@ export default function CreateChallenge() {
           console.log('User data not found in the database');
           return;
         }
-    
-        const usersSnapshot = await get(usersRef);
+  
         const participants: any = {};
-    
-        // adds ALL registered users from "users" bucket to this challenge 
-        usersSnapshot.forEach((userSnapshot) => {
-          const userData = userSnapshot.val();
-          if (userData) {
-            const participant = {
-              cardioPoints: 0,
-              weightsPoints: 0,
-              totalPoints: 0,
-            };
-            participants[userSnapshot.key] = participant;
-          }
-        });
-    
         // create the new challenge data to send to db
         const newChallenge: any = {
           id: '',

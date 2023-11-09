@@ -1,6 +1,5 @@
 .daily_points_input{
     display: flex;
-
     align-items: center;
     border-radius: var(--border-radius);
     background-color: var(--background-secondary);
@@ -9,7 +8,6 @@
 
 .inputs_container{
     display: flex;
-    gap: 3rem;
     justify-content: space-evenly;
     flex: 1;
 }
@@ -21,7 +19,7 @@
 }
 
 .input_width_wrapper{
-    width: 6rem;
+    width: 4rem;
 }
 
 .input_category {
@@ -33,18 +31,15 @@
     flex: 0.3;
 }
 
-/* Mobile Devices (landscape) */
-@media (max-width: 775px){
-    .daily_points_input{
-        flex-direction: column; 
-        gap: 2rem;
-    }
-}
-
 /* Mobile Devices up to 480px */
-@media (max-width: 480px) {  
+@media (max-width: 480px) {
+    .button_width_wrapper{
+        align-self: flex-end;
+    }
+
     .inputs_container{
         justify-content: space-evenly;
+        align-items: flex-end;
         width: 100%;
     }
 
@@ -56,4 +51,5 @@
         width: 40%;
     }
 }
+
 

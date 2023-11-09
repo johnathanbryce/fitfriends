@@ -23,8 +23,21 @@ export default function ParticipantCard({userId, firstName, lastName, userName, 
     return (
         <div className={styles.participant_card}>
             <div className={styles.name_container}>
-                <h5 className={styles.name}>{firstName} {lastName}</h5>
-                <p className={styles.nickname}> &quot;{userName}&quot; </p>
+                {profilePicture ? (
+                        <Image
+                          src={URL.createObjectURL(profilePicture)}
+                          className={styles.profile_pic_small_screens} 
+                          alt='The profile picture of one of the participants'
+                        />
+                      ) : (
+                        <Image
+                          src={defaultUserImage}
+                          className={`${styles.profile_pic_small_screens} ${styles.default_img}`} 
+                          alt='The profile picture of one of the participants'
+                        />
+                )}
+                <h5 className={styles.name}>{firstName} {lastName[0]}</h5>
+                <p className={styles.nickname}> {userName} </p>
             </div>
             <div className={styles.participant_overview}>
                 {profilePicture ? (
