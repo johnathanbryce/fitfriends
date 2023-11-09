@@ -71,7 +71,10 @@ export default function Challenges() {
                   />
                 ))
               ) : (
-                <p className={styles.empty_challenges_text}> You have no active challenges. Create one and invite your friends! </p>
+                <>
+                <p className={styles.empty_challenges_text}> You have no active challenges. </p>
+                <p><Link href="/create-challenge"> <span className={styles.underline}>Create one</span> and invite your friends! </Link></p>
+              </>
               )
           )}
          </ul>
@@ -94,8 +97,8 @@ export default function Challenges() {
                     ))
                   ) : (
                     <>
-                      <p className={styles.empty_challenges_text}> You have no active challenges. </p>
-                      <p><Link href="/create-challenge"> <span className={styles.underline}>Create one</span>   and invite your friends! </Link></p>
+                      <p className={styles.empty_challenges_text}> There are no active challenges. </p>
+                      <p><Link href="/create-challenge"> <span className={styles.underline}>Create one</span> and invite your friends! </Link></p>
                     </>
    
                   )

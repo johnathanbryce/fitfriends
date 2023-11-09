@@ -14,8 +14,8 @@ export default function ActiveChallenge({name, id, creatorName, rules}: ActiveCh
   return (
     <Link href={`/challenge/${id}`} className={styles.active_challenge}>
       <li className={styles.link_container}>
-            <h5 className={styles.name}>{name}</h5>
-            <p className={styles.creator}> created by: {creatorName} </p>
+            <h6 className={styles.name}>{name}</h6>
+            <p className={styles.creator}> creator: {creatorName} </p>
       </li>
     </Link>
   )

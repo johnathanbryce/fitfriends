@@ -44,37 +44,36 @@ export default function UserProfile() {
             </div>
             <div className={styles.user_main_overview}>
                 {profilePic ? (
-                    <Image
-                      src={URL.createObjectURL(profilePic)}
-                      width={100}
-                      height={100}
-                      className={styles.profile_pic}
-                      alt='Your profile picture'
-                    />
-                  ) : (
-                    // default backup
-                    <GoPerson className={styles.profile_pic} />
-                )}
-                {/* <ImageFileUploadButton onFileChange={handleFileChange} /> */}
-                <h3>{userData.firstName} {userData.lastName}</h3>
-                <p> &quot;{userData.userName}&quot; </p>
-                <h5> Total Points</h5>
-                <div className={styles.points_container}>
-                  <p> Cardio {userData.totalPointsOverall.totalCardio}</p>
-                  <h5>Overall {userData.totalPointsOverall.totalPoints}</h5>
-                  <p> Weights {userData.totalPointsOverall.totalWeights}</p>
-                </div>
-
+                      <Image
+                        src={URL.createObjectURL(profilePic)}
+                        width={100}
+                        height={100}
+                        className={styles.profile_pic}
+                        alt='Your profile picture'
+                      />
+                    ) : (
+                      // default backup
+                      <GoPerson className={styles.profile_pic} />
+                  )}
+                  {/* <ImageFileUploadButton onFileChange={handleFileChange} /> */}
+                  <div className={styles.user_info_container}>
+                    <h3>{userData.firstName} {userData.lastName}</h3>
+                    <p> &quot;{userData.userName}&quot; </p>
+                    <h6> Challenges won: {userData.challengesWon}</h6>
+                  </div>   
             </div>
+
             <div className={styles.user_details_section}>
                 <p> {userData.email} </p>
             </div>
+
             <div className={styles.user_details_section}>
                <button>
                 <p> Edit Profile </p>
                 <AiOutlineEdit className={styles.icon} />
                </button>
             </div>
+
             <div className={styles.user_details_section}>
                 <button onClick={handleLogout}>
                     <p> Log Out </p>
