@@ -4,13 +4,12 @@ import styles from './challenges.module.css'
 // Next.js
 import Link from 'next/link'
 // Internal Components
-import { Carousel } from '@/components/Carousel/Carousel'
 import ActiveChallenge from '@/components/ActiveChallenge/ActiveChallenge'
 import Loading from '@/app/loading'
 import ButtonPillRoute from '@/components/Buttons/ButtonPillRoute/ButtonPillRoute'
 // Firebase
 import { database } from '../../../../firebaseApp'
-import {ref, onValue, get} from 'firebase/database'
+import {ref, get} from 'firebase/database'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 
@@ -22,53 +21,38 @@ export default function Challenges() {
   // auth context
   const { user } = useAuth();
 
-  const fetchActiveChallenges = async () => {
+  const fetchChallenges = async () => {
     try {
-      setIsLoading(true)
-      // get refs to all active challenges from db
+      setIsLoading(true);
+      // get refs to all challenges from db
       const challengesRef = ref(database, `challenges`);
       // gets a snapshot of all challenges in 'challenges'
       const challengesSnapshot = await get(challengesRef);
       const challengesData = challengesSnapshot.val();
       // convert the challenges object into an array of objects
       const challengesArray = Object.values(challengesData || {});
-      setActiveChallenges(challengesArray);
+  
+      // filter challenges to only those that the user is a participant 
+      const yourChallenges = challengesArray.filter((challenge: any) => user?.uid in challenge.participants);
+      setYourChallenges(yourChallenges);
+  
+      // dilter out 'yourChallenges' from 'activeChallenges' so as not to duplicate
+      const activeChallenges = challengesArray.filter((challenge: any) => !(user?.uid in challenge.participants));
+      setActiveChallenges(activeChallenges);
+  
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching challenges:', error);
       setIsLoading(false);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
-
-  const fetchYourChallenges = async () => {
-    try {
-      setIsLoading(true)
-      // get refs to all active challenges from db
-      const challengesRef = ref(database, `challenges`);
-      // gets a snapshot of all challenges in 'challenges'
-      const challengesSnapshot = await get(challengesRef);
-      const challengesData = challengesSnapshot.val();
-      // convert the challenges object into an array of objects
-      const challengesArray = Object.values(challengesData || {});
-      // filter challenges to only those that the user is a participant in
-      const filteredChallenges = challengesArray.filter((challenge: any) => user?.uid in challenge.participants);
-      setYourChallenges(filteredChallenges);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching challenges:', error);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
+  
   useEffect(() => {
-    fetchActiveChallenges();
-    fetchYourChallenges()
+    fetchChallenges();
   }, []);
-
+  
   return (
     <section className={styles.challenges}>
       <div className={styles.challenge_section}>
