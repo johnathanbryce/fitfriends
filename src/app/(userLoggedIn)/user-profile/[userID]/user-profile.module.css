@@ -57,6 +57,10 @@
     cursor: pointer;
 }
 
+.logout p, .logout .icon {
+    font-weight: 900;
+}
+
 .icon {
     color: var(--font-primary);
     font-weight: bold;
