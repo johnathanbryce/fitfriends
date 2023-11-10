@@ -18,8 +18,6 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-// ... (previous code)
-
 // function to update challenge status to "inactive" if the current date is past the end date
 const checkAndUpdateChallengeStatus = async (challengeId) => {
     try {
