@@ -53,6 +53,7 @@ export default function SignUp() {
         userName: userName,
         profilePicture: defaultUser,
         isLoggedin: null,
+        challengesWon: 0,
         challenges: {
           
         },

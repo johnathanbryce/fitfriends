@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "@types/react-date-range": "^1.4.7",
-    "eslint": "^8.52.0"
+    "eslint": "^8.53.0"
   }
 }
