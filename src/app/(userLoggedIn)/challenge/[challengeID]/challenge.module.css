@@ -1,9 +1,12 @@
 .dashboard{
     display: flex;
     flex-direction: column;
-    gap: 4rem;
-    width: 65vw;
-    padding: 2rem;
+    gap: 2rem;
+    width: 75vw;
+    padding: 1rem 4rem;
+    background-color: var(--card-bg-primary);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 .challenge_name {
@@ -31,7 +34,7 @@
 .dashboard_section{
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .not_participant_text{
