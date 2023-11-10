@@ -1,8 +1,5 @@
 {
   "projects": {
-    "default": "fit-friends-2ce27",
-    "dev": "fit-friends-2ce27"
-  },
-  "targets": {},
-  "etags": {}
+    "default": "fit-friends-2ce27"
+  }
 }

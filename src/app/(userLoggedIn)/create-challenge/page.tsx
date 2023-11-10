@@ -44,10 +44,6 @@ export default function CreateChallenge() {
     // react-date-range fn
     const handleSelect = async (ranges: any) => {
       setSelection([ranges.selection]);
-
-
-
-
     };
 
     // TODO: ADD THE USER WHO CREATED THE CHALLENGE TO THE CHALLENGE
@@ -104,13 +100,11 @@ export default function CreateChallenge() {
             weightsPoints: weightsPoints,
           },
           challengeDuration: {
-            starts: selection[0].startDate.toString(),
-            ends: selection[0].endDate.toString(),
+            starts: selection[0].startDate.getTime(), // Store start date as a number
+            ends: selection[0].endDate.getTime(),     // Store end date as a number
           },
         };
 
-        console.log(newChallenge)
-    
         // push the new challenge to the 'challenges' node
         const newChallengeRef = push(challengesRef, newChallenge);
         // get the generated ID from the reference
