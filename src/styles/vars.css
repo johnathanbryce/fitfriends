@@ -7,7 +7,7 @@
     --background-primary: white; /* #F9F9F9; */
     --background-secondary:	#263238;
     --background-secondary-light: rgba(38, 50, 56, 0.8);
-    --card-bg-primary:	rgba(249, 249, 249,  0.80);
+    --card-bg-primary:	rgba(249, 249, 249,  0.8);
     --form-bg:	rgba(249, 249, 249,  0.80);
 
     /* font */
@@ -17,6 +17,7 @@
 
     /* accent */
     --accent-primary: #FF5722;
+    --accent-primary-light: rgba(255, 87, 34, 0.8);
     --accent-secondary: #00BD9D;
 
     /* buttons */

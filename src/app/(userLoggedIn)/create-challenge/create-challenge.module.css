@@ -5,6 +5,9 @@
     gap: 2.5rem;
     padding: 2rem;
     margin-bottom: 2rem;
+    background-color: var(--card-bg-primary);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 .create_challenge h2 {

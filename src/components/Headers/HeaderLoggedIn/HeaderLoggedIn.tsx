@@ -36,7 +36,7 @@ export default function HeaderLoggedIn() {
 
   return (
     <header className={styles.header}>
-      <Link href='/challenges-dashboard'>
+      <Link href='/challenges-dashboard' className={styles.fit_friends_header}>
         <h1> Fit Friends </h1>
       </Link>
 

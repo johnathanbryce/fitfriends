@@ -22,10 +22,6 @@ export default function HeaderHomePage() {
 
   return (
     <header className={styles.header}>
-{/*       <Link href='/'>
-        <h1> Fit Friends </h1>
-      </Link> */}
-
       <div className={`${styles.hamburger} ${isDropdownActive ? styles.hamburger_active : '' }`} onClick={toggleDropdown}>
           <div className={styles.bar} ></div>
           <div className={styles.bar} ></div>
@@ -42,7 +38,8 @@ export default function HeaderHomePage() {
       {isDropdownActive && 
         <nav className={styles.navbar_dropdown}>
           <ul>
-            <li className={styles.link}><Link href='/sign-up' onClick={onClickCloseDropdown} > Get Started</Link></li> 
+          <li className={styles.link}><Link href='/login' onClick={onClickCloseDropdown} > Login </Link></li> 
+            <li className={styles.link}><Link href='/sign-up' onClick={onClickCloseDropdown} > Sign Up </Link></li> 
           </ul>
         </nav>
       }

@@ -1,14 +1,20 @@
 .header{
     display: flex;
     justify-content: space-between;
-    padding: 2rem 5rem;
+    padding: 0rem 5rem;
     height: 10rem; 
 }
 
+.fit_friends_header{
+    display: flex;
+    align-items: center;
+
+}
 .navbar{
     display: flex;
     align-items: center;
-    gap: 5rem;
+    gap: 4rem;
+    margin-bottom: 2rem;
 }
 
 .nav_item{
@@ -17,7 +23,7 @@
     align-items: center;
     margin-top: 4rem;
     gap: 1rem; 
-    height: 6rem;
+    /* height: 6rem; */
 }
 
 .nav_item_text {
@@ -98,6 +104,7 @@
 
     .hamburger{
         display: block;
+        position: fixed;
     }
 
     .navbar_dropdown{

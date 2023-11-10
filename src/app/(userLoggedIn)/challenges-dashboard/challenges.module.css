@@ -5,7 +5,11 @@
     text-align: center;
     gap: 4rem;
     justify-content: space-evenly;
-    margin: 1rem 0;
+    padding: 2rem 4rem;
+    width: 85vw;
+    background-color: var(--card-bg-primary);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 .challenge_section{

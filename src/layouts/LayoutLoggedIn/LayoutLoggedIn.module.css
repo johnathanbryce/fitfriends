@@ -4,18 +4,4 @@
     justify-content: center;  
     align-items: center;
     padding: 2rem 2rem;
-    min-height: 80vh;
-}
-
-/* Mobile Devices (landscape) */
-@media (max-width: 775px) { 
-    .main_container {
-
-    }
-}
-
-/* Mobile Devices up to 480px */
-@media (max-width: 480px) {  
-    .main_container {
-     }
 }
