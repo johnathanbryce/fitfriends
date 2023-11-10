@@ -9,7 +9,8 @@
     width: 85vw;
     background-color: var(--card-bg-primary);
     border-radius: var(--border-radius);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    /* border: 0.1rem solid var(--accent-primary); */
+    box-shadow: 0 4px 6px rgba(255, 87, 34, 0.8);
 }
 
 .challenge_section{
