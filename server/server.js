@@ -20,7 +20,7 @@ app.listen(port, () => {
 
 // ... (previous code)
 
-// Function to update challenge status to "inactive" if the current date is past the end date
+// function to update challenge status to "inactive" if the current date is past the end date
 const checkAndUpdateChallengeStatus = async (challengeId) => {
     try {
       const db = admin.database();
@@ -33,18 +33,15 @@ const checkAndUpdateChallengeStatus = async (challengeId) => {
   
       if (currentTime >= challengeEnds && challengeData.status !== 'inactive') {
         await challengeRef.update({ status: 'inactive' });
-  
-        // Call a function to determine and update the challenge winner
+        // determines and updates the challenge winner
         determineAndSetChallengeWinner(challengeId);
-  
-        console.log(`Challenge ${challengeId} is now inactive.`);
       }
     } catch (error) {
       console.error('Error checking/updating challenge status:', error);
     }
   };
   
-// Function to determine and set the challenge winner
+// function to determine and set the challenge winner
 const determineAndSetChallengeWinner = async (challengeId) => {
 try {
     const db = admin.database();
@@ -56,7 +53,7 @@ try {
     let highestTotalPoints = -1;
     let winnerId = '';
 
-    // Loop through participants to find the winner
+    // loop through participants to find the winner
     for (const participantId in participants) {
     const participant = participants[participantId];
     if (participant.totalPoints > highestTotalPoints) {
@@ -74,8 +71,8 @@ try {
 }
 };
   
-// Schedule the function to run every minute (you can adjust the cron schedule)
-cron.schedule('*/10 * * * *', () => { // Run every 10 minutes
+// schedule the function to run every minute 
+cron.schedule('*/10 * * * *', () => { // runs every 10 minutes
     console.log('Running challenge status check...');
     const db = admin.database();
     const challengesRef = db.ref('challenges');
