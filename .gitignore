@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+# do not push key to github
+serviceAccountKey.json
+
 # production
 /build
 
