@@ -74,8 +74,15 @@ try {
     }
 
     if (winnerId) {
-      await challengeRef.update({ challengeWinner: winnerId });
-      console.log(`Challenge ${challengeId} winner is ${winnerId}.`);
+      const winnerUserRef = ref(database, `users/${winnerId}`);
+      const winnerUserSnapshot = await get(winnerUserRef);
+      const winnerUserData = winnerUserSnapshot.val();
+      const winnerUsername = winnerUserData.username; 
+
+      await challengeRef.update({ challengeWinner: winnerId, challengeWinnerUsername: winnerUsername });
+      console.log(`Challenge ${challengeId} winner is ${winnerId} (${winnerUsername}).`);
+      // decrease the challengesCreatedLimit for the winner by 1
+      await winnerUserRef.update({ challengesCreatedLimit: winnerUserData.challengesCreatedLimit - 1 });
     }
 } catch (error) {
     console.error('Error determining/setting challenge winner:', error);

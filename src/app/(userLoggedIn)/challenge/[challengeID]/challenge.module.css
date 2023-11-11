@@ -35,7 +35,6 @@
     padding: 1rem;
     border: 0.1rem solid var(--accent-primary);
     box-shadow: 0 4px 6px rgba(255, 87, 34, 0.4);
-    z-index: 10;
 }
 
 .not_participant_text{

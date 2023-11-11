@@ -13,7 +13,7 @@ import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 import defaultUser from '../../../../../public/images/default-user-img.png'
 // Firebase
 import { database } from '../../../../../firebaseApp'
-import {ref, onValue, get, remove, set, update, off} from 'firebase/database'
+import {ref, onValue, get, remove, set, update} from 'firebase/database'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 // Util
@@ -42,7 +42,9 @@ export default function Challenge({params}: urlParamsProps) {
   const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState(false)
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] = useState(false);
   const [isLeaveConfirmationVisible, setIsLeaveConfirmationVisible] = useState(false);
+  // state for active challenge and declaring winner
   const [isChallengeActive, setIsChallengeActive] = useState(true)
+  const [challengeWinner, setChallengeWinner] = useState('');
 
   // auth context
   const { user } = useAuth();
@@ -114,6 +116,10 @@ export default function Challenge({params}: urlParamsProps) {
           // 3. push this participantsData array from above to state to then map and render
           setParticipantsInfo(participantsData);
         });
+
+        // update isChallengeActive and challengeWinner based on the challenge data
+        setIsChallengeActive(data.status === 'active');
+        setChallengeWinner(data.challengeWinner || ''); 
       } else {
         setIsUserAParticipant(false);
       }
@@ -319,7 +325,11 @@ export default function Challenge({params}: urlParamsProps) {
           </div>
         </>
       ): (
-        <h3 className={styles.inactive_challenge_msg}> This challenge is no longer active.</h3>
+        <h3 className={styles.inactive_challenge_msg}> 
+          {challengeWinner ? 
+          `Challenge completed! The winner is ${challengeWinner}` 
+          : 'This challenge is not active'}
+        </h3>
       )}
 
       {isAddParticipantsModalOpen && 
