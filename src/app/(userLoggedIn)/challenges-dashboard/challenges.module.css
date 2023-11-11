@@ -5,11 +5,11 @@
     text-align: center;
     gap: 4rem;
     justify-content: space-evenly;
-    padding: 2rem 4rem;
+    padding: 4rem 4rem;
     width: 85vw;
     background-color: var(--card-bg-primary);
     border-radius: var(--border-radius);
-    /* border: 0.1rem solid var(--accent-primary); */
+    border: 0.1rem solid var(--accent-primary);
     box-shadow: 0 4px 6px rgba(255, 87, 34, 0.8);
 }
 
