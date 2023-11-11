@@ -17,6 +17,9 @@
     align-items: center;
     gap: 1rem;
     text-align: center;
+    padding: 1rem; 
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .rules{
@@ -32,9 +35,11 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1rem;
+    padding: 1.5rem;
     border: 0.1rem solid var(--accent-primary);
-    box-shadow: 0 4px 6px rgba(255, 87, 34, 0.4);
+    border-radius: var(--border-radius);
+    background-color: var(--background-primary);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
 .not_participant_text{
@@ -47,10 +52,10 @@
 }
 
 .participants_container{
-    display: flex;
+    display: grid; 
     justify-content: center;
     gap: 1.5rem;
-    flex-wrap: wrap;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
 }
 
 .no_users{
@@ -87,7 +92,7 @@
 
 .btns_flex_wrapper{
     display: flex;
-    gap: 4rem;
+    gap: 2rem;
 }
 
 .inactive_challenge_msg{
@@ -101,11 +106,6 @@
 @media (max-width: 950px) { 
     .dashboard{
         width: 100%;
-    }
-
-    .participants_container{
-        justify-content: center;
-        gap: 1rem;
     }
 }
 

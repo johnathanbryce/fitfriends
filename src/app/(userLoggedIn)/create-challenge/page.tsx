@@ -99,7 +99,7 @@ export default function CreateChallenge() {
             weightsMinutes: weightsMinutes,
             weightsPoints: weightsPoints,
           },
-          challengeWinner: null,
+          challengeWinner: '',
           status: 'active',
           challengeDuration: {
             starts: selection[0].startDate.getTime(), // Store start date as a number

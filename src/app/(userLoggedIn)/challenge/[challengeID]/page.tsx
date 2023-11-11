@@ -125,6 +125,7 @@ export default function Challenge({params}: urlParamsProps) {
       }
     });
   }
+
   // runs the fn to fetch all invited participant of this challenge
   useEffect(() => {
     fetchActiveChallengeParticipants();

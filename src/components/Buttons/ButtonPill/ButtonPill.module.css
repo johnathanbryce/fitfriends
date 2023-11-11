@@ -1,15 +1,36 @@
-
-.button{
-    color: var(--button-primary-text);
-    background-color: var(--button-primary-bg);
-    padding: var(--button-padding);
-    border-radius: var(--border-radius);
+.button, .button_secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem 2rem; 
+    border-radius: 0.5rem; 
     font-weight: bold;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    text-decoration: none; 
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s; 
+}
+  
+.button {
+    color: var(--button-primary-text);
+    background: var(--button-background);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); 
+}
+  
+.button_secondary {
+    color: var(--button-secondary-text);
+    background: var(--button-background-secondary);
+}
+  
+.button:hover {
+    background-color: var(--button-hover-bg);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); 
 }
 
-.button:hover{
-    background-color: var(--button-hover-bg);
-    transition: var(--hover-transition);
+.button_secondary:hover{
+    background-color: var(--button-hover-bg-secondary);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); 
 }
 
 .inactive_button{
@@ -18,20 +39,6 @@
     padding: var(--button-padding);
     border-radius: var(--border-radius);
     font-weight: bold;
-}
-
-.button_secondary{
-    color: var(--button-secondary-text);
-    background-color: var(--button-secondary-bg);
-    padding: var(--button-padding);
-    border-radius: var(--border-radius);
-    font-weight: bold;
-    width: 100%;
-}
-
-.button_secondary:hover{
-    background-color: var(--button-hover-bg-secondary);
-    transition: var(--hover-transition);
 }
 
 .label {

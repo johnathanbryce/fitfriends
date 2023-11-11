@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+# ignore serviceKey
+serviceAccountKey.json
+
 # production
 /build
 
