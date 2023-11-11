@@ -1,6 +1,6 @@
 'use client'
 import {useState, useEffect} from 'react'
-import styles from './challenges.module.css'
+import styles from './challenges-dashboard.module.css'
 // Next.js
 import Link from 'next/link'
 // Internal Components

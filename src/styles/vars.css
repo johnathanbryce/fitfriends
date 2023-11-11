@@ -21,13 +21,14 @@
     --accent-secondary: #00BD9D;
 
     /* buttons */
-    --button-primary-bg:#FF5722;
     --button-primary-text:#F9F9F9;
-    --button-secondary-bg:	#00BD9D;
     --button-secondary-text:#F9F9F9;
     --button-hover-bg: rgba(255, 87, 34, 0.8);
     --button-hover-bg-secondary: rgba(0, 189, 157, 0.8);
     --button-padding: 1rem 2rem;
+
+    --button-background: linear-gradient(to bottom, #FF5722, #c0392b);
+    --button-background-secondary: linear-gradient(to bottom, #00BD9D, #008f7d);
 
     /* borders */
     --border-radius: 0.5rem;

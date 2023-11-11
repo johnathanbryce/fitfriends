@@ -5,6 +5,7 @@
     padding: 2rem;
     border-radius: var(--border-radius);
     background-color: var(--background-secondary);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .name_container {
@@ -30,6 +31,7 @@
 .participant_overview{
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .points_container{
@@ -63,7 +65,6 @@
 @media (max-width: 950px) { 
     .participant_card{
         gap: 1rem;
-        width: 30rem;
         padding: 1rem;
     }
 
@@ -94,12 +95,13 @@
 
 /* Mobile Devices (landscape) */
 @media (max-width: 775px) { 
-
 }
 
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
-
+    .participant_card{
+        width: 100%;
+    }
 }
 
 
