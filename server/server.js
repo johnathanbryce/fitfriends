@@ -51,7 +51,7 @@ const checkAndUpdateChallengeStatus = async (challengeId) => {
     }
   };
 
-// 
+// TODO: add logic to deal with ties
 // function to determine and set the challenge winner
 const determineAndSetChallengeWinner = async (challengeId) => {
 try {
