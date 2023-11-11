@@ -50,7 +50,8 @@ const checkAndUpdateChallengeStatus = async (challengeId) => {
       console.error('Error checking/updating challenge status:', error);
     }
   };
-  
+
+// 
 // function to determine and set the challenge winner
 const determineAndSetChallengeWinner = async (challengeId) => {
 try {
@@ -65,16 +66,16 @@ try {
 
     // loop through participants to find the winner
     for (const participantId in participants) {
-    const participant = participants[participantId];
-    if (participant.totalPoints > highestTotalPoints) {
-        highestTotalPoints = participant.totalPoints;
-        winnerId = participantId;
-    }
+      const participant = participants[participantId];
+      if (participant.totalPoints > highestTotalPoints) {
+          highestTotalPoints = participant.totalPoints;
+          winnerId = participantId;
+      }
     }
 
     if (winnerId) {
-    await challengeRef.update({ challengeWinner: winnerId });
-    console.log(`Challenge ${challengeId} winner is ${winnerId}.`);
+      await challengeRef.update({ challengeWinner: winnerId });
+      console.log(`Challenge ${challengeId} winner is ${winnerId}.`);
     }
 } catch (error) {
     console.error('Error determining/setting challenge winner:', error);
