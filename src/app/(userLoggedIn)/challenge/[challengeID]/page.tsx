@@ -119,7 +119,7 @@ export default function Challenge({params}: urlParamsProps) {
 
         // update isChallengeActive and challengeWinner based on the challenge data
         setIsChallengeActive(data.status === 'active');
-        setChallengeWinner(data.challengeWinner || ''); 
+        setChallengeWinner(data.challengeWinnerUsername || 'unknown'); 
       } else {
         setIsUserAParticipant(false);
       }

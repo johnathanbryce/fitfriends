@@ -11,7 +11,7 @@ admin.initializeApp({
 const express = require('express');
 const app = express();
 
-const port = 4000; // NOTE this port for testing
+const port = 4001; // NOTE this port for testing
 
 app.use(express.json());
 
@@ -19,8 +19,10 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+// TODO: challenge ties
 // function to update challenge status to "inactive" if the current date is past the end date
 const checkAndUpdateChallengeStatus = async (challengeId) => {
+    console.log('checkAndUpdate')
     try {
       const db = admin.database();
       const challengeRef = db.ref(`challenges/${challengeId}`);
@@ -41,15 +43,16 @@ const checkAndUpdateChallengeStatus = async (challengeId) => {
   };
 
 // TODO: add logic to deal with ties
-// function to determine and set the challenge winner
 const determineAndSetChallengeWinner = async (challengeId) => {
-try {
+  console.log('determineAndSet');
+  try {
     const db = admin.database();
     const challengeRef = db.ref(`challenges/${challengeId}`);
     const participantsSnapshot = await challengeRef.child('participants').once('value');
     const participants = participantsSnapshot.val();
+    const challengeDataSnapshot = await challengeRef.once('value');
+    const challengeData = challengeDataSnapshot.val();
 
-    // initializing it with -1 ensures that any value of totalPoints from a participant will be greater than -1
     let highestTotalPoints = -1;
     let winnerId = '';
 
@@ -57,29 +60,57 @@ try {
     for (const participantId in participants) {
       const participant = participants[participantId];
       if (participant.totalPoints > highestTotalPoints) {
-          highestTotalPoints = participant.totalPoints;
-          winnerId = participantId;
+        highestTotalPoints = participant.totalPoints;
+        winnerId = participantId;
       }
     }
 
     if (winnerId) {
-      const winnerUserRef = ref(database, `users/${winnerId}`);
-      const winnerUserSnapshot = await get(winnerUserRef);
-      const winnerUserData = winnerUserSnapshot.val();
-      const winnerUsername = winnerUserData.username; 
+      // Update the challenge winner and username directly using challengeRef
+      await challengeRef.update({
+        challengeWinner: winnerId,
+        challengeWinnerUsername: participants[winnerId].username,
+      });
 
-      await challengeRef.update({ challengeWinner: winnerId, challengeWinnerUsername: winnerUsername });
-      console.log(`Challenge ${challengeId} winner is ${winnerId} (${winnerUsername}).`);
-      // decrease the challengesCreatedLimit for the winner by 1
-      await winnerUserRef.update({ challengesCreatedLimit: winnerUserData.challengesCreatedLimit - 1 });
+      // Increase challengesWon for the challenge winner
+      const winnerUserRef = db.ref(`users/${winnerId}`);
+      const winnerUserSnapshot = await winnerUserRef.once('value');
+      const winnerUserData = winnerUserSnapshot.val();
+
+      console.log('winner user data', winnerUserData)
+      // Ensure the user exists and has challengesWon property
+      if (winnerUserData) {
+        console.log('inside if statement')
+        await winnerUserRef.update({
+          challengesWon: /* (winnerUserData.challengesWon || 0) */ + 1,
+        });
+      }
     }
-} catch (error) {
+
+    // Decrease challengesCreatedLimit for the challenge creator
+    const creatorUid = challengeData.creator; 
+    if (creatorUid) {
+      const creatorUserRef = db.ref(`users/${creatorUid}`);
+      const creatorUserSnapshot = await creatorUserRef.once('value');
+      const creatorUserData = creatorUserSnapshot.val();
+
+      // Ensure the user exists and has challengesCreatedLimit property
+      if (creatorUserData && creatorUserData.challengesCreatedLimit) {
+        await creatorUserRef.update({
+          challengesCreatedLimit: creatorUserData.challengesCreatedLimit - 1,
+        });
+      }
+    }
+  } catch (error) {
     console.error('Error determining/setting challenge winner:', error);
-}
+  }
 };
+
+
+
   
 // schedule the function to run every minute 
-cron.schedule('*/10 * * * *', () => { // runs every 10 minutes
+cron.schedule('* * * * *', () => { // runs every 1 minute
     console.log('Running challenge status check...');
     const db = admin.database();
     const challengesRef = db.ref('challenges');
