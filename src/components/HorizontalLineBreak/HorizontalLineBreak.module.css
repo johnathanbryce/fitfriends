@@ -1,6 +1,6 @@
 .line { 
-    color: white;
+    color: var(--background-secondary);
     height: 0.1rem;
     width: 100%;
-    background-color: white;
+    background-color: var(--background-secondary);
 }

@@ -49,7 +49,7 @@ export default function Users() {
             <th>Rank </th>
             <th>Username </th>
             <th>Name</th>
-            <th>Total Wins</th>
+            <th>Wins</th>
           </tr>
         </thead>
         <tbody>
