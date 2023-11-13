@@ -36,7 +36,6 @@
     flex-direction: column;
     gap: 1rem;
     padding: 1.5rem;
-    border: 0.1rem solid var(--accent-primary);
     border-radius: var(--border-radius);
     background-color: var(--background-primary);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
@@ -106,6 +105,7 @@
 @media (max-width: 950px) { 
     .dashboard{
         width: 100%;
+        padding: 1rem 0.5rem;
     }
 }
 

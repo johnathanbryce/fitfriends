@@ -24,10 +24,6 @@
     padding: 1rem;
 }
 
-.table_container tbody tr:first-child td:first-child::before {
-
-}
-
 .username_cell{
     position: relative;
 }
@@ -35,7 +31,7 @@
 .icon {
     position: absolute;
     left: 1rem;
-    font-size: 2.5rem;
+    font-size: clamp(1.55rem, 2vw, 2.5rem);
 }
   
 
@@ -47,7 +43,6 @@
 .table_container td {
     padding: 1rem;
     border: 1px solid #ddd;
-  /*   height: 7rem; */
 }
   
   
@@ -66,7 +61,32 @@
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .users{
-        padding: 2rem 0;;
+        padding: 2rem 0;
+    }
+
+    .table_container {
+        width: 100vw;
+        padding: 0.5rem;
+
+    }
+
+    .table_container th{
+        font-size: 1rem;
+    }
+    
+    .table_container td {
+        font-size: 1rem;
+       /*  width: 0.5rem; */
+        padding: 0rem;
+    }
+
+    .icon {
+        display: none;
+    }
+
+    .table_container td:first-child, 
+    .table_container td:last-child {  
+        width: 0.1rem; 
     }
 }
   

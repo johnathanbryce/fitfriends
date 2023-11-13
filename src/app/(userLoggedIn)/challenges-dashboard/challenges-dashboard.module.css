@@ -4,7 +4,6 @@
     align-items: center;
     text-align: center;
     gap: 2rem;
-    /* justify-content: space-evenly; */
     padding: 4rem 4rem;
     width: 85vw;
 
@@ -18,16 +17,15 @@
     width: 100%;
     background-color: var(--card-bg-primary);
     border-radius: var(--border-radius);
-    border: 0.1rem solid var(--accent-primary);
-    box-shadow: 0 4px 6px rgba(255, 87, 34, 0.8);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
 .active_challenges_container{
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     flex-wrap: wrap;
     gap: 1.5rem;
-    padding: 1rem;
+    padding: 0.55rem;
     overflow: hidden;
 
 }
@@ -42,5 +40,14 @@
 
 .btn_wrapper{
     margin-top: 2rem;
+}
+
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .challenges{
+        width: 100%;
+        padding: 1rem 0.5rem;
+    }
 }
 

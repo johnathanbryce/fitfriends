@@ -7,6 +7,7 @@ import Link from 'next/link'
 import ActiveChallenge from '@/components/ActiveChallenge/ActiveChallenge'
 import Loading from '@/app/loading'
 import ButtonPillRoute from '@/components/Buttons/ButtonPillRoute/ButtonPillRoute'
+import ExpandableContainer from '@/components/ExpandableContainer/ExpandableContainer'
 // Firebase
 import { database } from '../../../../firebaseApp'
 import {ref, get} from 'firebase/database'
@@ -56,31 +57,32 @@ export default function Challenges() {
   return (
     <section className={styles.challenges}>
       <div className={styles.challenge_section}>
-        <h2> Your challenges </h2>
-         <ul className={styles.active_challenges_container}>
-          {isLoading ? (
-              <Loading /> 
-            ) : (
-              yourChallenges?.length > 0 ? (
-                yourChallenges.map((challenge: any) => (
-                  <ActiveChallenge
-                    key={challenge.id}
-                    id={challenge.id}
-                    name={challenge.name}
-                    creatorName={challenge.creatorName}
-                  />
-                ))
+        <ExpandableContainer title="Your Challenges" isOpenDefault={true}>
+          <ul className={styles.active_challenges_container}>
+            {isLoading ? (
+                <Loading /> 
               ) : (
-                <>
-                <p className={styles.empty_challenges_text}> You have no active challenges. </p>
-                <p><Link href="/create-challenge"> <span className={styles.underline}>Create one</span> and invite your friends! </Link></p>
-              </>
-              )
-          )}
-         </ul>
+                yourChallenges?.length > 0 ? (
+                  yourChallenges.map((challenge: any) => (
+                    <ActiveChallenge
+                      key={challenge.id}
+                      id={challenge.id}
+                      name={challenge.name}
+                      creatorName={challenge.creatorName}
+                    />
+                  ))
+                ) : (
+                  <>
+                  <p className={styles.empty_challenges_text}> You have no active challenges. </p>
+                  <p><Link href="/create-challenge"> <span className={styles.underline}>Create one</span> and invite your friends! </Link></p>
+                </>
+                )
+            )}
+          </ul>
+         </ExpandableContainer>
       </div>
       <div className={styles.challenge_section}>
-        <h2> Active challenges </h2>
+        <ExpandableContainer title="Active Challenges">
           <ul className={styles.active_challenges_container}>
             {/* <Carousel> */}
               {isLoading ? (
@@ -105,7 +107,7 @@ export default function Challenges() {
               )}
             {/* </Carousel> */}
           </ul>
-        
+        </ExpandableContainer>
       </div>
       <div className={styles.btn_wrapper}>
         <ButtonPillRoute 

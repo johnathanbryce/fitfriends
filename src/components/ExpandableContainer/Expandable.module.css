@@ -1,0 +1,20 @@
+.expandable_container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+    
+}
+
+.content_flex_wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.toggle_icon{
+    font-size: 3rem;
+    fill: var(--font-primary);
+    cursor: pointer;
+}
