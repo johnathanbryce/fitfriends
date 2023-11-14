@@ -12,6 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     /* gap: 2rem; */
 }
 
@@ -51,8 +52,9 @@
 
 .profile_pic {
     width: 30%;
+    width: 4.5rem;
     height: 100%; 
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 50%;
 }
 
@@ -75,14 +77,15 @@
     .profile_pic_small_screens{
         display: block;
         width: 8%;
+        width: 2.25rem;
         height: 100%; 
-        object-fit: cover;
+        object-fit: contain;
         border-radius: 50%;
     }
 
     .name_container {
-        justify-content: space-between;
-        gap: 1rem;
+        flex-wrap: nowrap;
+        /* gap: 1rem; */
     }
 
     .points_container{
