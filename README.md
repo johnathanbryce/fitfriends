@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+**FitFriends**
 
-## Getting Started
+**Introduction**
+FitFriends transforms your fitness journey into an engaging and competitive experience. By challenging friends in fitness battles, users earn points based on their dedication to cardio and weightlifting routines. This innovative platform is perfect for those looking to add a social and competitive edge to their fitness regime.
 
-First, run the development server:
+**Features**
+- User Authentication: Secure login and signup process.
+- Custom Fitness Challenges: Create and customize fitness challenges.
+- Challenge Invitations: Invite friends to participate in challenges.
+- Real-Time Tracking: Updates on challenge progress and leaderboards.
+- Responsive Design: Accessible on various devices and screen sizes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun run dev
-```
+**Technologies**
+- Frontend: Next.js, TypeScript, CSS
+- Server: Node.js
+- Database: Firebase Realtime Database
+- Authentication: Firebase Authentication
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Getting Started**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Prerequisites**
+- Node.js
+- npm or yarn
+- 
+**Installation**
+  1. Clone the repository: git clone https://github.com/yourusername/FitFriends.git
+  2. Install NPM packages: npm install
+ 
+**Running the Application**
+- To start the server: npm run dev
+- Navigate to http://localhost:3000 to view the application.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**Creating a Challenge**
+- Step 1: Navigate to "challenges dashboard"
+- Step 2: As you have just created an account, your "Your challenges" section will be empty. Select the "Create a challenge" button to start customizing your fitness challenge!
+- Step 3: Add a challenge name, define your cardio and weights points, and select your challenge duration.
+- Step 4: Voila, your challenge is now live and will automatically end and announce a winner on the last day you selected for your challenge duration.
+- Step 5: Select the "add participants" button to invite registered fitfriends users to your challenge to compete!
 
-## Learn More
+**Contributing**
+- Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
-To learn more about Next.js, take a look at the following resources:
+**Fork the Project**
+- Create your Feature Branch (git checkout -b feature/AmazingFeature)
+- Commit your Changes (git commit -m 'Add some AmazingFeature')
+- Push to the Branch (git push origin feature/AmazingFeature)
+- Open a Pull Request
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Contact**
+Johnathan Bryce - johnathanbryce@gmail.com
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Project Link: https://github.com/yourusername/FitFriends
