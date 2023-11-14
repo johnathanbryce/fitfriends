@@ -11,6 +11,7 @@
 .routes_flex_wrapper{
     display: flex;
     gap: 3rem;
+    width: 24rem;
 }
 
 /* DROPDOWN MENU NAVBAR STYLES */
