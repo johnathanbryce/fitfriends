@@ -1,5 +1,7 @@
 **FitFriends**
 
+URL: https://fitfriends.ca/
+
 FitFriends transforms your fitness journey into an engaging and competitive experience. By challenging friends in fitness battles, users earn points based on their dedication to cardio and weightlifting routines. This innovative platform is perfect for those looking to add a social and competitive edge to their fitness regime.
 
 **Features**
@@ -48,4 +50,4 @@ FitFriends transforms your fitness journey into an engaging and competitive expe
 **Contact**
 Johnathan Bryce - johnathanbryce@gmail.com
 
-Project Link: https://github.com/yourusername/FitFriends
+Project Link: https://github.com/johnathanbryce/fitfriends
