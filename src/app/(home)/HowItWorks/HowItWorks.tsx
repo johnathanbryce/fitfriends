@@ -60,7 +60,6 @@ export default function HowItWorks() {
                     <Image src={challenge} className={styles.create_challenge_img} alt="Challenges dashboard."/>
                 </figure>
             </Carousel>
-
         </div>
     </section>
   )

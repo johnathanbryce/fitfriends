@@ -8,17 +8,19 @@ import Head from 'next/head';
 // Auth Context
 import { AuthProvider } from '@/context/AuthProvider';
 
-import FooterLoggedIn from '@/components/Footers/FooterLoggedIn/FooterLoggedIn';
-
 const lato = Lato({
   weight: '400',
   subsets: ['latin'],
 })
 
+// global meta tags
+
 export const metadata: Metadata = {
-  title: 'FitFriends',
-  description: 'A monthly fitness challenge app made by Johnathan Bryce',
-}
+  title: 'FitFriends - Engage in Exciting Custom Fitness Challenges',
+  description: 'Join FitFriends for a unique experience in fitness and friendship. Participate in custom challenges, track your progress, and connect with a supportive community.',
+  keywords: 'fitness, challenge, health, community, wellness, workout, friends, fitfriends, motivation, fitness goals',
+  robots: 'index, follow',
+};
 
 export default function RootLayout({
   children,

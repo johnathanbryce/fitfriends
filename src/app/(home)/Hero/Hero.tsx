@@ -23,7 +23,6 @@ export default function Hero() {
                 src='/sign-up'
             />
         </div>
-
     </section>
   )
 }
