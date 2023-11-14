@@ -1,6 +1,5 @@
 **FitFriends**
 
-**Introduction**
 FitFriends transforms your fitness journey into an engaging and competitive experience. By challenging friends in fitness battles, users earn points based on their dedication to cardio and weightlifting routines. This innovative platform is perfect for those looking to add a social and competitive edge to their fitness regime.
 
 **Features**
@@ -21,7 +20,7 @@ FitFriends transforms your fitness journey into an engaging and competitive expe
 **Prerequisites**
 - Node.js
 - npm or yarn
-- 
+
 **Installation**
   1. Clone the repository: git clone https://github.com/yourusername/FitFriends.git
   2. Install NPM packages: npm install
