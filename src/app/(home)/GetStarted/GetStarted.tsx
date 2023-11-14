@@ -7,11 +7,12 @@ export default function GetStarted() {
   return (
     <section className={styles.get_started}>
         <h4> Ready to elevate your fitness game? </h4>
-        <ButtonPillRoute 
-            label="Let's get started!"
-            src='/sign-up'
-        />
-
+        <div>
+          <ButtonPillRoute 
+              label="Let's get started!"
+              src='/sign-up'
+          />
+        </div>
     </section>
   )
 }

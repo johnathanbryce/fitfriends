@@ -14,7 +14,6 @@ const lato = Lato({
 })
 
 // global meta tags
-
 export const metadata: Metadata = {
   title: 'FitFriends - Engage in Exciting Custom Fitness Challenges',
   description: 'Join FitFriends for a unique experience in fitness and friendship. Participate in custom challenges, track your progress, and connect with a supportive community.',
