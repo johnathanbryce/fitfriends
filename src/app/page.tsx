@@ -1,9 +1,7 @@
 'use client'
-import { useEffect, useState } from 'react';
 // Next.js
-import { useRouter } from 'next/navigation';
+import Head from 'next/head';
 // Internal Components
-import Loading from './loading';
 import LayoutHomePage from "@/layouts/LayoutHomePage/LayoutHomePage";
 import HeaderHomePage from "@/components/Headers/HeaderHomePage/HeaderHomePage";
 import Hero from "./(home)/Hero/Hero";
@@ -16,9 +14,13 @@ import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect';
 
 export default function Home() {
   useAuthenticationRedirect('/', 'challenges-dashboard');
-
   return (
     <LayoutHomePage>
+      <Head>
+        <title>FitFriends - Home | Begin Your Fitness Challenge Journey</title>
+        <meta name="description" content="Join FitFriends to participate in exciting fitness challenges. Stay fit, connect with friends, and enjoy a healthy lifestyle." />
+        <meta name="keywords" content="fitness, challenges, health, community, engage, friends" />
+      </Head>
       <HeaderHomePage />
       <Hero />
       <HowItWorks />

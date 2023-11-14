@@ -1,11 +1,10 @@
 
 'use client'
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 // Next.js
 import { useRouter } from 'next/navigation';
 // Internal Components
 import HeaderLoggedIn from '@/components/Headers/HeaderLoggedIn/HeaderLoggedIn';
-import UnauthorizedLoader from '@/components/UnauthorizedLoader/UnauthorizedLoader';
 import Loading from '../loading';
 import PrivateRoutes from '@/components/PrivateRoutes/PrivateRoutes';
 import FooterLoggedIn from '@/components/Footers/FooterLoggedIn/FooterLoggedIn';
