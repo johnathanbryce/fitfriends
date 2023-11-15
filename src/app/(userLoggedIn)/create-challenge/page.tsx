@@ -81,6 +81,7 @@ export default function CreateChallenge() {
         const newChallenge: any = {
           id: '',
           creator: userData?.uid,
+          creatorEmail: userData?.email,
           creatorName: userData?.userName || 'unknown user',
           name: challengeName,
           participants: {

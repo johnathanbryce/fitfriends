@@ -27,7 +27,6 @@ TODO:
 - implemenet challenge duration functionality
 - make sure that when a challenge ends, it gets moved to a new endpoint
   in the databse: "completedChallenges { ... } "
-
 */
 
 export default function Challenge({params}: urlParamsProps) {
@@ -60,7 +59,7 @@ export default function Challenge({params}: urlParamsProps) {
       get(challengeRef)
         .then((challengeSnapshot) => {
           if (challengeSnapshot.exists()) {
-            const challengeData = challengeSnapshot.val();    
+            const challengeData = challengeSnapshot.val();   
             // check if the current user is the creator to show or hide delete btn
             // and add participants btn
             if (challengeData.creator === user?.uid) {
@@ -91,7 +90,7 @@ export default function Challenge({params}: urlParamsProps) {
   
       if (data.participants) {
         const participantIds = Object.keys(data.participants);
-        // Update the state to reflect whether the logged-in user is a participant
+        // update the state to reflect whether the logged-in user is a participant
         setIsUserAParticipant(participantIds.includes(user?.uid));
         // 1. create an array to store participants info from users who in this challenge
         const participantsData: any = [];
@@ -145,7 +144,6 @@ export default function Challenge({params}: urlParamsProps) {
 
   const deleteChallenge = async () => {
     try {
-      // Delete the challenge
       const challengeRef = ref(database, `challenges/${params.challengeID}`);
       await remove(challengeRef);
   
@@ -153,10 +151,11 @@ export default function Challenge({params}: urlParamsProps) {
       setIsDeleteConfirmationVisible(false);
       router.replace('/challenges-dashboard');
   
-      // Decrease the user's challengesCreatedLimit by the number of challenges deleted
+      // decrease the user's challengesCreatedLimit by the number of challenges deleted
       const userRef = ref(database, `users/${user?.uid}`);
       const userSnapshot = await get(userRef);
       const userUpdateData = userSnapshot.val(); 
+
       // update challengesCreatedLimit in user data
       const updatedChallengesCreatedLimit = userUpdateData.challengesCreatedLimit - 1;
       await update(userRef, {
@@ -227,7 +226,18 @@ export default function Challenge({params}: urlParamsProps) {
                 user={user?.uid}   
               />
             ) : (
-              <h5 className={styles.not_participant_text}> You are not a participant of this challenge.</h5>
+              <div className={styles.not_participant_container}>
+                <h5 className={styles.not_participant_text}> You are not a participant of this challenge.</h5>
+                <a 
+                    className={styles.request_to_join_button} 
+                    href={`mailto:${encodeURIComponent(challengeData?.creatorEmail)}?subject=User%20${encodeURIComponent(user?.userName + ' is requesting to join ' + challengeData?.name)}.&body=Hello%2C%20${encodeURIComponent(challengeData?.creatorName)}%2C%0D%0A%0D%0A${encodeURIComponent(user?.userName + ' is requesting to join your challenge: ' + challengeData?.name)}.%0D%0A%0D%0APlease invite them to your challenge: ${encodeURIComponent('https://fitfriends.ca/challenge/' + params.challengeID)}%0D%0A%0D%0AThank you,%0D%0AFitFriends`} 
+                    target="_blank"
+                >
+                    Request to Join Challenge
+                </a>
+
+
+              </div>
             )}
           </div>
 
