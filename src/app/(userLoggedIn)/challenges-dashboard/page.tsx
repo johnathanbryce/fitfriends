@@ -140,7 +140,7 @@ export default function Challenges() {
                       />
                     ))
                   ) : (
-                    null
+                    <p> There are no completed challenges yet! </p>
                   )
               )}
           </ul>

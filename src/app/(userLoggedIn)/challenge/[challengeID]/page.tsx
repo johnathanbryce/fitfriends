@@ -263,7 +263,7 @@ export default function Challenge({params}: urlParamsProps) {
                         userId={user.uid}
                         firstName={user.firstName}
                         lastName={user.lastName}
-                        profilePicture={!user.profilePicture ? defaultUser : ''}
+                        profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
                         userName={user.userName}
                         cardio={user.cardioPoints}
                         weights={user.weightsPoints}
@@ -352,7 +352,7 @@ export default function Challenge({params}: urlParamsProps) {
                     userId={user.uid}
                     firstName={user.firstName}
                     lastName={user.lastName}
-                    profilePicture={!user.profilePicture ? defaultUser : ''}
+                    profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
                     userName={user.userName}
                     cardio={user.cardioPoints}
                     weights={user.weightsPoints}

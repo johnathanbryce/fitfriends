@@ -1,7 +1,8 @@
 :root {
     /* default / misc */
     --default-color:#F9F9F9;
-    --inactive-color: grey;
+    --inactive-color: #C0C0C0;
+    --inactive-color-light: rgba(192, 192, 192, 0.5);
 
     /* background */
     --background-primary: white; /* #F9F9F9; */
