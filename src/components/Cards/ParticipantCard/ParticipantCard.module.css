@@ -1,4 +1,5 @@
-.participant_card{
+/* note: width is controlled via challenge.module.css at .participants_container */
+.participant_card, .first_place_participant_card{
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -6,6 +7,19 @@
     border-radius: var(--border-radius);
     background-color: var(--background-secondary);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.first_place_participant_card {
+    position: relative;
+    border: 0.25rem solid var(--border-color-first-place);
+}
+
+.first_place_number {
+    position: absolute;
+    font-size: clamp(1.8rem, 2vw, 2.4rem);
+    right: 0;
+    top: 0;
+    color: var(--border-color-first-place);
 }
 
 .name_container {
@@ -51,9 +65,8 @@
 }
 
 .profile_pic {
-    width: 30%;
     width: 4.5rem;
-    height: 100%; 
+    /* height: 100%;  */
     object-fit: contain;
     border-radius: 50%;
 }

@@ -27,7 +27,12 @@
     gap: 1.5rem;
     padding: 0.55rem;
     overflow: hidden;
+}
 
+.loading_container{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
 }
 
 .icon {

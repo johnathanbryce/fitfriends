@@ -112,8 +112,15 @@ export default function Challenge({params}: urlParamsProps) {
             console.error('Error fetching user data:', error);
           });
         })).then(() => {
-          // 3. push this participantsData array from above to state to then map and render
-          setParticipantsInfo(participantsData);
+            // sort participants by total points before setting the state
+            const sortedParticipants = participantsData.sort((a: any, b: any) => {
+              const totalPointsA = a.cardioPoints + a.weightsPoints;
+              const totalPointsB = b.cardioPoints + b.weightsPoints;
+              return totalPointsB - totalPointsA; 
+            });
+
+            // update state with sorted data of participants
+            setParticipantsInfo(sortedParticipants);
         });
 
         // update isChallengeActive and challengeWinner based on the challenge data
@@ -255,9 +262,10 @@ export default function Challenge({params}: urlParamsProps) {
             <div className={styles.participants_container}>
               {participantsInfo.length > 0 ? (
                   <>
-                    {participantsInfo.map((user: any) => (
+                    {participantsInfo.map((user: any, index) => (
                       <ParticipantCard
                         key={user.uid}
+                        index={index}
                         userId={user.uid}
                         firstName={user.firstName}
                         lastName={user.lastName}
