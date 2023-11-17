@@ -36,9 +36,49 @@
     gap: 0.25rem;
 }
 
+.profile_pic_flex_wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.profile_pic_container{
+    width: 20rem; 
+    height: 20rem; 
+    overflow: hidden;
+    border-radius: 50%; 
+    border: 0.25rem solid var(--default-color);
+    background-color: var(--default-color); /* Fallback color or pattern */
+}
+
 .profile_pic {
-    width: 20%;
-    height: 100%;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+
+}
+
+.update_profile_pic_btn {
+    position: absolute;
+    padding: 0.5rem;
+    border: 0.25rem solid var(--default-color);
+    border-radius: 50%; 
+    background-color: var(--inactive-color);
+    color: var(--background-secondary);
+    bottom: 0.5rem;
+    right: 1.5rem;
+    font-size: 3.4rem;
+    cursor: pointer;
+    transition: var(--hover-transition);
+    z-index: 10;
+}
+
+.update_profile_pic_btn:hover{
+    background-color: var(--inactive-color-light);
+    color: var(--background-primary);
 }
 
 .user_details_section{
@@ -77,7 +117,13 @@
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .user_main_overview{
-        justify-content: space-between;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .update_profile_pic_btn {
+        bottom: -0.25rem;
+        right: 2rem;
     }
 
     .user_profile {

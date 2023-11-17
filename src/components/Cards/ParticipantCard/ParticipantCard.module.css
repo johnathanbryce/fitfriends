@@ -60,18 +60,34 @@
     color: var(--accent-secondary);
 }
 
-.profile_pic_small_screens{
+.profile_pic_container{
+    width: 10rem; 
+    height: 10rem; 
+    overflow: hidden;
+    border-radius: 50%; 
+    border: 0.2rem solid var(--default-color);
+
+}
+
+.profile_pic_container_small_screens {
     display: none;
+    width: 5rem; 
+    height: 5rem; 
+    overflow: hidden;
+    border-radius: 50%; 
+    border: 0.1rem solid var(--default-color);
 }
 
 .profile_pic {
-    width: 4.5rem;
-    /* height: 100%;  */
-    object-fit: contain;
-    border-radius: 50%;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
 }
 
-.default_img{
+.default_img {
+    color: white;
+    border: 1px solid red;
     filter: brightness(0) invert(1) grayscale(1);
 }
  
@@ -83,12 +99,15 @@
         padding: 1rem;
     }
 
-    .profile_pic {
+    .profile_pic_container {
         display: none;
     }
 
-    .profile_pic_small_screens{
+    .profile_pic_container_small_screens{
         display: block;
+    }
+
+    .profile_pic_small_screens{
         width: 8%;
         width: 2.25rem;
         height: 100%; 
