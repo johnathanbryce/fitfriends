@@ -60,7 +60,9 @@ export default function Challenges() {
         <ExpandableContainer title="Your Challenges" isOpenDefault={true}>
           <ul className={styles.active_challenges_container}>
             {isLoading ? (
-                <Loading /> 
+                 <div className={styles.loading_container}>
+                    <Loading /> 
+                 </div>
               ) : (
                 yourChallenges?.length > 0 ? (
                   yourChallenges.map((challenge: any) => (
@@ -84,7 +86,6 @@ export default function Challenges() {
       <div className={styles.challenge_section}>
         <ExpandableContainer title="Active Challenges">
           <ul className={styles.active_challenges_container}>
-            {/* <Carousel> */}
               {isLoading ? (
                   <Loading /> 
                 ) : (
@@ -102,10 +103,8 @@ export default function Challenges() {
                       <p className={styles.empty_challenges_text}> There are no active challenges. </p>
                       <p><Link href="/create-challenge"> <span className={styles.underline}>Create one</span> and invite your friends! </Link></p>
                     </>
-   
                   )
               )}
-            {/* </Carousel> */}
           </ul>
         </ExpandableContainer>
       </div>

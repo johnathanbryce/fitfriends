@@ -17,8 +17,9 @@
 
     /* accent */
     --accent-primary: #FF5722;
-    --accent-primary-light: rgba(255, 87, 34, 0.8);
+    --accent-primary-light: rgba(28, 24, 22, 0.8);
     --accent-secondary: #00BD9D;
+    --border-color-first-place: #FFD700;
 
     /* buttons */
     --button-primary-text:#F9F9F9;

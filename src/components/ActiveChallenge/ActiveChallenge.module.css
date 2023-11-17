@@ -4,10 +4,11 @@
     align-items: center;
     padding: 1.85rem;
     border-radius: var(--border-radius);
-    background-color: var(--accent-secondary);
+    background-color: var(--background-secondary);
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    width: 30rem;
 }
 
 .active_challenge:hover{
@@ -28,6 +29,7 @@
 }
 
 .creator{
+    color: var(--button-primary-text);
     font-size: clamp(0.8rem, 2vw, 1.25rem);
     font-style: italic;
 }
@@ -35,6 +37,7 @@
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {
     .active_challenge {
+        width: 100%;
         padding: 1rem; 
     }
 

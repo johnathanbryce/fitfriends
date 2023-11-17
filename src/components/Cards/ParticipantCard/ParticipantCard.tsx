@@ -6,6 +6,7 @@ import Link from 'next/link'
 import defaultUserImage from '../../../../public/images/default-user-img.png'
 // External Libraries 
 import {GoPerson} from 'react-icons/go'
+import { TbHexagonNumber1 } from "react-icons/tb";
 
 interface ParticipantCardProps {
     userId: string,
@@ -15,13 +16,14 @@ interface ParticipantCardProps {
     profilePicture: any,
     cardio: number,
     weights: number,
-    total: number
+    total: number,
+    index?: number
 }
 
-export default function ParticipantCard({userId, firstName, lastName, userName, profilePicture, cardio, weights, total}: ParticipantCardProps) {
-  
+export default function ParticipantCard({firstName, lastName, userName, profilePicture, cardio, weights, index}: ParticipantCardProps) {
     return (
-        <div className={styles.participant_card}>
+        <div className={index === 0 ? styles.first_place_participant_card : styles.participant_card}>
+            {index === 0  && <TbHexagonNumber1 className={styles.first_place_number} />}
             <div className={styles.name_container}>
                 {profilePicture ? (
                         <Image

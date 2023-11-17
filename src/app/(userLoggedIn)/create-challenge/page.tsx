@@ -145,7 +145,7 @@ export default function CreateChallenge() {
                 onChange={(e) => setChallengeName(e)}
                 theme='dark'
                 required={true}
-                maxLength={35}
+                maxLength={30}
             />
         </div>
 
@@ -162,7 +162,7 @@ export default function CreateChallenge() {
                       onChange={(e) => setCardioMinutes(e)}
                       theme='dark'
                       required={true}
-                      maxLength={35}
+                      maxLength={30}
                   />
                   <p> equals </p>
                   <Input 
@@ -188,7 +188,7 @@ export default function CreateChallenge() {
                       onChange={(e) => setWeightsMinutes(e)}
                       theme='dark'
                       required={true}
-                      maxLength={35}
+                      maxLength={30}
                   />
                   <p> equals </p>
                   <Input 
