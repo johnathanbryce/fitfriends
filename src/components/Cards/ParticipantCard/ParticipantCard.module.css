@@ -11,7 +11,7 @@
 
 .first_place_participant_card {
     position: relative;
-    border: 0.25rem solid var(--border-color-first-place);
+    border: 0.25rem solid var(--accent-winner);
 }
 
 .first_place_number {
@@ -19,7 +19,7 @@
     font-size: clamp(1.8rem, 2vw, 2.4rem);
     right: 0;
     top: 0;
-    color: var(--border-color-first-place);
+    color: var(--accent-winner);
 }
 
 .name_container {
