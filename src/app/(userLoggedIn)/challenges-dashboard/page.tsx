@@ -14,9 +14,23 @@ import {ref, get} from 'firebase/database'
 // Auth Context
 import { useAuth } from '@/context/AuthProvider'
 
+interface Challenge {
+  id: string;
+  name: string;
+  challengeWinner: string,
+  challengeWinnerUsername: string,
+  creatorName: string;
+  creatorEmail: string,
+  participants: object; 
+  rules: object,
+  challengeDuration: object
+  status: 'active' | 'inactive';
+}
+
 export default function Challenges() {
-  const [activeChallenges, setActiveChallenges] = useState<any>();
-  const [yourChallenges, setYourChallenges] = useState<any>();
+  const [activeChallenges, setActiveChallenges] = useState<Challenge[]>([]);
+  const [yourChallenges, setYourChallenges] = useState<Challenge[]>([]);
+  const [pastChallenges, setPastChallenges] = useState<Challenge[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // auth context
@@ -31,15 +45,16 @@ export default function Challenges() {
       const challengesSnapshot = await get(challengesRef);
       const challengesData = challengesSnapshot.val();
       // convert the challenges object into an array of objects
-      const challengesArray = Object.values(challengesData || {});
-  
+      const challengesArray: Challenge[] = Object.values(challengesData || {});
       // filter challenges to only those that the user is a participant 
-      const yourChallenges = challengesArray.filter((challenge: any) => user?.uid in challenge.participants);
+      const yourChallenges = challengesArray.filter((challenge: any) => user?.uid in challenge.participants && challenge.status === 'active');
       setYourChallenges(yourChallenges);
-  
-      // dilter out 'yourChallenges' from 'activeChallenges' so as not to duplicate
-      const activeChallenges = challengesArray.filter((challenge: any) => !(user?.uid in challenge.participants));
+      // filter out 'yourChallenges' from 'activeChallenges' so as not to duplicate
+      const activeChallenges = challengesArray.filter((challenge: any) => !(user?.uid in challenge.participants) && challenge.status === 'active');
       setActiveChallenges(activeChallenges);
+      // filter out 'pastChallenges' from challenges marked "status: inactive"
+      const pastChallenges = challengesArray.filter((challenge: any) => challenge.status === 'inactive');
+      setPastChallenges(pastChallenges)
   
       setIsLoading(false);
     } catch (error) {
@@ -108,6 +123,30 @@ export default function Challenges() {
           </ul>
         </ExpandableContainer>
       </div>
+
+      <div className={styles.challenge_section}>
+        <ExpandableContainer title="Past Challenges">
+          <ul className={styles.active_challenges_container}>
+              {isLoading ? (
+                  <Loading /> 
+                ) : (
+                  pastChallenges?.length > 0 ? (
+                    pastChallenges.map((challenge: any) => (
+                      <ActiveChallenge
+                        key={challenge.id}
+                        id={challenge.id}
+                        name={challenge.name}
+                        creatorName={challenge.creatorName}
+                      />
+                    ))
+                  ) : (
+                    null
+                  )
+              )}
+          </ul>
+        </ExpandableContainer>
+      </div>
+
       <div className={styles.btn_wrapper}>
         <ButtonPillRoute 
           label="Create a challenge"

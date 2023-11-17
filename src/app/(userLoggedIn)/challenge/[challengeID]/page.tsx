@@ -22,12 +22,6 @@ import { formatDateForChallenges } from '@/utils/dateHelpers'
 interface urlParamsProps {
   params: any
 }
-/*
-TODO:
-- implemenet challenge duration functionality
-- make sure that when a challenge ends, it gets moved to a new endpoint
-  in the databse: "completedChallenges { ... } "
-*/
 
 export default function Challenge({params}: urlParamsProps) {
   const [challengeData, setChallengeData] = useState<any>()
@@ -343,11 +337,33 @@ export default function Challenge({params}: urlParamsProps) {
           </div>
         </>
       ): (
-        <h3 className={styles.inactive_challenge_msg}> 
-          {challengeWinner ? 
-          `Challenge completed! The winner is ${challengeWinner}` 
-          : 'This challenge is not active'}
-        </h3>
+        <>
+          {challengeWinner ? (
+            <div className={styles.inactive_challenge_container}> 
+              <div className={styles.inactive_challenge_msg}>
+                <h3> Challenge complete. </h3>
+                <h3> The winner is <span className={styles.winner_text}>{challengeWinner}</span></h3>
+              </div>
+              <div className={styles.inactive_challenge_participants_container}>          
+                {participantsInfo.map((user: any, index) => (
+                  <ParticipantCard
+                    key={user.uid}
+                    index={index}
+                    userId={user.uid}
+                    firstName={user.firstName}
+                    lastName={user.lastName}
+                    profilePicture={!user.profilePicture ? defaultUser : ''}
+                    userName={user.userName}
+                    cardio={user.cardioPoints}
+                    weights={user.weightsPoints}
+                    total={user.cardioPoints + user.weightsPoints}
+                  />
+                ))}  
+              </div> 
+            </div>
+          )
+          : null}
+        </>
       )}
 
       {isAddParticipantsModalOpen && 

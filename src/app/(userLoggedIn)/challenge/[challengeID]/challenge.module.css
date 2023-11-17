@@ -46,7 +46,7 @@
     justify-content: space-between;
 }
 
-.participants_container{
+.participants_container, .inactive_challenge_participants_container{
     display: grid; 
     justify-content: center;
     gap: 1.5rem;
@@ -90,12 +90,6 @@
     gap: 2rem;
 }
 
-.inactive_challenge_msg{
-    margin-top: 5rem;
-    text-align: center;
-
-}
-
 .not_participant_container{
     display: flex;
     flex-direction: column;
@@ -128,6 +122,28 @@
 .request_to_join_button:hover{
     background-color: var(--button-hover-bg-secondary);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+/* inactive/expired challenge styles  */
+.inactive_challenge_container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.inactive_challenge_msg{
+    text-align: center;
+}
+
+.winner_text {
+    font-weight: 900;
+    color: var(--accent-primary);
+}
+
+.inactive_challenge_participants_container{
+    display: grid; 
+    justify-content: center;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
 }
 
 
