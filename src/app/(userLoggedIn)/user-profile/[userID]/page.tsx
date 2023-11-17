@@ -55,7 +55,7 @@ export default function UserProfile() {
                       // default backup
                       <GoPerson className={styles.profile_pic} />
                   )}
-                  {/* <ImageFileUploadButton onFileChange={handleFileChange} /> */}
+                  <ImageFileUploadButton onFileChange={handleFileChange} />
                   <div className={styles.user_info_container}>
                     <h3>{userData.firstName} {userData.lastName}</h3>
                     <p> &quot;{userData.userName}&quot; </p>
