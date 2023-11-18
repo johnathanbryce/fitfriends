@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import styles from './forgot-password.module.css'
+// Next.js
+import Link from 'next/link'
 // Internal Components
 import AuthCard from '@/components/Cards/AuthCard/AuthCard'
 import InputForm from '@/components/Input/Input'
@@ -15,7 +17,7 @@ export default function ForgotPassword() {
   // Custom hook
   useAuthenticationRedirect('/forgot-password', 'challenges-dashboard');
   // Auth context
-  const { forgotPassword, isLoading, authError, isPasswordResetSent} = useAuth()
+  const { forgotPassword, isLoading, authError, clearAuthError, isPasswordResetSent} = useAuth()
 
   const handleResetPassword = (e: any) => {
     e.preventDefault();
@@ -32,29 +34,38 @@ export default function ForgotPassword() {
     };
   }, [isPasswordResetSent]);
 
+    // when component unmounts, clear any authError's
+    useEffect(() => {
+      return () => {
+        clearAuthError();
+      };
+    }, []);
+
 
   return (
     <section className={styles.login}>
         {isPasswordResetSent ? (
             <div className={styles.password_reset_container}>
-                <p> An email has been sent to {email}</p>
-                <p> Please follow the link provided in this email to reset your password. </p>
+                <p className={styles.text}>If an account exists for {email}, you will get an email with instructions on resetting your password.</p>
+                <Link href='/login' className={styles.route_to_login_text}> Back to Log in</Link>
             </div>
         ) : (
         <AuthCard 
-            title='Reset Your Password' 
+            title='Enter your email to reset password' 
             buttonLabel='Submit' 
             isLoading={isLoading}
+            subSection='Cancel'
+            navigateToSubSection='/login'
             onClick={handleResetPassword}
           >
-            {authError ? <p className={styles.auth_error}>{authError}</p> : <p className={styles.text}>Enter the email associated with your account for a password reset email. </p>}
+            {authError ? <p className={styles.auth_error}>{authError}</p> : null}
             <InputForm 
                 name='Your Email'
                 value={email}
                 type='email'
                 placeholder='Email'
                 onChange={(newVal) => setEmail(newVal)}
-                theme='dark'
+                theme='light'
                 onClick={(e) => e.stopPropagation()}
             />
           </AuthCard>   

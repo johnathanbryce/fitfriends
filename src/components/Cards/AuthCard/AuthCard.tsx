@@ -12,24 +12,26 @@ interface AuthCardProps {
     buttonLabel?: string,
     onClick?: (e: any) => void;
     subSection?: string,
-    navigateTo?: any,
+    subSectionTwo? : string,
+    navigateToSubSection?: any,
+    navigateToSubSectionTwo?: any,
 }
 
-export default function AuthCard({children, title, subSection, buttonLabel, onClick, isLoading, navigateTo}: AuthCardProps) {
-  
-  
+export default function AuthCard({children, title, subSection, subSectionTwo, buttonLabel, onClick, isLoading, navigateToSubSection, navigateToSubSectionTwo}: AuthCardProps) {
   return (
     <div className={styles.auth_card}>
-      <h2 className={styles.title}> {title} </h2>
+      <h3 className={styles.title}> {title} </h3>
       <form className={styles.form} onClick={onClick} >
         {children}
         { buttonLabel ? <ButtonPill label={buttonLabel} isLoading={isLoading}/> : (null) }
-        { subSection ? (
+        { subSection &&
           <>
             <HorizontalLineBreak />
-            <Link href={navigateTo}>{subSection} </Link>
+            <Link href={navigateToSubSection} className={styles.sub_section_text}>{subSection} </Link>
           </>
-        ) : (null)
+        }
+        { subSectionTwo &&
+            <Link href={navigateToSubSectionTwo} className={styles.sub_section_text}>{subSectionTwo} </Link>
         }
       </form>
     </div>

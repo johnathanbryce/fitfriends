@@ -31,6 +31,7 @@ interface AuthContextState {
   authError: string | null;
   isPasswordResetSent: boolean | null;
   isLoading: boolean;
+  clearAuthError: () => void,
   handleLogin: (email: string, password: string) => void;
   handleSignInWithGoogle: (e: any) => void;
   handleLogout: () => void;
@@ -44,6 +45,7 @@ const AuthContext = createContext<AuthContextState>({
   authError: null,
   isLoading: false,
   isPasswordResetSent: false,
+  clearAuthError: () => {},
   handleLogin: () => {},
   handleSignInWithGoogle: () => {},
   handleLogout: () => {},
@@ -71,6 +73,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Routing
   const router = useRouter();
+
+  // clears any authErrors when a user navigates away from login/sign-up/forgot-password
+  const clearAuthError = () => {
+    setAuthError(null);
+  };
   
   // restore user auth state after a page refresh
   useEffect(() => {
@@ -235,6 +242,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         authError,
         isLoading,
         isPasswordResetSent,
+        clearAuthError: clearAuthError,
         handleLogin: handleLogin, 
         handleSignInWithGoogle: handleSignInWithGoogle,
         handleLogout: handleLogout, 

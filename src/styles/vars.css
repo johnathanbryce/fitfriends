@@ -47,7 +47,7 @@
     --input-bg:	#263238;
     --input-text: #F9F9F9;
     --input-padding: 1rem;
-    --input-focus-transition: 0.15s ease-in-out;
+    --input-focus-transition: 0.2s ease-in-out;
     
     /* header/footer */
     --header-bg: white;

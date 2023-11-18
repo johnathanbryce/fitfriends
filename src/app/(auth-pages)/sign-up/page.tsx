@@ -27,7 +27,7 @@ export default function SignUp() {
   // Custom hook
   useAuthenticationRedirect('/sign-up', 'challenges-dashboard');
   // Auth
-  const { handleSignup, authError, isLoading } = useAuth();
+  const { handleSignup, authError,clearAuthError, isLoading } = useAuth();
 
   // Use useEffect to watch for changes in authError
   useEffect(() => {
@@ -82,15 +82,21 @@ export default function SignUp() {
     }
   }
 
+  // when component unmounts, clear any authError's
+  useEffect(() => {
+    return () => {
+      clearAuthError();
+    };
+  }, []);
+
   return (
     <section className={styles.login}>
       <AuthCard 
-        title='Create Your Account' 
-        navigateTo='/login'
-        subSection="Already have an account?" 
+        title='Sign up for Fit Friends' 
+        navigateToSubSection='/login'
+        subSection="Already have an account? Log in" 
         isLoading={isLoading}
       >
-         <p className={styles.headline}>Create or join a fitness challenge, conquer goals, and become the reigning champion amongst your friends!</p>
           {emailError && <p className={styles.error_text}> {authError} </p>}
           {passwordError && <p className={styles.error_text}> {authError} </p>}
           <InputForm 
@@ -99,7 +105,7 @@ export default function SignUp() {
             value={email}
             type='email'
             onChange={(newVal) => setEmail(newVal)}
-            theme='dark'
+            theme='light'
             error={emailError}
             required={true}
           />
@@ -110,7 +116,7 @@ export default function SignUp() {
             value={password}
             type='password'
             onChange={(newVal) => setPassword(newVal)}
-            theme='dark'
+            theme='light'
             error={passwordError}
             required={true}
           /> 
@@ -122,7 +128,7 @@ export default function SignUp() {
                 value={firstName}
                 type='text'
                 onChange={(newVal) => setFirstName(newVal)}
-                theme='dark'
+                theme='light'
                 required={true}
                 maxLength={15}
             />
@@ -132,7 +138,7 @@ export default function SignUp() {
                 value={lastName}
                 type='text'
                 onChange={(newVal) => setLastName(newVal)}
-                theme='dark'
+                theme='light'
                 required={true}
                 maxLength={15}
             />
@@ -143,12 +149,12 @@ export default function SignUp() {
                 value={userName}
                 type='text'
                 onChange={(newVal) => setUserName(newVal)}
-                theme='dark'
+                theme='light'
                 required={true}
                 maxLength={15}
             />
           <ButtonPill 
-            label="Submit"
+            label="Create account"
             onClick={handleUserSignUp}
             isLoading={isLoading}
           />
