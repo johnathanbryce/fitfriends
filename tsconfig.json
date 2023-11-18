@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "functions/src/index.js"  ],
+, "functions/src/index.js", "src/app/(home)/GetStarted/GetStarted.js"  ],
   "exclude": [
     "node_modules"
   ]

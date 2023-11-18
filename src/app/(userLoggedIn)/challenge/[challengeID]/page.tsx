@@ -18,6 +18,9 @@ import {ref, onValue, get, remove, set, update} from 'firebase/database'
 import { useAuth } from '@/context/AuthProvider'
 // Util
 import { formatDateForChallenges } from '@/utils/dateHelpers'
+// External Libraries
+import Lottie from 'lottie-react';
+import animationData from '../../../../assets/ff-dumbbell-challenge.json'
 
 interface urlParamsProps {
   params: any
@@ -201,7 +204,15 @@ export default function Challenge({params}: urlParamsProps) {
     <section className={styles.dashboard}>
       {isChallengeActive ? (
         <>
-          <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
+          <div className={styles.header_container}>
+            <div className={styles.animation}>
+              <Lottie animationData={animationData} loop={false} speed={2.5} />
+            </div>
+            <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
+            <div className={styles.animation}>
+              <Lottie animationData={animationData} loop={false}/>
+            </div>
+          </div>
           <div className={styles.challenge_overview}>
             <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
 

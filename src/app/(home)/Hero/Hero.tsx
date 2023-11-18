@@ -6,8 +6,37 @@ import ButtonPillRoute from '@/components/Buttons/ButtonPillRoute/ButtonPillRout
 import Image from 'next/image'
 // Internal Assets
 import logoTransparent from '../../../../public/images/logo-transparent.png'
+// External Libraries
+import Lottie from 'lottie-react';
+import animationData from '../../../assets/dumbbell-phone-animation.json'
+
+interface Interactivity {
+  mode: 'scroll' 
+  actions: any[]
+}
 
 export default function Hero() {
+  const interactivity: Interactivity = {
+    mode: "scroll",
+    actions: [
+      {
+        visibility: [0, 0.2],
+        type: "stop",
+        frames: [0],
+      },
+      {
+        visibility: [0.2, 0.45],
+        type: "seek",
+        frames: [0, 45],
+      },
+      {
+        visibility: [0.45, 1.0],
+        type: "loop",
+        frames: [45, 60],
+      },
+    ],
+  };
+
   return (
     <section className={styles.hero}>
         <Image src={logoTransparent} className={styles.logo} priority alt="Fit Friend's logo" />
@@ -22,6 +51,9 @@ export default function Hero() {
                 label='Sign Up'
                 src='/sign-up'
             />
+        </div>
+        <div className={styles.animation}>
+            <Lottie animationData={animationData} loop={false} interactivity={interactivity} /* interactivity={interactivity} */ />
         </div>
     </section>
   )

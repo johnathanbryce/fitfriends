@@ -6,9 +6,28 @@
     padding: 1rem 4rem;
 }
 
+.header_container{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
 .challenge_name {
     text-align: center;
     color: var(--font-headers);
+}
+
+.animation {
+    width: 10rem;
+}
+
+.header_container > .animation:nth-child(1){
+    transform: rotate(-45deg);
+}
+
+
+.header_container > .animation:nth-child(3){
+    transform: rotate(45deg);
 }
 
 .challenge_overview{

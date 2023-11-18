@@ -29,6 +29,10 @@
     width: 25rem;
 }
 
+.animation {
+    width: 15rem;
+}
+
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .hero {
