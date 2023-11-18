@@ -1,18 +1,11 @@
-import styles from '../styles/loading.module.css';
-// Next.js
-import Image from 'next/image';
-// Internal Assets
-import logoTransparent from '../../public/images/logo-transparent.png'
+'use client'
+// External Libraries
+import Lottie from 'lottie-react';
+import animationData from '../assets/loading-animation.json'
 
 
 const Loading = () => {
-    return (
-      <div className={styles.container}>
-          <div className={styles.spinner}>
-            {/* <Image src={logoTransparent} className={styles.logo} alt="Fit Friend's logo"/> */}
-          </div>
-      </div>
-    );
+    return <Lottie animationData={animationData}/>
   };
   
   export default Loading;

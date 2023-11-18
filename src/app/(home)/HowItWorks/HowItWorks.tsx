@@ -12,6 +12,9 @@ import createChallenge1 from '../../../../public/images/create-challenge-1.png'
 import createChallenge2 from '../../../../public/images/create-challenge-2.png'
 import challengesDashboard from '../../../../public/images/challenge-dashboard-png.png'
 import challenge from '../../../../public/images/challenge.png'
+// External Libraries
+import Lottie from 'lottie-react';
+import animationData from '../../../assets/dumbbell-phone-animation.json'
 
 export default function HowItWorks() {
   return (
@@ -26,7 +29,7 @@ export default function HowItWorks() {
                         src='/sign-up'
                         secondary={true}
                     />
-                </div>
+                </div>               
             </aside>
         </LayoutSections>
         <div className={styles.steps_container}>

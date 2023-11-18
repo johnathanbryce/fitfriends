@@ -50,7 +50,7 @@
     overflow: hidden;
     border-radius: 50%; 
     border: 0.25rem solid var(--default-color);
-    background-color: var(--default-color); /* Fallback color or pattern */
+    background-color: var(--default-color);
 }
 
 .profile_pic {
@@ -58,7 +58,6 @@
     height: auto;
     object-fit: cover;
     object-position: center;
-
 }
 
 .update_profile_pic_btn {

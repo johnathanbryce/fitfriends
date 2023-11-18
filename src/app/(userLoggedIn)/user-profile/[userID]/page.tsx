@@ -39,7 +39,6 @@ export default function UserProfile() {
     setIsUploadButtonVisible((prev) => !prev)
   }
 
-
   if(isLoading){
     return <Loading />
   }
