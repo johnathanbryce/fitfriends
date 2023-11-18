@@ -14,28 +14,29 @@ import {AiFillCloseCircle, AiOutlineUserAdd} from 'react-icons/ai'
 interface ParticipantsModalProps{
     onClose: () => void,
     challengeId: string,
+    existingUsers: any,
 }
 
-// TODO: ADD THE USER WHO CREATED THE CHALLENGE TO THE CHALLENGE FROM "CREATE-CHALLENGE"
-
-export default function ParticipantsModal({onClose, challengeId}: ParticipantsModalProps) {
+export default function ParticipantsModal({onClose, challengeId, existingUsers}: ParticipantsModalProps) {
     const [users, setUsers] = useState([]); // all of the users in the db
     const [isLoading, setIsLoading] = useState(false);
     const [errorFetch, setErrorFetch] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState<any>([]);
 
-    const toggleInviteSelection = (user: any) => {
-        setIsSelected(user)   
-        setSelectedUsers((prevSelectedUsers: any) => {
-          if (prevSelectedUsers.includes(user)) {
-            // remove user if already selected
-            return prevSelectedUsers.filter((user: any) => user !== user);
-          } else {
-            // add user if not selected
-            return [...prevSelectedUsers, user];
-          }
-        });
+    const existingUsersArr = existingUsers.map((user: any) => user.userName);
+
+    const toggleInviteSelection = (selectedUser: any) => {
+      setIsSelected(selectedUser);
+      setSelectedUsers((prevSelectedUsers: any) => {
+        if (prevSelectedUsers.includes(selectedUser)) {
+          // remove user if already selected
+          return prevSelectedUsers.filter((user: any) => user !== selectedUser);
+        } else {
+           // add user if not selected
+          return [...prevSelectedUsers, selectedUser];
+        }
+      });
     };
 
     useEffect(() => {
@@ -43,11 +44,16 @@ export default function ParticipantsModal({onClose, challengeId}: ParticipantsMo
         setIsLoading(true)
         try {
           const fetchedUsers = await fetchAllUsers();
+          // filters out users already invited to the challenge (as passed down via existingUsers)
+          const filteredUsers = fetchedUsers.filter((user: any) => 
+            !existingUsersArr.includes(user.userName)
+          );
+
           // sort the users array by totalPointsOverall in descending order
-          fetchedUsers.sort((a: any, b: any) =>
+          filteredUsers.sort((a: any, b: any) =>
                 b.challengesWon - a.challengesWon
           );
-          setUsers(fetchedUsers);
+          setUsers(filteredUsers);
           setIsLoading(false)
         } catch (error) {
           console.error('Error fetching users:', error);
@@ -57,7 +63,7 @@ export default function ParticipantsModal({onClose, challengeId}: ParticipantsMo
       }
       getUsers();
       setErrorFetch(false)
-    }, []);
+    }, [existingUsers]);
 
     const handleAddParticipants = async () => {
       setIsLoading(true);

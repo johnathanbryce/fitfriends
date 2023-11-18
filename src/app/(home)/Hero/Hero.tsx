@@ -53,7 +53,7 @@ export default function Hero() {
             />
         </div>
         <div className={styles.animation}>
-            <Lottie animationData={animationData} loop={false} interactivity={interactivity} /* interactivity={interactivity} */ />
+            <Lottie animationData={animationData} loop={false} interactivity={interactivity}/>
         </div>
     </section>
   )

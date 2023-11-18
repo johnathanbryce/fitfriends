@@ -18,6 +18,8 @@ import {ref, onValue, get, remove, set, update} from 'firebase/database'
 import { useAuth } from '@/context/AuthProvider'
 // Util
 import { formatDateForChallenges } from '@/utils/dateHelpers'
+// Custom Hooks
+import { useFetchUserData } from '@/hooks/useFetchUserData'
 // External Libraries
 import Lottie from 'lottie-react';
 import animationData from '../../../../assets/ff-dumbbell-challenge.json'
@@ -44,6 +46,8 @@ export default function Challenge({params}: urlParamsProps) {
 
   // auth context
   const { user } = useAuth();
+  // custom hook
+  const { userData } = useFetchUserData();
   // routing
   const router = useRouter();
   
@@ -243,7 +247,7 @@ export default function Challenge({params}: urlParamsProps) {
                 <h5 className={styles.not_participant_text}> You are not a participant of this challenge.</h5>
                 <a 
                     className={styles.request_to_join_button} 
-                    href={`mailto:${encodeURIComponent(challengeData?.creatorEmail)}?subject=User%20${encodeURIComponent(user?.userName + ' is requesting to join ' + challengeData?.name)}.&body=Hello%2C%20${encodeURIComponent(challengeData?.creatorName)}%2C%0D%0A%0D%0A${encodeURIComponent(user?.userName + ' is requesting to join your challenge: ' + challengeData?.name)}.%0D%0A%0D%0APlease invite them to your challenge: ${encodeURIComponent('https://fitfriends.ca/challenge/' + params.challengeID)}%0D%0A%0D%0AThank you,%0D%0AFitFriends`} 
+                    href={`mailto:${challengeData?.creatorEmail}?subject=User%20${userData?.userName + ' is requesting to join your FitFriends challenge: ' + challengeData?.name}.&body=Hello%2C%20${challengeData?.creatorName}%2C%0D%0A%0D%0A${userData?.userName + ' is requesting to join your challenge: ' + challengeData?.name}.%0D%0A%0D%0APlease invite them to your challenge: ${'https://fitfriends.ca/challenge/' + params.challengeID}%0D%0A%0D%0AThank you,%0D%0AFitFriends`} 
                     target="_blank"
                 >
                     Request to Join Challenge
@@ -382,7 +386,8 @@ export default function Challenge({params}: urlParamsProps) {
         <ParticipantsModal 
           onClose={toggleAddParticipantsModal}
           challengeId={params.challengeID} 
-          />
+          existingUsers={participantsInfo}
+        />
         }
     </section>
   )
