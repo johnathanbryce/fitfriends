@@ -13,7 +13,7 @@ import FooterLoggedOut from "@/components/Footers/FooterLoggedOut/FooterLoggedOu
 import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect';
 
 export default function Home() {
-  useAuthenticationRedirect('/', 'challenges-dashboard');
+  /* useAuthenticationRedirect('/', 'challenges-dashboard'); */
   return (
     <LayoutHomePage>
       <Head>
