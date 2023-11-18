@@ -24,7 +24,7 @@ export default function Login() {
   const [passwordError, setPasswordError] = useState(false);
 
   // Custom hook
-/*   useAuthenticationRedirect('/login', 'challenges-dashboard'); */
+  useAuthenticationRedirect('/login', 'challenges-dashboard');
 
   // Auth
   const { handleSignInWithGoogle, handleLogin, authError, isLoading } = useAuth();
