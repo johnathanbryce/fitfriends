@@ -1,12 +1,12 @@
 'use client'
 import React, {useState} from 'react'
-import styles from './HeaderLoggedOut.module.css'
+import styles from './HeaderAuthPages.module.css'
 // Internal Components
 import ButtonPillRoute from '../../Buttons/ButtonPillRoute/ButtonPillRoute'
 // Next.js
 import Link from 'next/link'
 
-export default function HeaderLoggedOut() {
+export default function HeaderAuthPages() {
   // dropdown navbar menu on smaller screens:
   const [isDropdownActive, setIsDropdownActive] = useState(false);
 
@@ -26,7 +26,7 @@ export default function HeaderLoggedOut() {
         <h1> Fit Friends </h1>
       </Link>
 
-      <div className={`${styles.hamburger} ${isDropdownActive ? styles.hamburger_active : '' }`} onClick={toggleDropdown}>
+{/*       <div className={`${styles.hamburger} ${isDropdownActive ? styles.hamburger_active : '' }`} onClick={toggleDropdown}>
           <div className={styles.bar} ></div>
           <div className={styles.bar} ></div>
           <div className={styles.bar} ></div>
@@ -51,7 +51,7 @@ export default function HeaderLoggedOut() {
             <li className={styles.link}><Link href='/sign-up' onClick={onClickCloseDropdown} > Sign Up </Link></li> 
           </ul>
         </nav>
-      }
+      } */}
     </header>
   )
 }

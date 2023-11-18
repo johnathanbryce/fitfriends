@@ -25,9 +25,10 @@ export default function Login() {
 
   // Custom hook
   useAuthenticationRedirect('/login', 'challenges-dashboard');
-
+  // Router
+  const router = useRouter();
   // Auth
-  const { handleSignInWithGoogle, handleLogin, authError, isLoading } = useAuth();
+  const { handleSignInWithGoogle, handleLogin, authError, clearAuthError, isLoading } = useAuth();
 
   // Use useEffect to watch for changes in authError
   useEffect(() => {
@@ -44,6 +45,13 @@ export default function Login() {
     }
   }, [authError]);
 
+  // when component unmounts, clear any authError's
+  useEffect(() => {
+    return () => {
+      clearAuthError();
+    };
+  }, []);
+
   const handleSignIn = async () => {
     await handleLogin(emailInput, passwordInput);
     setEmailError(false);
@@ -53,9 +61,11 @@ export default function Login() {
   return (
     <section className={styles.login}>
       <AuthCard 
-        title='Login' 
-        navigateTo='/forgot-password'
-        subSection="Forgot your password?" 
+        title='Log in to Fit Friends' 
+        subSection="Reset password"
+        navigateToSubSection='/forgot-password'
+        subSectionTwo="No account? Sign up"
+        navigateToSubSectionTwo='/sign-up'
         isLoading={isLoading}
       >  
 {/*         <button type="button" onClick={handleSignInWithGoogle} className={styles.login_option}> 
@@ -74,7 +84,7 @@ export default function Login() {
           required={true}
           type='email'
           onChange={(newVal) => setEmailInput(newVal)}
-          theme='dark'
+          theme='light'
         />
 
         <InputForm 
@@ -85,10 +95,10 @@ export default function Login() {
           required={true}
           type='password'
           onChange={(newVal) => setPasswordInput(newVal)}
-          theme='dark'
+          theme='light'
         />
         <ButtonPill 
-          label="Submit"
+          label="Log in"
           onClick={handleSignIn}
           isLoading={isLoading}
         />

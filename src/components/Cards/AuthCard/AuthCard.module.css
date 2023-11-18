@@ -6,16 +6,16 @@
     gap: 2rem;
     width: 50rem;
     max-width: 50rem;
-    background-color: var(--background-secondary-light);
-    color: var(--font-secondary);
+    background-color: var(--background-primary);
+    color: var(--font-primary);
 }
 
 .title{
     text-align: center;
     width: 100%;
     padding: 2rem;
-    color: var(--font-secondary);
-    background-color: var(--background-secondary);
+    color: var(--font-primary);
+    background-color: var(--background-primary);
 }
 
 .form {
@@ -24,6 +24,15 @@
     gap: 2rem;
     width: 80%;
     padding: 2rem;
+}
+
+.sub_section_text{
+    font-weight: 600;
+}
+
+.sub_section_text:hover{
+   /*  color: var(--accent-secondary); */
+    text-decoration: underline;
 }
 
 /* Mobile Devices (landscape) */

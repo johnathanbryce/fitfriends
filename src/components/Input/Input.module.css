@@ -21,18 +21,21 @@
     background-color: var(--default-color);
     width: 100%;
     padding: var(--input-padding);
+    border: 0.1rem solid var(--input-bg);
     border-radius: var(--border-radius);
-    outline: none;
-    border: none;
+/*     outline: none;
+    border: none; */
 }
 
 .input_light:focus {
-    outline: 0.1rem solid var(--input-bg);
+    border: none;
+    outline: 0.25rem solid var(--accent-secondary);
     transition: var(--input-focus-transition);
 }
 
 .input_light::placeholder{
-    color: var(--font-primary);
+    color: var(--inactive-color);
+    
 }
 
 .error {
