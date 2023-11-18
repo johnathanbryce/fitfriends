@@ -32,11 +32,11 @@ export default function LoggedInLayout({
     } else {
       //
     }
-  }, [user, router]); */
+  }, [user, router]);
 
   if (!user || !user.uid) {
     return <Loading />
-  }
+  } */
 
   return (
     <>
