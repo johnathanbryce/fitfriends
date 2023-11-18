@@ -46,6 +46,7 @@ export default function Challenge({params}: urlParamsProps) {
   const { user } = useAuth();
   // routing
   const router = useRouter();
+  
 
   // checks if the user created the challenge to show or hide the
   // delete button and then add participants button
@@ -206,7 +207,7 @@ export default function Challenge({params}: urlParamsProps) {
         <>
           <div className={styles.header_container}>
             <div className={styles.animation}>
-              <Lottie animationData={animationData} loop={false} speed={2.5} />
+              <Lottie animationData={animationData} loop={false} />
             </div>
             <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
             <div className={styles.animation}>
