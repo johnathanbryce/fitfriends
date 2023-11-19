@@ -18,7 +18,7 @@
 }
 
 .animation {
-    width: 10rem;
+    width: clamp(6.5rem, 10vw, 10rem);
 }
 
 .header_container > .animation:nth-child(1){
@@ -149,8 +149,33 @@
     flex-direction: column;
     gap: 2rem;
 }
-.inactive_challenge_msg{
+
+.inactive_challenge_announcement_wrapper {
+    display: flex;
+    align-items: center;
     text-align: center;
+}
+
+.animation_winner {
+    margin: 0 auto;
+    width: 50vw;
+}
+
+.animation_winner_text{
+    animation: fadeInZoomIn 2.5s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInZoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5); /* Start from a scaled-down size */
+    }
+    to {
+        opacity: 1;
+        transform: scale(1); /* Scale to normal size */
+    }
 }
 
 .winner_text {
@@ -179,5 +204,9 @@
     .challenge_overview h5{
         font-size: 1.2rem;
         text-align: center;
+    }
+
+    .inactive_challenge_announcement_wrapper{
+        flex-direction: column;
     }
 }

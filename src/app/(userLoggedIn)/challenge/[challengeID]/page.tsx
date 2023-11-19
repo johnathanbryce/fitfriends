@@ -22,7 +22,8 @@ import { formatDateForChallenges } from '@/utils/dateHelpers'
 import { useFetchUserData } from '@/hooks/useFetchUserData'
 // External Libraries
 import Lottie from 'lottie-react';
-import animationData from '../../../../assets/ff-dumbbell-challenge.json'
+import animationData from '../../../../assets/ff-dumbbell-animation.json'
+import animationDataWinner from '../../../../assets/ff-chall-winner.json'
 
 interface urlParamsProps {
   params: any
@@ -356,9 +357,14 @@ export default function Challenge({params}: urlParamsProps) {
         <>
           {challengeWinner ? (
             <div className={styles.inactive_challenge_container}> 
-              <div className={styles.inactive_challenge_msg}>
-                <h3> Challenge complete. </h3>
-                <h3> The winner is <span className={styles.winner_text}>{challengeWinner}</span></h3>
+              <div className={styles.inactive_challenge_announcement_wrapper}>
+                <div className={styles.animation_winner}>
+                  <Lottie animationData={animationDataWinner} loop={false} />
+                </div>
+                <div className={styles.animation_winner_text}>
+                  <h2> Challenge complete. </h2>
+                  <h2> The winner is <span className={styles.winner_text}>{challengeWinner}</span></h2>
+                </div>
               </div>
               <div className={styles.inactive_challenge_participants_container}>          
                 {participantsInfo.map((user: any, index) => (
