@@ -12,6 +12,8 @@ import { database } from '../../../../firebaseApp';
 import { ref, get, push, set, update} from 'firebase/database';
 // Custom Hooks
 import { useFetchUserData } from '@/hooks/useFetchUserData';
+// Util
+import { formatDateForChallenges } from '@/utils/dateHelpers'
 // External Libraries
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
@@ -24,6 +26,76 @@ export default function CreateChallenge() {
     const [weightsMinutes, setWeightsMinutes] = useState('');
     const [weightsPoints, setWeightsPoints] = useState('');
     const [limitExceeded, setLimitExceeded] = useState(false);
+    // alert state for required inputs
+    const [requiredInputAlert, setRequiredInputAlert] = useState('')
+    // state for controlling active sections of create challenge
+    const [activeSection, setActiveSection] = useState(0);
+    // react-date-range state
+    const [selection, setSelection] = useState<any>([
+      {
+        startDate: new Date(),
+        endDate: new Date(),
+        key: 'selection',
+      },
+    ]);
+
+    // react-date-range fn
+    const handleSelect = async (ranges: any) => {
+      setSelection([ranges.selection]);
+    };
+
+    const sections = [
+      "challenge_name",
+      "challenge_rules",
+      "challenge_duration",
+      "challenge_summary"
+    ];
+
+    const handlePrevSection = () => {
+      setRequiredInputAlert(''); //reset so the error message doesn't persist
+      setActiveSection((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
+    };
+
+    const handleNextSection = () => {
+      setRequiredInputAlert(''); //reset so the error message doesn't persist
+      // for case 2 to ensure that challenges startDate are not created in the past
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      // cases per section
+      switch (activeSection) {
+        case 0:
+          if (!challengeName) {
+            setRequiredInputAlert('Please enter a challenge name.');
+            return;
+          }
+          break;
+    
+        case 1:
+          if (!cardioMinutes || !cardioPoints || !weightsMinutes || !weightsPoints) {
+            setRequiredInputAlert('Please complete all fields in the challenge rules.');
+            return;
+          }
+          break;
+    
+        case 2:
+          if (!selection[0].startDate) {
+            setRequiredInputAlert('Please select your challenge duration.');
+            return;
+          }
+          if (selection[0].startDate < today) {
+            setRequiredInputAlert('The start date cannot be in the past.');
+            return;
+          }
+          break;
+    
+        default:
+          break;
+      }
+    
+      // Move to the next section if all validations pass
+      setActiveSection((prevIndex) => (prevIndex < sections.length - 1 ? prevIndex + 1 : prevIndex));
+    };
+    
 
     // maximum allowable challenges cap
     const maxChallenges = 3
@@ -33,20 +105,6 @@ export default function CreateChallenge() {
     // custom hook
     const {userData, isLoading} = useFetchUserData();
 
-    // react-date-range state
-    const [selection, setSelection] = useState([
-      {
-        startDate: new Date(),
-        endDate: new Date(),
-        key: 'selection',
-      },
-    ]);
-    // react-date-range fn
-    const handleSelect = async (ranges: any) => {
-      setSelection([ranges.selection]);
-    };
-
-    // TODO: ADD THE USER WHO CREATED THE CHALLENGE TO THE CHALLENGE
     async function addNewChallenge(e: any) {
       e.preventDefault();
       // get refs to "users" & "challenges" main data buckets in db
@@ -135,96 +193,140 @@ export default function CreateChallenge() {
   return (
     <form className={styles.create_challenge} onSubmit={addNewChallenge}>
         <h2> Create Your Fitness Challenge</h2>
-        <div className={`${styles.input_container} ${styles.name_wrapper}`}>
-            <h4> Challenge name </h4>
-            <Input 
-                name='challengeName'
-                placeholder=''
-                value={challengeName}
-                type='text'
-                onChange={(e) => setChallengeName(e)}
-                theme='dark'
-                required={true}
-                maxLength={30}
-            />
-        </div>
+          <section className={styles.create_challenge_sections_wrapper}>
+            {requiredInputAlert.length > 0 && <p className={styles.warning}> {requiredInputAlert} </p>}
+            {activeSection === 0 && (
+              <div className={`${styles.input_container} ${styles.name_wrapper}`}>
+                <h4> Challenge name </h4>
+                <Input 
+                    name='challengeName'
+                    placeholder=''
+                    value={challengeName}
+                    type='text'
+                    onChange={(e) => setChallengeName(e)}
+                    theme='dark'
+                    required={true}
+                    maxLength={30}
+                />
+              </div>
+            )}
 
-        <div className={styles.input_container}>
-            <h4> Rules </h4>
-            <div className={styles.rule}>
-                 <h5> Cardio: </h5>
-                 <div className={styles.rules_flex_wrapper}>
-                  <Input 
-                      name='cardioMinutes'
-                      placeholder=" ex: 20 minutes"
-                      value={cardioMinutes}
-                      type='text'
-                      onChange={(e) => setCardioMinutes(e)}
-                      theme='dark'
-                      required={true}
-                      maxLength={30}
-                  />
-                  <p> equals </p>
-                  <Input 
-                      name='cardioPoints'
-                      placeholder=" ex: 1 point"
-                      value={cardioPoints}
-                      type='text'
-                      onChange={(e) => setCardioPoints(e)}
-                      theme='dark'
-                      required={true}
-                      maxLength={15}
-                  />
-                 </div>
-            </div>
-            <div className={styles.rule}>
-                <h5> Weights </h5>
-                <div className={styles.rules_flex_wrapper}>
-                  <Input 
-                      name='weightsMinutes'
-                      placeholder='ex: 30 mins'
-                      value={weightsMinutes}
-                      type='text'
-                      onChange={(e) => setWeightsMinutes(e)}
-                      theme='dark'
-                      required={true}
-                      maxLength={30}
-                  />
-                  <p> equals </p>
-                  <Input 
-                      name='weightsPoints'
-                      placeholder='ex: 1 point'
-                      value={weightsPoints}
-                      type='text'
-                      onChange={(e) => setWeightsPoints(e)}
-                      theme='dark'
-                      required={true}
-                      maxLength={15}
-                  />
+            {activeSection === 1 && (
+              <div className={styles.input_container}>
+                <h4> Rules </h4>
+                <div className={styles.rule}>
+                    <h5> Cardio: </h5>
+                    <div className={styles.rules_flex_wrapper}>
+                      <Input 
+                          name='cardioMinutes'
+                          placeholder=" ex: 20 minutes"
+                          value={cardioMinutes}
+                          type='text'
+                          onChange={(e) => setCardioMinutes(e)}
+                          theme='dark'
+                          required={true}
+                          maxLength={30}
+                      />
+                      <p> equals </p>
+                      <Input 
+                          name='cardioPoints'
+                          placeholder=" ex: 1 point"
+                          value={cardioPoints}
+                          type='text'
+                          onChange={(e) => setCardioPoints(e)}
+                          theme='dark'
+                          required={true}
+                          maxLength={15}
+                      />
+                    </div>
                 </div>
+                <div className={styles.rule}>
+                    <h5> Weights </h5>
+                    <div className={styles.rules_flex_wrapper}>
+                      <Input 
+                          name='weightsMinutes'
+                          placeholder='ex: 30 mins'
+                          value={weightsMinutes}
+                          type='text'
+                          onChange={(e) => setWeightsMinutes(e)}
+                          theme='dark'
+                          required={true}
+                          maxLength={30}
+                      />
+                      <p> equals </p>
+                      <Input 
+                          name='weightsPoints'
+                          placeholder='ex: 1 point'
+                          value={weightsPoints}
+                          type='text'
+                          onChange={(e) => setWeightsPoints(e)}
+                          theme='dark'
+                          required={true}
+                          maxLength={15}
+                      />
+                    </div>
+                </div>
+              </div>
+          )}
+
+          {activeSection === 2 && (
+            <div className={styles.input_container}>
+              <h4> Challenge duration </h4>
+              <DateRange
+                ranges={selection}
+                onChange={handleSelect}
+                className={styles.date_range_picker}
+                showMonthAndYearPickers={false}
+                showDateDisplay={false}
+                rangeColors={['#FF5722']}
+                style={{width: '28.5rem'}}
+              />
             </div>
-        </div>
-        
-        <div className={styles.input_container}>
-            <h4> Challenge duration </h4>
-            <DateRange
-              ranges={selection}
-              onChange={handleSelect}
-              className={styles.date_range_picker}
-              showMonthAndYearPickers={false}
-              showDateDisplay={false}
-              rangeColors={['#FF5722']}
-              style={{width: '28.5rem'}}
-            />
-        </div>
-        <div className={styles.btn_and_warning_container}>
-          {limitExceeded && <p className={styles.warning}> Maximum active challenges per user: {maxChallenges}. To create this challenge, please delete or finish one of your active challenges. </p>}
-          <ButtonPill 
-              label="Create Challenge"
-              isLoading={false}
-              secondary={true}  
-          />
-        </div>
+          )}
+
+          {activeSection === 3 && (
+            <div className={styles.input_container}>
+              <h4> Challenge Summary </h4>
+              <div className={styles.challenge_summary}>
+                <p> <span className={styles.bold}> Name: </span> {challengeName}</p>
+                <p> <span className={styles.bold}> Cardio: </span> {cardioMinutes} equals {cardioPoints}</p>
+                <p> <span className={styles.bold}> Weights: </span> {weightsMinutes} equals {weightsPoints}</p>
+                <p>
+                  <span className={styles.bold}> Starts: </span> {selection[0].startDate ? formatDateForChallenges(selection[0].startDate) : 'Not set'}
+                </p>
+                <p>
+                <span className={styles.bold}> Ends: </span> {selection[0].endDate ? formatDateForChallenges(selection[0].endDate) : 'Not set'}
+                </p>
+              </div>
+
+              <div className={styles.btn_and_warning_container}>
+                {limitExceeded && <p className={styles.warning}> Maximum active challenges per user: {maxChallenges}. To create this challenge, please delete or finish one of your active challenges. </p>}
+                <ButtonPill 
+                    label="Create Challenge"
+                    isLoading={false}
+                    disabled={activeSection !== sections.length - 1}
+                    secondary={true}  
+                />
+              </div>
+            </div>
+          )}
+
+          {/* section controls */}
+          <div className={styles.section_controls_container}>
+              {activeSection === 0 ? null : 
+                  <p onClick={handlePrevSection} className={`${styles.control} ${styles['previous-section-control']}`}> 
+                      &#9664;
+                      Back 
+                  </p>
+              }
+              {activeSection === sections.length - 1 ? null : 
+                  <p onClick={handleNextSection} className={`${styles.control} ${styles['next-section-control']}`}> 
+                      Next
+                      &#9654;
+                  </p>
+              }
+          </div>
+        </section>
     </form>
   )
 }

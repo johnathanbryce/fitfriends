@@ -3,17 +3,25 @@
     flex-direction: column;
     align-items: center;
     gap: 2.5rem;
+    height: 100vh;
+}
+
+.create_challenge_sections_wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
     padding: 2rem;
     margin-bottom: 2rem;
     background-color: var(--card-bg-primary);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    width: 100%;
 }
 
 .create_challenge h2 {
     text-align: center;
 }
-
 
 .input_container{
     display: flex;
@@ -26,7 +34,7 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    width: 50%;
+    width: 100%;
 }
 
 .input_container h4 {
@@ -62,28 +70,41 @@
     color: var(--error-color);
 }
 
+.challenge_summary{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.bold{
+    font-weight: 800;
+}
+
+/* section control arrows */
+.section_controls_container{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.control{
+    flex: 1;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .create_challenge{
-        width: 100%;
         padding: 0;
     }
 
     .input_container{
         gap: 0.5rem;
     }
-
-    .rule h5 {
-        width: 100%;
-        text-align: center;
-    }
-    
-    .rule {
-        align-items: center;
-        justify-content: center;
-        gap: 1.25rem;
-    }
-    
+  
     .rules_flex_wrapper{
         flex-direction: column;
         border-left: 0.1rem solid lightgrey;
