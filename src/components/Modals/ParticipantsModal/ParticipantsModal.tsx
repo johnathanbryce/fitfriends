@@ -102,7 +102,6 @@ export default function ParticipantsModal({onClose, challengeId, existingUsers}:
   return (
     <div className={styles.participants_modal}>
         <div className={styles.modal_background} onClick={onClose} />
-
         {isLoading ? (
             <Loading />
         ) : (
