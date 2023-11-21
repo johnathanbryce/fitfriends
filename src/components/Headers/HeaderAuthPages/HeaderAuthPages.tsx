@@ -22,8 +22,8 @@ export default function HeaderAuthPages() {
 
   return (
     <header className={styles.header}>
-      <Link href='/'>
-        <h1> Fit Friends </h1>
+      <Link href='/challenges-dashboard' className={styles.fit_friends_header}>
+        <h3 className={styles.header_text}> Fit Friends </h3>
       </Link>
 
 {/*       <div className={`${styles.hamburger} ${isDropdownActive ? styles.hamburger_active : '' }`} onClick={toggleDropdown}>

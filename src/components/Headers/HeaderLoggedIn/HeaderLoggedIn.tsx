@@ -46,7 +46,7 @@ export default function HeaderLoggedIn() {
   return (
     <header className={styles.header}>
       <Link href='/challenges-dashboard' className={styles.fit_friends_header}>
-        <h1> Fit Friends </h1>
+        <h3 className={styles.header_text}> Fit Friends </h3>
       </Link>
 
       <div className={`${styles.hamburger} ${isDropdownActive ? styles.hamburger_active : '' }`} onClick={toggleDropdown}>
@@ -82,7 +82,7 @@ export default function HeaderLoggedIn() {
                     />
                 </div>
                 ) : ( 
-                <p className={styles.initials}> {userData.firstName[0]}{userData.lastName[0]}  </p>
+                <p className={styles.initials}> {userData?.firstName[0]}{userData?.lastName[0]}  </p>
                 )}
             </Link>
           </li>
