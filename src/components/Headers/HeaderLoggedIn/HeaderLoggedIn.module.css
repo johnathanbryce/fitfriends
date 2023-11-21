@@ -6,6 +6,12 @@
     height: 10rem; 
 }
 
+.header_text {
+    font-weight: bold;
+    color: var(--font-headers);
+    padding: 0 1rem;
+}
+
 .fit_friends_header{
     display: flex;
     align-items: center;

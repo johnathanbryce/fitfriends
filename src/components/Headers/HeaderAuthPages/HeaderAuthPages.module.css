@@ -8,6 +8,12 @@
     position: relative;
 }
 
+.fit_friends_header{
+    font-weight: bold;
+    color: var(--font-headers);
+    padding: 0 1rem;
+}
+
 .routes_flex_wrapper{
     display: flex;
     gap: 3rem;
