@@ -11,9 +11,8 @@ import logoTransparent from '../../../../public/images/logo-transparent.png'
 import { useAuth } from '@/context/AuthProvider'
 
 export default function Intro() {
-
-    // auth context
-    const { user } = useAuth();
+  // auth context
+  const { user } = useAuth();
   return (
     <section className={styles.intro}>
       <figure className={styles.logo_wrapper}>

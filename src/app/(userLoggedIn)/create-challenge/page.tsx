@@ -2,6 +2,7 @@
 import React, {useState} from 'react'
 import styles from './create-challenge.module.css'
 // Next.js
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 // Internal Components
 import Input from '@/components/Input/Input';
@@ -18,6 +19,7 @@ import { formatDateForChallenges } from '@/utils/dateHelpers'
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
+import {IoIosArrowBack, IoIosArrowForward} from 'react-icons/io'
 
 export default function CreateChallenge() {
     const [challengeName, setChallengeName] = useState('');
@@ -279,7 +281,7 @@ export default function CreateChallenge() {
                 showMonthAndYearPickers={false}
                 showDateDisplay={false}
                 rangeColors={['#FF5722']}
-                style={{width: '28.5rem'}}
+                /* style={{width: '27.5rem'}} */
               />
             </div>
           )}
@@ -307,6 +309,7 @@ export default function CreateChallenge() {
                     disabled={activeSection !== sections.length - 1}
                     secondary={true}  
                 />
+                <Link href='/challenges-dashboard' className={styles.cancel}> Cancel  </Link>
               </div>
             </div>
           )}
@@ -314,15 +317,15 @@ export default function CreateChallenge() {
           {/* section controls */}
           <div className={styles.section_controls_container}>
               {activeSection === 0 ? null : 
-                  <p onClick={handlePrevSection} className={`${styles.control} ${styles['previous-section-control']}`}> 
-                      &#9664;
+                  <p onClick={handlePrevSection} className={`${styles.control} ${styles.control_left}`}> 
+                      <IoIosArrowBack className={styles.arrow}/> 
                       Back 
                   </p>
               }
               {activeSection === sections.length - 1 ? null : 
-                  <p onClick={handleNextSection} className={`${styles.control} ${styles['next-section-control']}`}> 
+                  <p onClick={handleNextSection} className={`${styles.control} ${styles.control_right}`}> 
                       Next
-                      &#9654;
+                      <IoIosArrowForward className={styles.arrow}/> 
                   </p>
               }
           </div>

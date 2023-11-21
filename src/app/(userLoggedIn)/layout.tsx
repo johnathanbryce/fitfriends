@@ -28,10 +28,7 @@ export default function LoggedInLayout({
   useEffect(() => {
     if (!user || !user.uid) {
       router.replace('/login');
-      
-    } else {
-      //
-    }
+    } 
   }, [user, router]);
 
   if (!user || !user.uid) {
