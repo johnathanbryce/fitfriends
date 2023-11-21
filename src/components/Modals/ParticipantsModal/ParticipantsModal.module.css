@@ -7,7 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 8;
 }
 
 .modal_background{
@@ -20,7 +20,7 @@
     cursor: pointer;
 }
 
-.modal_content{
+.modal_content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,8 +86,11 @@
 
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
+    .participants_modal{
+        width: 100%;
+    }
     .modal_content{
-        padding: 2rem;
+        padding: 1.25rem;
     }
 }
 

@@ -1,6 +1,7 @@
 .header{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 0rem 5rem;
     height: 10rem; 
 }
@@ -13,23 +14,24 @@
 .navbar{
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 4rem;
-    margin-bottom: 2rem;
+}
+
+.active .nav_item_text, .active .icon{
+    color: var(--font-headers);
+    font-weight: 900;
 }
 
 .nav_item{
     display: flex;
-    flex-direction: column;
     align-items: center;
-    margin-top: 4rem;
-    gap: 1rem; 
-    /* height: 6rem; */
+    gap: 2rem; 
 }
 
 .nav_item_text {
-    font-size: 1rem;
-    opacity: 0;
-    color: var(--font-headers);
+    font-size: clamp(1.4rem, 2vw, 1.6rem);
+    color: var(--font-primary);
 }
 
 .nav_item:hover .nav_item_text {
@@ -38,9 +40,40 @@
 
 
 .icon{
-    font-size: clamp(2rem, 3.5vw, 3.55rem);
-    color: var(--font-headers);
+    font-size: clamp(1.8rem, 2vw, 2.2rem);
+    color: var(--font-primary);
     cursor: pointer;
+}
+
+.prof_pic_container{
+    width: 5rem; 
+    height: 5rem; 
+    overflow: hidden;
+    border-radius: 50%; 
+    background-color: var(--default-color);
+}
+
+.prof_pic {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+}
+
+.active .prof_pic_container {
+    border: 0.15rem solid var(--accent-primary);
+}
+
+.initials {    
+    border-radius: 50%; 
+    padding: 1rem;
+    color: var(--font-secondary);
+    background-color: var(--background-secondary);
+   /*  font-weight: 900 */;
+}
+
+.active .initials {
+    background-color: var(--accent-primary);
 }
 
 
