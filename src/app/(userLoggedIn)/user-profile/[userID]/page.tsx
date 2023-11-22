@@ -47,12 +47,12 @@ export default function UserProfile() {
     <section className={styles.user_profile}>
         {userData ? (
           <>
-            <div className={styles.return_container}>
+{/*             <div className={styles.return_container}>
               <Link href={`/challenges-dashboard`}> 
                 <IoIosArrowBack className={styles.back_arrow}/> 
                 <p> challenges dashboard </p>
               </Link>
-            </div>
+            </div> */}
             <div className={styles.user_main_overview}>
               <div className={styles.profile_pic_flex_wrapper}>
                 <div className={styles.profile_pic_container}>

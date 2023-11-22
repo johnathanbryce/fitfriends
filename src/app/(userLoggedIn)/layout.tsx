@@ -2,7 +2,7 @@
 'use client'
 import React, {useEffect} from 'react';
 // Next.js
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 // Internal Components
 import HeaderLoggedIn from '@/components/Headers/HeaderLoggedIn/HeaderLoggedIn';
 import Loading from '../loading';
@@ -22,17 +22,21 @@ export default function LoggedInLayout({
 }) {
   
   const { user } = useAuth();
-  const router = useRouter();
+/*   const router = useRouter(); */
 
   // redirect to login page if user not authorized
-  useEffect(() => {
+/*   useEffect(() => {
     if (!user || !user.uid) {
       router.replace('/login');
     } 
-  }, [user, router]);
+  }, [user, router]); */
 
-  if (!user || !user.uid) {
+/*   if (!user || !user.uid) {
     return <Loading />
+  } */
+
+  if(!user) {
+    redirect('/login')
   }
 
   return (
