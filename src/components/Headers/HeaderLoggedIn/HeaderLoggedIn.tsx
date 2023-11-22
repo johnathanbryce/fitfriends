@@ -26,7 +26,6 @@ export default function HeaderLoggedIn() {
   const pathname = usePathname();
   // custom hooks
   const { userData } = useFetchUserData();
-  console.log(userData?.profilePicture)
 
   // toggle dropdown navbar menu on smaller screens:
   const toggleDropdown = () => {

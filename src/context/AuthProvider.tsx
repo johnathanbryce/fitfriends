@@ -5,7 +5,7 @@ import { initFirebase } from '../../firebaseApp';
 // Firebase Auth for Google
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 // Next.js
-import { useRouter } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
 // Firebase Auth
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, confirmPasswordReset } from 'firebase/auth';
 // Firebase 
@@ -204,15 +204,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
  
   const handleLogout = async () => {
     if(user === null){
-      console.log('Not logged in')
       return;
     }
-    auth.signOut();
+    await auth.signOut();
     setUser(null);
     setIsLoading(false);
     setAuthError('');
     localStorage.removeItem('user');
     router.replace('/login')
+    /* redirect('/login') */
   };
 
   const forgotPassword = async (email: string) => {
