@@ -52,7 +52,6 @@ export default function Challenge({params}: urlParamsProps) {
   // routing
   const router = useRouter();
   
-
   // checks if the user created the challenge to show or hide the
   // delete button and then add participants button
   useEffect(() => {
@@ -106,8 +105,10 @@ export default function Challenge({params}: urlParamsProps) {
           .then((userSnapshot) => {
             if (userSnapshot.exists()) {
               const userData = userSnapshot.val(); // data from "users"
-              const pointsData = data.participants[participantID]; // get points for this participant ** coming from "challenges" 
-              const participantWithPoints = { ...userData, ...pointsData }; 
+              const participantData = data.participants[participantID]; // data from "challenges"
+              const pointMetrics = participantData.pointMetricsUser || {}; // points from 'challenges' for each user bucket
+              // combined userData from USERS bucket + the user's points from CHALLENGES bucket via challenge/challengeID/participants/participantID/pointMetricsUser
+              const participantWithPoints = { ...userData, ...participantData, pointMetrics };
               participantsData.push(participantWithPoints);
             }
           })
@@ -205,6 +206,7 @@ export default function Challenge({params}: urlParamsProps) {
         console.error('Error fetching challenge data:', error);
       });
   };
+  
 
   return (
     <section className={styles.dashboard}>
@@ -221,19 +223,6 @@ export default function Challenge({params}: urlParamsProps) {
           </div>
           <div className={styles.challenge_overview}>
             <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
-
-            <div className={styles.rules}>
-              <p> <b>Cardio: </b>
-                  <span className={styles.rule}>
-                    {challengeData ? challengeData.rules.cardioMinutes : ''} = {challengeData ? challengeData.rules.cardioPoints : ''}
-                  </span>
-              </p>
-              <p> <b>Weights: </b>
-                  <span className={styles.rule}>
-                    {challengeData ? challengeData.rules.weightsMinutes : ''} = {challengeData ? challengeData.rules.weightsPoints : ''}
-                  </span>
-              </p>
-            </div>
           </div>
 
           <div className={styles.dashboard_section}>
@@ -282,9 +271,8 @@ export default function Challenge({params}: urlParamsProps) {
                         lastName={user.lastName}
                         profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
                         userName={user.userName}
-                        cardio={user.cardioPoints}
-                        weights={user.weightsPoints}
-                        total={user.cardioPoints + user.weightsPoints}
+                        pointMetrics={user.pointMetrics} 
+                        total={user.totalPoints}
                       />
                     ))}
                   </>
@@ -376,9 +364,8 @@ export default function Challenge({params}: urlParamsProps) {
                     lastName={user.lastName}
                     profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
                     userName={user.userName}
-                    cardio={user.cardioPoints}
-                    weights={user.weightsPoints}
-                    total={user.cardioPoints + user.weightsPoints}
+                    pointMetrics={user.pointMetrics} 
+                    total={user.totalPoints}
                   />
                 ))}  
               </div> 

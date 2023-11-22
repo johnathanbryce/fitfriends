@@ -91,6 +91,12 @@
     color: var(--error-color);
 }
 
+.icon_add_challenge{
+    cursor: pointer;
+    font-size: 3rem;
+    margin: 2rem auto;
+}
+
 /* section control arrows */
 .section_controls_container{
     display: flex;

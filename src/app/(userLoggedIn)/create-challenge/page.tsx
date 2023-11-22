@@ -5,6 +5,7 @@ import styles from './create-challenge.module.css'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 // Internal Components
+import PointMetric from '@/components/PointMetric/PointMetric';
 import Input from '@/components/Input/Input';
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill';
 import Loading from '@/app/loading';
@@ -20,9 +21,15 @@ import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 import {IoIosArrowBack, IoIosArrowForward} from 'react-icons/io'
+import { FaCirclePlus } from "react-icons/fa6";
 
 export default function CreateChallenge() {
     const [challengeName, setChallengeName] = useState('');
+    // pointMetric state
+    const [pointMetrics, setPointMetrics] = useState([{ name: '', value: '', duration: '', durationOption: '', intensity: '' }]);
+
+
+
     const [cardioMinutes, setCardioMinutes] = useState('');
     const [cardioPoints, setCardioPoints] = useState('');
     const [weightsMinutes, setWeightsMinutes] = useState('');
@@ -53,6 +60,7 @@ export default function CreateChallenge() {
       "challenge_summary"
     ];
 
+    // controls to handle each section
     const handlePrevSection = () => {
       setRequiredInputAlert(''); //reset so the error message doesn't persist
       setActiveSection((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
@@ -72,12 +80,12 @@ export default function CreateChallenge() {
           }
           break;
     
-        case 1:
+/*         case 1:
           if (!cardioMinutes || !cardioPoints || !weightsMinutes || !weightsPoints) {
             setRequiredInputAlert('Please complete all fields in the challenge rules.');
             return;
           }
-          break;
+          break; */
     
         case 2:
           if (!selection[0].startDate) {
@@ -148,18 +156,27 @@ export default function CreateChallenge() {
             [userData?.uid]: {  
               name: userData?.firstName + ' ' + userData?.lastName[0],
               username: userData?.userName || 'unknown user',
-              cardioPoints: 0,  // TODO: change to pointsMetric1 when flexible metrics created
-              weightsPoints: 0,   // TODO: change to pointsMetric2 when flexible metrics created
-              //TODO: update to pointsMetric3 and onwards.... when flexible metrics is created
+              // Dynamically create initial scores for each point metric
+              pointMetricsUser: pointMetrics.reduce((acc: any, metric, index) => {
+                acc[`metric${index + 1}`] = {
+                  name: metric.name,
+                  score: 0,  // Initial score for each metric
+                };
+                return acc;
+              }, {}),
               totalPoints: 0    
             }
           },
-          rules: {
-            cardioMinutes: cardioMinutes,
-            cardioPoints: cardioPoints,
-            weightsMinutes: weightsMinutes,
-            weightsPoints: weightsPoints,
-          },
+          pointMetrics: pointMetrics.reduce((acc: any, metric, index) => {
+            acc[`metric${index + 1}`] = {
+                name: metric.name,
+                value: metric.value,
+                duration: metric.duration,
+                durationOption: metric.durationOption,
+                intensity: metric.intensity
+            };
+            return acc;
+          }, {}),
           challengeWinner: '',
           status: 'active',
           challengeDuration: {
@@ -178,16 +195,30 @@ export default function CreateChallenge() {
         set(newChallengeRef, newChallenge);
         // reset inputs 
         setChallengeName('');
-        setCardioPoints('');
+/*         setCardioPoints('');
         setCardioMinutes('');
         setWeightsPoints('');
-        setWeightsMinutes('');
+        setWeightsMinutes(''); */
         router.replace(`/challenge/${newChallengeId}`);
       } catch (error) {
         console.error('Error adding a new challenge:', error);
       }
     }
-    
+
+    const addPointMetric = () => {
+      if (pointMetrics.length < 4) {
+        setPointMetrics([...pointMetrics, { name: '', value: '', duration: '', durationOption: '', intensity: '' }]);
+      }
+    };
+
+    const deletePointMetric = (index: any) => {
+      setPointMetrics(pointMetrics.filter((_, i) => i !== index));
+    }
+
+    const updatePointMetric = (index: any, updatedMetric: any) => {
+      setPointMetrics(pointMetrics.map((metric, i) => i === index ? updatedMetric : metric));
+    };
+
     if (isLoading) {
       return <Loading />
     }
@@ -215,59 +246,17 @@ export default function CreateChallenge() {
 
             {activeSection === 1 && (
               <div className={styles.input_container}>
-                <h4> Rules </h4>
-                <div className={styles.rule}>
-                    <h5> Cardio: </h5>
-                    <div className={styles.rules_flex_wrapper}>
-                      <Input 
-                          name='cardioMinutes'
-                          placeholder=" ex: 20 minutes"
-                          value={cardioMinutes}
-                          type='text'
-                          onChange={(e) => setCardioMinutes(e)}
-                          theme='dark'
-                          required={true}
-                          maxLength={30}
-                      />
-                      <p> equals </p>
-                      <Input 
-                          name='cardioPoints'
-                          placeholder=" ex: 1 point"
-                          value={cardioPoints}
-                          type='text'
-                          onChange={(e) => setCardioPoints(e)}
-                          theme='dark'
-                          required={true}
-                          maxLength={15}
-                      />
-                    </div>
-                </div>
-                <div className={styles.rule}>
-                    <h5> Weights </h5>
-                    <div className={styles.rules_flex_wrapper}>
-                      <Input 
-                          name='weightsMinutes'
-                          placeholder='ex: 30 mins'
-                          value={weightsMinutes}
-                          type='text'
-                          onChange={(e) => setWeightsMinutes(e)}
-                          theme='dark'
-                          required={true}
-                          maxLength={30}
-                      />
-                      <p> equals </p>
-                      <Input 
-                          name='weightsPoints'
-                          placeholder='ex: 1 point'
-                          value={weightsPoints}
-                          type='text'
-                          onChange={(e) => setWeightsPoints(e)}
-                          theme='dark'
-                          required={true}
-                          maxLength={15}
-                      />
-                    </div>
-                </div>
+                <h4> Challenge Point Metrics </h4>
+                {pointMetrics.map((metric, index) => (
+                    <PointMetric
+                        key={index}
+                        index={index}
+                        metric={metric}
+                        updateMetric={(updatedMetric) => updatePointMetric(index, updatedMetric)}
+                        deleteMetric={() => deletePointMetric(index)}
+                    />
+                ))}
+                { pointMetrics.length < 4 ? <FaCirclePlus className={styles.icon_add_challenge} onClick={addPointMetric} /> : null}
               </div>
           )}
 
@@ -281,7 +270,6 @@ export default function CreateChallenge() {
                 showMonthAndYearPickers={false}
                 showDateDisplay={false}
                 rangeColors={['#FF5722']}
-                /* style={{width: '27.5rem'}} */
               />
             </div>
           )}

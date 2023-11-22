@@ -22,18 +22,6 @@ export default function LoggedInLayout({
 }) {
   
   const { user } = useAuth();
-/*   const router = useRouter(); */
-
-  // redirect to login page if user not authorized
-/*   useEffect(() => {
-    if (!user || !user.uid) {
-      router.replace('/login');
-    } 
-  }, [user, router]); */
-
-/*   if (!user || !user.uid) {
-    return <Loading />
-  } */
 
   if(!user) {
     redirect('/login')
