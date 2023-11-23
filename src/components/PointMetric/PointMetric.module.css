@@ -32,12 +32,16 @@
     gap: 0.5rem;
 }
 
+.input_wrapper p {
+    font-size: 1.45rem;
+}
+
 .small_screen_name{
     display: none; /* initally hidden on larger screens */
 }
 
 .name {
-    flex: 0.2; /* initally displayed on larger screens */
+    flex: 0.4; /* initally displayed on larger screens */
 }
 
 .quantity {

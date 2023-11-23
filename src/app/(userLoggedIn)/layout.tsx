@@ -26,8 +26,6 @@ export default function LoggedInLayout({
   const pathname = usePathname()
   const isCreateChallengePage = pathname === '/create-challenge';
 
-  console.log(pathname)
-  
   const { user } = useAuth();
 
   if(!user) {

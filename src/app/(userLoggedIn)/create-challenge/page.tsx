@@ -190,10 +190,6 @@ export default function CreateChallenge() {
         set(newChallengeRef, newChallenge);
         // reset inputs 
         setChallengeName('');
-/*         setCardioPoints('');
-        setCardioMinutes('');
-        setWeightsPoints('');
-        setWeightsMinutes(''); */
         router.replace(`/challenge/${newChallengeId}`);
       } catch (error) {
         console.error('Error adding a new challenge:', error);
@@ -271,17 +267,23 @@ export default function CreateChallenge() {
 
           {activeSection === 3 && (
             <div className={styles.section_container}>
-              <h4> Challenge summary </h4>
+              <h4> Summary </h4>
               <div className={styles.challenge_summary}>
-                <p> <span className={styles.bold}> Name: </span> {challengeName}</p>
-                <p> <span className={styles.bold}> Cardio: </span> </p>
-                <p> <span className={styles.bold}> Weights: </span> </p>
-                <p>
-                  <span className={styles.bold}> Starts: </span> {selection[0].startDate ? formatDateForChallenges(selection[0].startDate) : 'Not set'}
-                </p>
-                <p>
-                <span className={styles.bold}> Ends: </span> {selection[0].endDate ? formatDateForChallenges(selection[0].endDate) : 'Not set'}
-                </p>
+                <h5 className={styles.summary_challenge_name}> {challengeName}</h5>
+                {pointMetrics.map((metric, index) => (
+                    <p key={index}> 
+                      <span className={styles.bold}> Metric {index + 1}: </span> 
+                      {`${metric.name} for ${metric.duration} ${metric.durationOption === '' ? 'minutes' : metric.durationOption}${metric.intensity !== 'n/a' && metric.intensity !== '' ? ` at ${metric.intensity} intensity` : ''} equals ${metric.value} point(s).`}
+                    </p>
+                ))}
+                <div className={styles.challenge_duration_container}>
+                  <p>
+                    <span className={styles.bold}> Starts: </span> {selection[0].startDate ? formatDateForChallenges(selection[0].startDate) : 'Not set'}
+                  </p>
+                  <p>
+                  <span className={styles.bold}> Ends: </span> {selection[0].endDate ? formatDateForChallenges(selection[0].endDate) : 'Not set'}
+                  </p>
+                </div>
               </div>
 
               <div className={styles.btn_and_warning_container}>

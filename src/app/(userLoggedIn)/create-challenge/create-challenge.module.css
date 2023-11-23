@@ -78,12 +78,24 @@
 .challenge_summary{
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 4rem;
+}
+
+.summary_challenge_name{
+    text-align: center;
+}
+
+.challenge_duration_container{
+    display: flex;
+    justify-content: space-between;
+
 }
 
 .bold{
-    font-weight: 800;
+    font-weight: 600;
 }
+
+/* end of chall summary CSS */
 
 .btn_and_warning_container {
     display: flex;
