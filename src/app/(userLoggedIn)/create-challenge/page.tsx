@@ -27,13 +27,7 @@ export default function CreateChallenge() {
     const [challengeName, setChallengeName] = useState('');
     // pointMetric state
     const [pointMetrics, setPointMetrics] = useState([{ name: '', value: '', duration: '', durationOption: '', intensity: '' }]);
-
-
-
-    const [cardioMinutes, setCardioMinutes] = useState('');
-    const [cardioPoints, setCardioPoints] = useState('');
-    const [weightsMinutes, setWeightsMinutes] = useState('');
-    const [weightsPoints, setWeightsPoints] = useState('');
+    // challenge creation limit per user flag
     const [limitExceeded, setLimitExceeded] = useState(false);
     // alert state for required inputs
     const [requiredInputAlert, setRequiredInputAlert] = useState('')
@@ -47,11 +41,17 @@ export default function CreateChallenge() {
         key: 'selection',
       },
     ]);
-
     // react-date-range fn
     const handleSelect = async (ranges: any) => {
       setSelection([ranges.selection]);
     };
+
+    // maximum allowable challenges cap
+    const maxChallenges = 3
+    // router
+    const router = useRouter();
+    // custom hook
+    const {userData, isLoading} = useFetchUserData();
 
     const sections = [
       "challenge_name",
@@ -80,12 +80,16 @@ export default function CreateChallenge() {
           }
           break;
     
-/*         case 1:
-          if (!cardioMinutes || !cardioPoints || !weightsMinutes || !weightsPoints) {
-            setRequiredInputAlert('Please complete all fields in the challenge rules.');
-            return;
+        case 1:
+          const allMetricsFilled = pointMetrics.every(metric => 
+              metric.name && metric.value && metric.duration /* && metric.durationOption */
+          );
+      
+          if (!allMetricsFilled) {
+              setRequiredInputAlert('Please complete all fields in the challenge rules.');
+              return;
           }
-          break; */
+          break;
     
         case 2:
           if (!selection[0].startDate) {
@@ -105,15 +109,6 @@ export default function CreateChallenge() {
       // Move to the next section if all validations pass
       setActiveSection((prevIndex) => (prevIndex < sections.length - 1 ? prevIndex + 1 : prevIndex));
     };
-    
-
-    // maximum allowable challenges cap
-    const maxChallenges = 3
-
-    // router
-    const router = useRouter();
-    // custom hook
-    const {userData, isLoading} = useFetchUserData();
 
     async function addNewChallenge(e: any) {
       e.preventDefault();
@@ -225,12 +220,12 @@ export default function CreateChallenge() {
 
   return (
     <form className={styles.create_challenge} onSubmit={addNewChallenge}>
-        <h2> Create Your Fitness Challenge</h2>
+          { activeSection === 0 && <h2> Create Your Fitness Challenge </h2>}
           <section className={styles.create_challenge_sections_wrapper}>
             {requiredInputAlert.length > 0 && <p className={styles.warning}> {requiredInputAlert} </p>}
             {activeSection === 0 && (
               <div className={`${styles.section_container} ${styles.name_wrapper}`}>
-                <h4> Challenge name </h4>
+                <h4> Name your challenge </h4>
                 <Input 
                     name='challengeName'
                     placeholder=''
@@ -246,7 +241,7 @@ export default function CreateChallenge() {
 
             {activeSection === 1 && (
               <div className={styles.section_container}>
-                <h4> Challenge Point Metrics </h4>
+                <h4> Create your custom point metrics </h4>
                 {pointMetrics.map((metric, index) => (
                     <PointMetric
                         key={index}
@@ -262,7 +257,7 @@ export default function CreateChallenge() {
 
           {activeSection === 2 && (
             <div className={styles.section_container}>
-              <h4> Challenge duration </h4>
+              <h4> Define the duration </h4>
               <DateRange
                 ranges={selection}
                 onChange={handleSelect}
@@ -276,11 +271,11 @@ export default function CreateChallenge() {
 
           {activeSection === 3 && (
             <div className={styles.section_container}>
-              <h4> Challenge Summary </h4>
+              <h4> Challenge summary </h4>
               <div className={styles.challenge_summary}>
                 <p> <span className={styles.bold}> Name: </span> {challengeName}</p>
-                <p> <span className={styles.bold}> Cardio: </span> {cardioMinutes} equals {cardioPoints}</p>
-                <p> <span className={styles.bold}> Weights: </span> {weightsMinutes} equals {weightsPoints}</p>
+                <p> <span className={styles.bold}> Cardio: </span> </p>
+                <p> <span className={styles.bold}> Weights: </span> </p>
                 <p>
                   <span className={styles.bold}> Starts: </span> {selection[0].startDate ? formatDateForChallenges(selection[0].startDate) : 'Not set'}
                 </p>

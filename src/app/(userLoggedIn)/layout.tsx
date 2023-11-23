@@ -2,7 +2,8 @@
 'use client'
 import React, {useEffect} from 'react';
 // Next.js
-import { redirect } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
+
 // Internal Components
 import HeaderLoggedIn from '@/components/Headers/HeaderLoggedIn/HeaderLoggedIn';
 import Loading from '../loading';
@@ -21,6 +22,12 @@ export default function LoggedInLayout({
   children: React.ReactNode
 }) {
   
+  ;
+  const pathname = usePathname()
+  const isCreateChallengePage = pathname === '/create-challenge';
+
+  console.log(pathname)
+  
   const { user } = useAuth();
 
   if(!user) {
@@ -33,7 +40,7 @@ export default function LoggedInLayout({
       <LayoutLoggedIn>
         {children}
       </LayoutLoggedIn>
-      <FooterLoggedIn />
+      {!isCreateChallengePage && <FooterLoggedIn />}
     </>
   )
 }

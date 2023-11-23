@@ -2,17 +2,21 @@
     display: none; /* never change, this allows for customizable select  */
 }
 
+.select_trigger, .option {
+    width: 10rem;
+    height: 4rem;
+}
+
 .select_trigger {
     padding: 1rem;
-  /*   text-align: left; */
-
     color: var(--input-text);
     background-color: var(--input-bg);
-    width: 10rem;
     padding: var(--input-padding);
     border-radius: var(--border-radius);
+    font-size: clamp(1rem, 2vw, 1.15rem); /* same as custom Input */
     cursor: pointer;
     position: relative; /* for positioning the arrow icon */
+    
 }
 
 /* Example with a pseudo-element */
@@ -22,27 +26,47 @@
     right: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.15rem);
 }
 
 .options {
-    background-color: #fff;
+    background-color: var(--background-secondary);
     border: 1px solid #ccc;
     border-radius: var(--border-radius);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    position: absolute;
-    z-index: 10;
+    position: absolute; 
+/*     height: 12rem;
+    overflow-y: scroll; */
+    z-index: 9;
+    
 }
 
 .option {
     /* padding: 10px 15px; */
-    width: 10rem; /*match with  */
+    color: var(--font-secondary);
     padding: var(--input-padding);
-
+    font-size: 1rem;
     cursor: pointer;
+    z-index: 9;
 }
 
 .option:hover {
-    background-color: #f0f0f0;
+    background-color: var(--inactive-color);
 }
 
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .select_trigger{
+        height: 3rem;
+    }
+
+    .select_trigger::after {
+        bottom: 1rem;
+        right: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .select_trigger, .option {
+        width: 7.25rem;
+    }
+}

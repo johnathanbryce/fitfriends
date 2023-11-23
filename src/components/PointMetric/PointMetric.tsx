@@ -5,7 +5,8 @@ import styles from './PointMetric.module.css';
 import Input from '../Input/Input';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
 // External Libraries
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaEquals  } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
 
 interface PointMetricProps {
     metric: {
@@ -28,19 +29,19 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
     };
 
     const durationOptions = [
-        'seconds',
         'minutes',
         'hours',
         'reps',
-        'sets'
+        'sets',
+        'n/a',
     ]
 
     const intensityOptions =[
-        'n/a',
+        'any',
         'low',
         'medium',
         'high',
-        'any'
+        'n/a',
     ]
 
     const placeholderOptions = [
@@ -58,7 +59,7 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
         'Boxing',
         'Rowing',
         'Jump Rope',
-        'Dance Fitness',
+        'Dance',
         'Basketball',
     ]
 
@@ -69,10 +70,9 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
 
   return (
     <div className={styles.point_metric}>
-        <p className={styles.title}> metric {index + 1} </p>
-        <div className={styles.point_metric_flex_wrapper}>
-            <div className={`${styles.input_wrapper} ${styles.name}`}>
-                <p> name </p>
+        <p className={styles.metric_number}> {index + 1}. </p>
+        <div className={`${styles.input_wrapper} ${styles.small_screen_name}`}>
+                <p> activity </p>
                 <Input 
                     name='name'
                     placeholder={placeholder}
@@ -81,10 +81,26 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     type='text'
                     theme='dark'
                     required={true}
+                    smallInput={true}
+                    maxLength={20}
+                />
+        </div>
+        <div className={styles.point_metric_flex_wrapper}>
+            <div className={`${styles.input_wrapper} ${styles.name}`}>
+                <p> activity </p>
+                <Input 
+                    name='name'
+                    placeholder={placeholder}
+                    value={metric.name}
+                    onChange={(newValue) => handleChange('name', newValue)}
+                    type='text'
+                    theme='dark'
+                    required={true}
+                    smallInput={true}
                     maxLength={20}
                 />
             </div>
-            <div className={`${styles.input_wrapper} ${styles.duration}`}>
+            <div className={`${styles.input_wrapper} ${styles.quantity}`}>
                 <p> quantity </p>
                 <Input 
                     name='duration'
@@ -94,6 +110,7 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     type='number'
                     theme='dark'
                     required={true}
+                    smallInput={true}
                     maxLength={10}
                 />
             </div>
@@ -102,7 +119,6 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                 <p> duration </p>
                 <CustomDropdown 
                     options={durationOptions} 
-                    title='parameters'
                     name='durationOption'
                     onChange={(e) => handleChange('durationOption', e.target.value)}
                 />
@@ -112,13 +128,12 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                 <p> intensity </p>
                 <CustomDropdown 
                     options={intensityOptions} 
-                    title='intensity'
                     name='intensity'
                     onChange={(e) => handleChange('intensity', e.target.value)}
                 />
             </div>
 
-            <p> = </p>
+            <FaEquals />
             <div className={`${styles.input_wrapper} ${styles.points}`}>
                 <p> point(s) </p>
                 <Input 
@@ -129,10 +144,14 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     type='number'
                     theme='dark'
                     required={true}
+                    smallInput={true}
                     maxLength={2}
                 />
             </div>
-            {index > 0 ? <FaTrashAlt className={styles.icon} onClick={() => deleteMetric(index)}  /> : <FaTrashAlt className={styles.icon_hidden} />  }
+            {/* trash icon for small screens */}
+            {index > 0 ? <FaTrashAlt className={styles.trash_icon } onClick={() => deleteMetric(index)}  /> : null  }
+            {/* X icon for small screens */}
+            {index > 0 ? <MdCancel className={styles.cancel_icon } onClick={() => deleteMetric(index)}  /> : null  }
         </div>
     </div>
   )

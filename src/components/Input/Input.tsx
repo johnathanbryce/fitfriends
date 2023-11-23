@@ -13,10 +13,11 @@ interface InputFormProps {
     theme: 'dark' | 'light',
     error?: boolean,
     required?: boolean,
+    smallInput?: boolean,
     maxLength?: number;
 }
 
-export default function Input({name, onClick, placeholder, value, type, theme, onChange, onFocus, onBlur, error=false, required=false, maxLength}: InputFormProps) {
+export default function Input({name, onClick, smallInput, placeholder, value, type, theme, onChange, onFocus, onBlur, error=false, required=false, maxLength}: InputFormProps) {
   return (
       <input 
           type={type}
@@ -32,6 +33,7 @@ export default function Input({name, onClick, placeholder, value, type, theme, o
           ${theme === 'dark' ? styles.input : styles.input_light} 
           ${error ? styles.error : '' }
           ${required ? styles.required : ''} 
+          ${smallInput? styles.small_input: ''}
           `}
       />
   )

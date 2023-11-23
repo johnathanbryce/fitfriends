@@ -4,23 +4,25 @@
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    padding: 1rem;
-/*     border: 0.05rem solid var(--border-color);
-    border-radius: var(--border-radius); */
-   
+    padding: 1rem 2rem; 
+    border-radius: var(--border-radius);
+    border: 0.1rem solid var(--inactive-color-light);
+    position: relative;  /* for trash & X icons positioning */
 }
 
 .point_metric_flex_wrapper{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 2rem;
     align-items: center;
-    /* gap: 3rem; */
 }
 
-.title {
-    text-align: center;
-    border-bottom: 0.05rem solid var(--border-color);
-    width: 100%;
+.metric_number {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-weight: 600;
+    padding: 1rem;
 }
 
 .input_wrapper{
@@ -30,11 +32,15 @@
     gap: 0.5rem;
 }
 
-.name {
-    flex: 0.2;
+.small_screen_name{
+    display: none; /* initally hidden on larger screens */
 }
 
-.duration {
+.name {
+    flex: 0.2; /* initally displayed on larger screens */
+}
+
+.quantity {
     flex: 0.15;
 }
 
@@ -51,11 +57,83 @@
     gap: 1rem;
 }
 
-.icon {
-    font-size: 1.6rem;
-    cursor: pointer;
+.cancel_icon {
+    display: none; /* initally hidden on larger screens */
 }
 
-.icon_hidden {
-    opacity: 0;
+.trash_icon {
+    font-size: 1.45rem;
+    cursor: pointer;
+    right: 2rem;
+    top: 3.5rem;
+    transition: var(--hover-transition);
+    position: absolute;
+}
+
+.trash_icon:hover, .cancel_icon:hover {
+    color: var(--accent-primary);
+    transform: scale(1.2);
+}
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .point_metric{
+        position: relative; /* for X icon */
+    }
+
+    .point_metric_flex_wrapper{
+        position: unset; /* reset rel position from above for X icon to apply to .point_metric */
+    }
+
+    .input_wrapper p {
+        font-size: 1.25rem;
+    }
+
+   .quantity  {
+        flex: 0.2;
+    }
+    
+    .points{
+        flex: 0.2;
+    }
+
+    .name{
+        display: none;
+    }
+
+    .small_screen_name{
+        display: flex;
+        text-align: center;
+        width: 15rem;
+        border-bottom: 0.05rem solid var(--inactive-color-light);
+        padding-bottom: 1rem;
+    }
+
+    .trash_icon {
+        display: none;
+    }
+
+    .cancel_icon {
+        display: block;
+        font-size: 2.4rem;
+        right: -0.5rem;
+        top: -0.5rem;
+        cursor: pointer;
+        position: absolute;
+    }
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .point_metric_flex_wrapper {
+        gap: 1rem;
+    }
+
+}
+
+/* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
+@media (max-width: 325px) {  
+    .point_metric_flex_wrapper{
+        flex-direction: column;
+    }
 }

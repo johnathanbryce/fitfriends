@@ -4,24 +4,24 @@ import styles from './CustomDropdown.module.css'
 
 interface CustomDropdownProps {
     options: any[],
-    title: string,
     name: string,
     onChange: (e: any) => void,
 }
 
-const CustomDropdown = ({ options, name, title, onChange }: CustomDropdownProps) => {
+const CustomDropdown = ({ options, name, onChange }: CustomDropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(options[0]);
+    // ensures 'minutes' is the default and already selected option
+    const defaultOption = options.includes('minutes') ? 'minutes' : options[0];
+    const [selectedOption, setSelectedOption] = useState(defaultOption);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const handleOptionClick = (option: any) => {
         setSelectedOption(option);
-        onChange({ target: { name, value: option } }); // Mimic event object structure
+        onChange({ target: { name, value: option } }); 
         setIsOpen(false);
     };
     
-
     return (
         <div className={styles.custom_dropdown}>
             <div className={styles.select_trigger} onClick={toggleDropdown}>
