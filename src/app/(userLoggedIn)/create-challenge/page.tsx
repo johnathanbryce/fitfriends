@@ -229,7 +229,7 @@ export default function CreateChallenge() {
           <section className={styles.create_challenge_sections_wrapper}>
             {requiredInputAlert.length > 0 && <p className={styles.warning}> {requiredInputAlert} </p>}
             {activeSection === 0 && (
-              <div className={`${styles.input_container} ${styles.name_wrapper}`}>
+              <div className={`${styles.section_container} ${styles.name_wrapper}`}>
                 <h4> Challenge name </h4>
                 <Input 
                     name='challengeName'
@@ -245,7 +245,7 @@ export default function CreateChallenge() {
             )}
 
             {activeSection === 1 && (
-              <div className={styles.input_container}>
+              <div className={styles.section_container}>
                 <h4> Challenge Point Metrics </h4>
                 {pointMetrics.map((metric, index) => (
                     <PointMetric
@@ -261,7 +261,7 @@ export default function CreateChallenge() {
           )}
 
           {activeSection === 2 && (
-            <div className={styles.input_container}>
+            <div className={styles.section_container}>
               <h4> Challenge duration </h4>
               <DateRange
                 ranges={selection}
@@ -275,7 +275,7 @@ export default function CreateChallenge() {
           )}
 
           {activeSection === 3 && (
-            <div className={styles.input_container}>
+            <div className={styles.section_container}>
               <h4> Challenge Summary </h4>
               <div className={styles.challenge_summary}>
                 <p> <span className={styles.bold}> Name: </span> {challengeName}</p>

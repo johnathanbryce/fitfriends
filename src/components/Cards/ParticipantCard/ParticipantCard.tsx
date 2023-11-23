@@ -57,9 +57,6 @@ export default function ParticipantCard({firstName, lastName, userName, profileP
                   <p key={idx}> {metric.name}: {metric.score}</p>
                 ))}
                 <p className={styles.total_points}> Total: {total}</p>
-   {/*                <p> Cardio: {cardio}</p>
-                  <p> Weights: {weights}</p>
-                  <p className={styles.total_points}> Total: {cardio + weights}</p> */}
               </div>
             </div>
         </div>

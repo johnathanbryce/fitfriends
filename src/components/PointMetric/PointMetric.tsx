@@ -1,6 +1,9 @@
-import styles from './PointMetric.module.css'
+'use client'
+import { useState, useEffect } from 'react';
+import styles from './PointMetric.module.css';
 // Internal Components
-import Input from '../Input/Input'
+import Input from '../Input/Input';
+import CustomDropdown from '../CustomDropdown/CustomDropdown';
 // External Libraries
 import { FaTrashAlt } from "react-icons/fa";
 
@@ -18,6 +21,8 @@ interface PointMetricProps {
   }
 
 export default function PointMetric({metric, index, updateMetric, deleteMetric}: PointMetricProps) {
+    const [placeholder, setPlaceholder] = useState('');
+
     const handleChange = (propertyName: any, newValue: any) => {
         updateMetric({ ...metric, [propertyName]: newValue });
     };
@@ -29,62 +34,105 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
         'reps',
         'sets'
     ]
+
     const intensityOptions =[
-        'N/A',
+        'n/a',
         'low',
         'medium',
         'high',
         'any'
     ]
 
+    const placeholderOptions = [
+        'Yoga',
+        'Cardio',
+        'Cycling',
+        'Weight Lifting',
+        'Soccer',
+        'Walking',
+        'Running',
+        'Swimming',
+        'Hiking',
+        'CrossFit',
+        'Pilates',
+        'Boxing',
+        'Rowing',
+        'Jump Rope',
+        'Dance Fitness',
+        'Basketball',
+    ]
+
+    useEffect(() => {
+        const randomIndex = Math.floor(Math.random() * placeholderOptions.length);
+        setPlaceholder(`ex:  ${placeholderOptions[randomIndex]}`);
+    }, []);
+
   return (
     <div className={styles.point_metric}>
-        <p> Custom Metric {index + 1} </p>
+        <p className={styles.title}> metric {index + 1} </p>
         <div className={styles.point_metric_flex_wrapper}>
-            <Input 
-                name='name'
-                placeholder="Name (ex: Weightlifting)"
-                value={metric.name}
-                onChange={(newValue) => handleChange('name', newValue)}
-                type='text'
-                theme='dark'
-                required={true}
-                maxLength={20}
-            />
-            <Input 
-                name='duration'
-                placeholder="Duration"
-                value={metric.duration}
-                onChange={(newValue) => handleChange('duration', newValue)}
-                type='number'
-                theme='dark'
-                required={true}
-                maxLength={10}
-            />
-            <select name='durationOption' value={metric.durationOption} onChange={(e) => handleChange('durationOption', e.target.value)}>
-                {durationOptions.map(option => (
-                    <option key={option} value={option}>{option}</option>
-                ))}
-            </select>
+            <div className={`${styles.input_wrapper} ${styles.name}`}>
+                <p> name </p>
+                <Input 
+                    name='name'
+                    placeholder={placeholder}
+                    value={metric.name}
+                    onChange={(newValue) => handleChange('name', newValue)}
+                    type='text'
+                    theme='dark'
+                    required={true}
+                    maxLength={20}
+                />
+            </div>
+            <div className={`${styles.input_wrapper} ${styles.duration}`}>
+                <p> quantity </p>
+                <Input 
+                    name='duration'
+                    placeholder=""
+                    value={metric.duration}
+                    onChange={(newValue) => handleChange('duration', newValue)}
+                    type='number'
+                    theme='dark'
+                    required={true}
+                    maxLength={10}
+                />
+            </div>
 
-            <select name='intensity'  value={metric.intensity} onChange={(e) => handleChange('intensity', e.target.value)}>
-                {intensityOptions.map(option => (
-                    <option key={option} value={option}>{option}</option>
-                ))}
-            </select>
+            <div className={`${styles.input_wrapper} ${styles.dropdown}`}>
+                <p> duration </p>
+                <CustomDropdown 
+                    options={durationOptions} 
+                    title='parameters'
+                    name='durationOption'
+                    onChange={(e) => handleChange('durationOption', e.target.value)}
+                />
+            </div>
+
+            <div className={`${styles.input_wrapper} ${styles.dropdown}`}>
+                <p> intensity </p>
+                <CustomDropdown 
+                    options={intensityOptions} 
+                    title='intensity'
+                    name='intensity'
+                    onChange={(e) => handleChange('intensity', e.target.value)}
+                />
+            </div>
 
             <p> = </p>
-            <Input 
-                name='value'
-                placeholder="Value (ex: 1 point)"
-                value={metric.value}
-                onChange={(newValue) => handleChange('value', newValue)}
-                type='number'
-                theme='dark'
-                required={true}
-                maxLength={10}
-            />
-            {index > 0 ? <FaTrashAlt className={styles.icon} onClick={() => deleteMetric(index)}  /> : <div> </div> }
+            <div className={`${styles.input_wrapper} ${styles.points}`}>
+                <p> point(s) </p>
+                <Input 
+                    name='value'
+                    placeholder=""
+                    value={metric.value}
+                    onChange={(newValue) => handleChange('value', newValue)}
+                    type='number'
+                    theme='dark'
+                    required={true}
+                    maxLength={2}
+                />
+            </div>
+            {index > 0 ? <FaTrashAlt className={styles.icon} onClick={() => deleteMetric(index)}  /> : <FaTrashAlt className={styles.icon_hidden} />  }
         </div>
     </div>
   )

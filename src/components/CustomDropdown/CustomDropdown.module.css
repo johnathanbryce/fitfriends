@@ -1,0 +1,48 @@
+.hidden_select{
+    display: none; /* never change, this allows for customizable select  */
+}
+
+.select_trigger {
+    padding: 1rem;
+  /*   text-align: left; */
+
+    color: var(--input-text);
+    background-color: var(--input-bg);
+    width: 10rem;
+    padding: var(--input-padding);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    position: relative; /* for positioning the arrow icon */
+}
+
+/* Example with a pseudo-element */
+ .select_trigger::after {
+    content: '\25BC';
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+}
+
+.options {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: absolute;
+    z-index: 10;
+}
+
+.option {
+    /* padding: 10px 15px; */
+    width: 10rem; /*match with  */
+    padding: var(--input-padding);
+
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: #f0f0f0;
+}
+
