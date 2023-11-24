@@ -21,7 +21,7 @@ export default function HowItWorks() {
     <section className={styles.how_it_works}>
         <LayoutSections title='How it works' bgColor='orange'>
             <aside className={styles.how_it_works_flex_wrapper}>
-                <p className={styles.text}> Create custom fitness challenges based on weights and cardio. Set the duration and points for each metric to match your fitness goals.</p>
+                <p className={styles.text}> Design your own fitness challenges with complete flexibility. Choose the exercises and set the duration and points for each activity to align with your fitness objectives. Whether it&apos;s strength training, cardio, or any other workout, tailor each challenge to suit your goals.</p>
                 <p className={styles.text}> Track your progress and compete with friends to stay motivated on your fitness journey.</p>
                 <div className={styles.btn_container}>
                     <ButtonPillRoute
