@@ -26,12 +26,12 @@ export const Carousel = ({children}: CarouselProps) => {
 
   return (
     <div className={styles.embla}>    
-        <div className={styles.arrow_wrapper}  onClick={scrollPrev}>
+{/*         <div className={styles.arrow_wrapper}  onClick={scrollPrev}>
           <IoIosArrowBack className={styles.arrow} />
         </div>
         <div className={styles.arrow_wrapper} onClick={scrollNext}>
             <IoIosArrowForward className={styles.arrow} />
-        </div>   
+        </div>    */}
         <div className={styles.embla__viewport} ref={emblaRef}>
             <div className={styles.embla__container}>
                 {children}

@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
-    min-height: 90vh;
+    gap: 1.5rem;
+    min-height: 100vh;
 }
 
 .hero h1 {
@@ -30,24 +30,31 @@
 }
 
 .animation {
-    width: 15rem;
+    width: 25rem;
+}
+
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+
 }
 
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .hero {
-        padding: 2rem 2rem;
+        padding: 0 2rem;
         justify-content: center;
-        min-height: 70vh;
+    }
+
+    .logo{
+        width: 30rem;
     }
 
     .subheader{
-        text-align: center;
         width: 100%;
         padding: 0 2rem;
     }
 
-    .btn_container{
-        justify-content: center;
+    .animation {
+        width: 15rem;
     }
 }
