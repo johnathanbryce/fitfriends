@@ -8,34 +8,9 @@ import Image from 'next/image'
 import logoTransparent from '../../../../public/images/logo-transparent.png'
 // External Libraries
 import Lottie from 'lottie-react';
-import animationData from '../../../assets/dumbbell-phone-animation.json'
-
-interface Interactivity {
-  mode: 'scroll' 
-  actions: any[]
-}
+import animationData from '../../../assets/ff-hero-animation.json'
 
 export default function Hero() {
-  const interactivity: Interactivity = {
-    mode: "scroll",
-    actions: [
-      {
-        visibility: [0, 0.2],
-        type: "stop",
-        frames: [0],
-      },
-      {
-        visibility: [0.2, 0.45],
-        type: "seek",
-        frames: [0, 45],
-      },
-      {
-        visibility: [0.45, 1.0],
-        type: "loop",
-        frames: [45, 60],
-      },
-    ],
-  };
 
   return (
     <section className={styles.hero}>
@@ -53,7 +28,7 @@ export default function Hero() {
             />
         </div>
         <div className={styles.animation}>
-            <Lottie animationData={animationData} loop={false} interactivity={interactivity}/>
+            <Lottie animationData={animationData}/>
         </div>
     </section>
   )

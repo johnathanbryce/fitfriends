@@ -24,7 +24,7 @@ export default function Home() {
       <HeaderHomePage />
       <Hero />
       <HowItWorks />
-      <OurStory />
+      {/* <OurStory /> */}
       <GetStarted />
       <FooterLoggedOut />
     </LayoutHomePage>
