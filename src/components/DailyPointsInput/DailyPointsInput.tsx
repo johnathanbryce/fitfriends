@@ -14,15 +14,13 @@ interface DailyPointsInputProps {
 }
 
 export default function DailyPointsInput({challengeId, user}: DailyPointsInputProps) {
-    const [cardio, setCardio] = useState<number | ''>(0);
-    const [weights, setWeights] = useState<number | ''>(0);
     const [isConfirmActive, setIsConfirmActive] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     // each challenges individual point metrics state
     const [pointMetrics, setPointMetrics] = useState<any>([]);
     // input values per point metric
     const [inputValues, setInputValues] = useState<any>({});
-
+    
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       if (e.target.value === '0') {
           e.target.value = '';
@@ -132,6 +130,7 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
                         name={metric.name}
                         value={inputValues[metric.name] || 0}
                         type='number'
+                        maxLength={3}
                         onChange={(e) => handleMetricChange(metric.name, e)}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
@@ -143,34 +142,38 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
         </div>
 
         <div className={styles.button_width_wrapper}>
+            {/* button submit is disabled if any of the inputs === '0' or ' */}
             <ButtonPill 
                 label='Submit'
                 isLoading={isLoading}
                 secondary={true}
+                disabled={Object.values(inputValues).every(value => value === '0' || value === '')}
                 onClick={toggleConfirmPoints}
             />
         </div>
 
         {isConfirmActive && (
           <div className={styles.confirm_points_container}>
-            <div className={styles.confirm_text_wrapper}>
-              <h6> Confirm:</h6>
-              <div className={styles.points_wrapper}>
-                <p> Cardio {cardio}</p>
-                <p> Weights {weights}</p>
+            <div className={styles.inputs_container}>
+              {pointMetrics.map((metric: any, index: any) => (
+              <div key={index} className={styles.input}>
+                <h6 className={`${styles.input_metric_name} ${inputValues[metric.name] > 0 ? styles.updated_metric : ''}`}>{metric.name}</h6>
+                <p className={inputValues[metric.name] > 0 ? styles.updated_metric : ''}> {inputValues[metric.name] || 0 } </p>
               </div>
+              ))}
             </div>
+
             <div className={styles.btn_confirm_wrapper}>
               <ButtonPill 
-                  label='Submit'
+                  label='X'
+                  isLoading={isLoading}
+                  onClick={toggleConfirmPoints}
+              />
+              <ButtonPill 
+                  label='confirm'
                   isLoading={isLoading}
                   secondary={true}
                   onClick={updatePoints}
-              />
-              <ButtonPill 
-                  label='Edit'
-                  isLoading={isLoading}
-                  onClick={toggleConfirmPoints}
               />
             </div>
           </div>

@@ -97,7 +97,7 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     theme='dark'
                     required={true}
                     smallInput={true}
-                    maxLength={20}
+                    maxLength={18}
                 />
             </div>
             <div className={`${styles.input_wrapper} ${styles.quantity}`}>
@@ -111,7 +111,7 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     theme='dark'
                     required={true}
                     smallInput={true}
-                    maxLength={10}
+                    maxLength={3}
                 />
             </div>
 
@@ -145,7 +145,7 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     theme='dark'
                     required={true}
                     smallInput={true}
-                    maxLength={2}
+                    maxLength={3}
                 />
             </div>
             {/* trash icon for small screens */}

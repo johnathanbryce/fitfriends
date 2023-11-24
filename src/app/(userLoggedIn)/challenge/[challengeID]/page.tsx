@@ -113,21 +113,16 @@ export default function Challenge({params}: urlParamsProps) {
               // combined userData from USERS bucket + the user's points from CHALLENGES bucket via challenge/challengeID/participants/participantID/pointMetricsUser
               const participantWithPoints = { ...userData, ...participantData, pointMetrics };
               participantsData.push(participantWithPoints);
+/*               setParticipantsInfo(participantsData); */
             }
           })
           .catch((error) => {
             console.error('Error fetching user data:', error);
           });
         })).then(() => {
-            // sort participants by total points before setting the state
-            const sortedParticipants = participantsData.sort((a: any, b: any) => {
-              const totalPointsA = a.cardioPoints + a.weightsPoints;
-              const totalPointsB = b.cardioPoints + b.weightsPoints;
-              return totalPointsB - totalPointsA; 
-            });
-
-            // update state with sorted data of participants
-            setParticipantsInfo(sortedParticipants);
+          // Sort participants by total points before setting the state
+          participantsData.sort((a: any, b: any) => b.totalPoints - a.totalPoints);
+          setParticipantsInfo(participantsData);
         });
 
         // update isChallengeActive and challengeWinner based on the challenge data
@@ -229,23 +224,25 @@ export default function Challenge({params}: urlParamsProps) {
 
           
             <div className={styles.challenge_overview}>
-              {/* <p> <b>Rules:</b></p> */}
-              <ExpandableContainer title='Rules'>
-                {pointMetricsArray.length > 0 && pointMetricsArray.map((metric: any, i: number) => (
-                  <div key={i} className={styles.rule}> 
-                    <p><b>{metric.name}: </b></p>
-                    <p> for {metric.duration} </p>
-                    <p> {metric.durationOption === "" ? 'minutes' : metric.durationOption}</p>
-                    {metric.intensity === "" ? null : <p>at {metric.intensity} intensity</p>}
-                    <p> equals {metric.value} point{metric.value > 1 ? 's' : null} </p>
-                  </div>
-                ))}
+              <ExpandableContainer title='Challenge Rules'>
+                <div className={styles.point_rules_container}>
+                  {pointMetricsArray.length > 0 && pointMetricsArray.map((metric: any, i: number) => (
+                    <div key={i}> 
+                      <p className={styles.rule}>
+                        <b>{metric.name}: </b>
+                        for {metric.duration} {metric.durationOption === "" ? 'minutes' : metric.durationOption}
+                        {metric.intensity && ` at ${metric.intensity} intensity`}
+                        &nbsp; = {metric.value} point{metric.value > 1 ? 's' : ''}
+                      </p>
+                    </div> 
+                  ))}
+                </div>
                </ExpandableContainer>
             </div>
          
 
           <div className={styles.dashboard_section}>
-            <h3> Submit points  </h3>
+            <h4> Submit points  </h4>
             {isUserAParticipant ? (
               <DailyPointsInput 
                 challengeId={params} 
@@ -261,15 +258,13 @@ export default function Challenge({params}: urlParamsProps) {
                 >
                     Request to Join Challenge
                 </a>
-
-
               </div>
             )}
           </div>
 
           <div className={styles.dashboard_section}>
             <div className={styles.subheader_container}>
-              <h3> Participants </h3>
+              <h4> Participants </h4>
               {isAddParticipantsButtonVisible && 
                 <ButtonPill
                   label='add-users'

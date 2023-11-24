@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './ButtonPill.module.css';
 // External Libraries
 import {AiOutlineUsergroupAdd} from 'react-icons/ai'
+import { FaCheck } from "react-icons/fa";
 
 interface ButtonPillProps {
   label: any;
@@ -20,8 +21,12 @@ const ButtonPill = ({label, isLoading, disabled, secondary, onClick}: ButtonPill
     ? styles.button_secondary
     : styles.button;
 
-    if(label === 'add-users'){
+    if (label === 'add-users'){
       label = <AiOutlineUsergroupAdd className={styles.icon} />
+    }
+
+    if (label === 'confirm'){
+      label = <FaCheck className={styles.icon_confirm} />
     }
 
   return (

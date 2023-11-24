@@ -28,7 +28,7 @@
     color: var(--font-secondary);
 }
 
-.confirm_points_container > *, .points_wrapper > *, .confirm_text_wrapper > *{
+.confirm_points_container > *, .points_wrapper > *, .confirm_text_wrapper > *, .input > * {
     color: white;
 }
 
@@ -57,23 +57,42 @@
     gap: 4rem;
 }
 
-.confirm_text_wrapper, .btn_confirm_wrapper{
+.confirm_text_wrapper {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
 }
 
+.btn_confirm_wrapper{
+    display: flex;
+    gap: 1rem;
+}
+
+.updated_metric{
+    color: var(--accent-secondary);
+    font-weight: 900;
+}
+
 /* Mobile Devices (landscape) */
 @media (max-width: 775px) {
-    .daily_points_input {
+    .daily_points_input, .confirm_points_container {
         flex-direction: column;
         gap: 2rem;
+    }
+
+    .confirm_points_container{
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: var(--border-radius);
+        background-color: var(--background-secondary);
+        padding: 2rem;
     }
 
     .inputs_container{
        flex-direction: column;
        align-items: center;
-        gap: 2rem;
+       gap: 2rem;
     }
 
     .input {
@@ -88,16 +107,18 @@
     }
 
     .input_width_wrapper{
-        flex: 0.15;
+        flex: 0.2;
     }
 
-    .button_width_wrapper{
+    .button_width_wrapper, .btn_confirm_wrapper{
         align-self: flex-end;
     }
+}
 
-    .confirm_points_container{
-        flex-direction: column;
-        gap: 0.5rem;
+/* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
+@media (max-width: 325px) {
+    .input_width_wrapper{
+        flex: 0.30;
     }
 }
 

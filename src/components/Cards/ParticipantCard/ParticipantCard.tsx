@@ -17,11 +17,12 @@ interface ParticipantCardProps {
 }
 
 export default function ParticipantCard({firstName, lastName, userName, profilePicture, pointMetrics, index, total}: ParticipantCardProps) {
+    
     let pointMetricsArray = Object.entries(pointMetrics).map(([id, metric]) => {
       if (metric && typeof metric === 'object') {
           return { id, ...metric };
       } else {
-          // Return a default structure if metric is not an object
+          // return a default structure if metric is not an object
           return { id, name: '', score: 0 };
       }
     });
@@ -53,9 +54,14 @@ export default function ParticipantCard({firstName, lastName, userName, profileP
                   />      
                 </div>
               <div className={styles.points_container}>
-                {pointMetricsArray.map((metric: any, idx: number) => (
-                  <p key={idx}> {metric.name}: {metric.score}</p>
-                ))}
+                <div className={styles.point_metrics_wrapper}>
+                  {pointMetricsArray.map((metric: any, i: number) => (
+                    <div className={styles.point} key={i}>
+                      <p> {metric.name}:&nbsp; </p>
+                      <p> {metric.score}</p>
+                    </div>
+                  ))}
+                </div>
                 <p className={styles.total_points}> Total: {total}</p>
               </div>
             </div>
