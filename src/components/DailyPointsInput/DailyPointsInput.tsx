@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './DailyPointsInput.module.css'
 // Internal Components
 import Input from '../Input/Input';
@@ -7,8 +7,6 @@ import ButtonPill from '../Buttons/ButtonPill/ButtonPill';
 // Firebase
 import { database } from '../../../firebaseApp';
 import {get, update, ref} from 'firebase/database'
-// Custom Hooks
-import { useFetchUserData } from '@/hooks/useFetchUserData';
 
 interface DailyPointsInputProps {
     challengeId: any,
@@ -16,14 +14,13 @@ interface DailyPointsInputProps {
 }
 
 export default function DailyPointsInput({challengeId, user}: DailyPointsInputProps) {
-    const [cardio, setCardio] = useState<number | ''>(0);
-    const [weights, setWeights] = useState<number | ''>(0);
     const [isConfirmActive, setIsConfirmActive] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    // custom hook
-    const { userData } = useFetchUserData();
-
+    // each challenges individual point metrics state
+    const [pointMetrics, setPointMetrics] = useState<any>([]);
+    // input values per point metric
+    const [inputValues, setInputValues] = useState<any>({});
+    
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       if (e.target.value === '0') {
           e.target.value = '';
@@ -40,6 +37,39 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
       setIsConfirmActive((prev) => !prev)
     }
 
+    const handleMetricChange = (metricName: any, newValue: any) => {
+      setInputValues({
+          ...inputValues,
+          [metricName]: newValue
+      });
+  };
+
+    // fetches challenge pointMetrics and sets into state
+    useEffect(() => {
+      const fetchChallengeData = async () => {
+          const challengeRef = ref(database, `challenges/${challengeId.challengeID}`);
+          const challengeSnapshot = await get(challengeRef);
+          if (challengeSnapshot.exists()) {
+              const challengeData = challengeSnapshot.val();
+              // convert pointMetrics object to an array to then iterate over in JSX below
+              const metricsArray = challengeData.pointMetrics ? Object.keys(challengeData.pointMetrics).map(key => {
+                return {
+                    id: key,
+                    ...challengeData.pointMetrics[key]
+                };
+            }) : [];
+            // point metrics specific to each challenge 
+            setPointMetrics(metricsArray);
+            setInputValues(metricsArray.reduce((acc, metric) => {
+              acc[metric.name] = ''; // Initialize input value for each metric
+              return acc;
+          }, {}));
+          }
+      };
+  
+      fetchChallengeData();
+  }, [challengeId]);
+
     const updatePoints = async () => {
         setIsLoading(true);
         try {
@@ -54,39 +84,30 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
               const participant = challengeData.participants[user];
       
               if (participant) {
-                // calculate new points based on the current data and input values
-                const currentCardioPoints = participant.cardioPoints || 0;
-                const currentWeightsPoints = participant.weightsPoints || 0;
-                const newCardioPoints = currentCardioPoints + parseInt(cardio as string, 10);
-                const newWeightsPoints = currentWeightsPoints + parseInt(weights as string, 10);
-      
-                // update the logged-in user's points in 'challenges'
                 const participantRef = ref(database, `challenges/${challengeId.challengeID}/participants/${user}`);
-                await update(participantRef, {
-                  cardioPoints: newCardioPoints,
-                  weightsPoints: newWeightsPoints,
-                  totalPoints: newCardioPoints + newWeightsPoints,
-                });
+                let totalPoints = participant.totalPoints || 0;
+                const participantMetrics: any = {};
+                
+            
+                pointMetrics.forEach((metric: any, index: any) => {
+                  const metricKey = `metric${index + 1}`;
+                  const currentScore = participant.pointMetricsUser[metricKey]?.score || 0;
+                  const inputScore = parseInt(inputValues[metric.name], 10);
 
-                // calculate new points based on the current data and input values for the user
-                const currentUserRef = ref(database, `users/${userData.uid}/totalPointsOverall`);
-                const currentUserSnapshot = await get(currentUserRef);
-                const currentUserData = currentUserSnapshot.val() || {};
+                  if (!isNaN(inputScore)) {
+                      const newScore = currentScore + inputScore;
+                      // pushes each individual pointMetric to participantMetrics at the appropriate database route `pointMetricsUser/${metricKey}/score`
+                      participantMetrics[`pointMetricsUser/${metricKey}/score`] = newScore;
+                      totalPoints += inputScore; 
+                  }
+              });
 
-                const currentCardioPointsUser = currentUserData.totalCardio || 0;
-                const currentWeightsPointsUser = currentUserData.totalWeights || 0;
-                const newCardioPointsUser = currentCardioPointsUser + parseInt(cardio as string, 10);
-                const newWeightsPointsUser = currentWeightsPointsUser + parseInt(weights as string, 10);
+                // add the updated total points along with metric scores to participantMetrics { }
+                participantMetrics['totalPoints'] = totalPoints;
 
-                // update the total overall points for the user in 'users'
-                await update(currentUserRef, {
-                  totalCardio: newCardioPointsUser,
-                  totalWeights: newWeightsPointsUser,
-                  totalPoints: newCardioPointsUser + newWeightsPointsUser,
-                });
-
-                setCardio(0);
-                setWeights(0);
+                // NOTE: this adds the participantMetrics { } which includes each metric (from .forEach above) as well as the totalPoints from participantMetrics['totalPoints'] = totalPoints;
+                await update(participantRef, participantMetrics);
+                setInputValues(Object.keys(inputValues).reduce((acc, key) => ({...acc, [key]: '0'}), {}));
                 setIsConfirmActive(false);
               }
             }
@@ -101,63 +122,58 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
   return (
     <div className={styles.daily_points_input}>
         <div className={styles.inputs_container}>
-            <div className={styles.input}>
-                <h5 className={styles.input_category}>Cardio</h5>
+          {pointMetrics.map((metric: any, index: any) => (
+            <div key={index} className={styles.input}>
+                <h6 className={styles.input_metric_name}>{metric.name}</h6>
                 <div className={styles.input_width_wrapper}>
                     <Input 
-                        name=''
-                        value={cardio}
+                        name={metric.name}
+                        value={inputValues[metric.name] || 0}
                         type='number'
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
-                        onChange={(e) => setCardio(e)}
-                        theme='light'
-                    />
-                </div>
-            </div>
-            <div className={styles.input}>
-                <h5 className={styles.input_category}>Weights</h5>
-                <div className={styles.input_width_wrapper}>
-                    <Input 
-                        name=''
-                        value={weights}
-                        type='number'
-                        onChange={(e) => setWeights(e)}
+                        maxLength={3}
+                        onChange={(e) => handleMetricChange(metric.name, e)}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         theme='light'
                     />
                 </div>
             </div>
+          ))}
         </div>
+
         <div className={styles.button_width_wrapper}>
+            {/* button submit is disabled if any of the inputs === '0' or ' */}
             <ButtonPill 
                 label='Submit'
                 isLoading={isLoading}
                 secondary={true}
+                disabled={Object.values(inputValues).every(value => value === '0' || value === '')}
                 onClick={toggleConfirmPoints}
             />
         </div>
-        { isConfirmActive && (
+
+        {isConfirmActive && (
           <div className={styles.confirm_points_container}>
-            <div className={styles.confirm_text_wrapper}>
-              <h6> Confirm:</h6>
-              <div className={styles.points_wrapper}>
-                <p> Cardio {cardio}</p>
-                <p> Weights {weights}</p>
+            <div className={styles.inputs_container}>
+              {pointMetrics.map((metric: any, index: any) => (
+              <div key={index} className={styles.input}>
+                <h6 className={`${styles.input_metric_name} ${inputValues[metric.name] > 0 ? styles.updated_metric : ''}`}>{metric.name}</h6>
+                <p className={inputValues[metric.name] > 0 ? styles.updated_metric : ''}> {inputValues[metric.name] || 0 } </p>
               </div>
+              ))}
             </div>
+
             <div className={styles.btn_confirm_wrapper}>
               <ButtonPill 
-                  label='Submit'
+                  label='X'
+                  isLoading={isLoading}
+                  onClick={toggleConfirmPoints}
+              />
+              <ButtonPill 
+                  label='confirm'
                   isLoading={isLoading}
                   secondary={true}
                   onClick={updatePoints}
-              />
-              <ButtonPill 
-                  label='Edit'
-                  isLoading={isLoading}
-                  onClick={toggleConfirmPoints}
               />
             </div>
           </div>

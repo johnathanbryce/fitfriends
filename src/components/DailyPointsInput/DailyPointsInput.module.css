@@ -1,16 +1,17 @@
 .daily_points_input{
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
     border-radius: var(--border-radius);
     background-color: var(--background-secondary);
     padding: 2rem;
-    position: relative; /* for confirm points pop-up */
+    position: relative; /* for confirm points pop-u & btn */
 }
 
 .inputs_container{
     display: flex;
     justify-content: space-evenly;
-    flex: 1;
+    width: 100%;
 }
 
 .input {
@@ -23,16 +24,11 @@
     width: 4rem;
 }
 
-.input_category {
+.input_metric_name {
     color: var(--font-secondary);
 }
 
-.button_width_wrapper{
-    display: flex;
-    flex: 0.3;
-}
-
-.confirm_points_container > *, .points_wrapper > *, .confirm_text_wrapper > *{
+.confirm_points_container > *, .points_wrapper > *, .confirm_text_wrapper > *, .input > * {
     color: white;
 }
 
@@ -61,39 +57,68 @@
     gap: 4rem;
 }
 
-.confirm_text_wrapper, .btn_confirm_wrapper{
+.confirm_text_wrapper {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
 }
 
 .btn_confirm_wrapper{
-    
+    display: flex;
+    gap: 1rem;
 }
 
-/* Mobile Devices up to 480px */
-@media (max-width: 480px) {
-    .button_width_wrapper{
-        align-self: flex-end;
-    }
+.updated_metric{
+    color: var(--accent-secondary);
+    font-weight: 900;
+}
 
-    .inputs_container{
-        justify-content: space-evenly;
-        align-items: flex-end;
-        width: 100%;
-    }
-
-    .input {
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) {
+    .daily_points_input, .confirm_points_container {
         flex-direction: column;
-    }
-
-    .button_width_wrapper{
-        width: 40%;
+        gap: 2rem;
     }
 
     .confirm_points_container{
-        flex-direction: column;
-        gap: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: var(--border-radius);
+        background-color: var(--background-secondary);
+        padding: 2rem;
+    }
+
+    .inputs_container{
+       flex-direction: column;
+       align-items: center;
+       gap: 2rem;
+    }
+
+    .input {
+        width: 100%;
+        align-items: center;
+        gap: 0.5;
+        justify-content: space-around;
+    }
+
+    .input_metric_name {
+        flex: 1;
+    }
+
+    .input_width_wrapper{
+        flex: 0.2;
+    }
+
+    .button_width_wrapper, .btn_confirm_wrapper{
+        align-self: flex-end;
+    }
+}
+
+/* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
+@media (max-width: 325px) {
+    .input_width_wrapper{
+        flex: 0.30;
     }
 }
 

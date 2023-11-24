@@ -4,6 +4,11 @@
     width: 100%;
     padding: var(--input-padding);
     border-radius: var(--border-radius);
+    font-size: clamp(1.6rem, 2vw, 1.8rem);
+}
+
+.small_input {
+    height: 4rem;
 }
 
 .input:focus {
@@ -23,8 +28,6 @@
     padding: var(--input-padding);
     border: 0.1rem solid var(--input-bg);
     border-radius: var(--border-radius);
-/*     outline: none;
-    border: none; */
 }
 
 .input_light:focus {
@@ -52,9 +55,14 @@
     100% { transform: translateX(0); }
 }
 
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .input, .input_light{
+        width: 90%;
+        height: 3rem;
+    }
+}
+
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
-    .input {
-        height: 4rem;
-    }
 }

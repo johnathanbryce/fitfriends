@@ -9,6 +9,7 @@ import LeaderboardCard from '@/components/Cards/LeaderboardCard/LeaderboardCard'
 import ParticipantsModal from '@/components/Modals/ParticipantsModal/ParticipantsModal'
 import ParticipantCard from '@/components/Cards/ParticipantCard/ParticipantCard'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
+import ExpandableContainer from '@/components/ExpandableContainer/ExpandableContainer'
 // Internal Assets
 import defaultUser from '../../../../../public/images/default-user-img.png'
 // Firebase
@@ -30,7 +31,8 @@ interface urlParamsProps {
 }
 
 export default function Challenge({params}: urlParamsProps) {
-  const [challengeData, setChallengeData] = useState<any>()
+  const [challengeData, setChallengeData] = useState<any>();
+  const [pointMetricsArray, setPointMetricsArray] =useState<any>([]); // convert .pointMetrics to an array from challengeData to map over in JSX
   const [participantsInfo, setParticipantsInfo] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   // state to track if a user is part of this challenge
@@ -52,7 +54,6 @@ export default function Challenge({params}: urlParamsProps) {
   // routing
   const router = useRouter();
   
-
   // checks if the user created the challenge to show or hide the
   // delete button and then add participants button
   useEffect(() => {
@@ -90,6 +91,7 @@ export default function Challenge({params}: urlParamsProps) {
     onValue(challengeRef, (snapshot) => {
       const data = snapshot.val();
       setChallengeData(data);
+      setPointMetricsArray(Object.values(data.pointMetrics))
   
       if (data.participants) {
         const participantIds = Object.keys(data.participants);
@@ -106,24 +108,21 @@ export default function Challenge({params}: urlParamsProps) {
           .then((userSnapshot) => {
             if (userSnapshot.exists()) {
               const userData = userSnapshot.val(); // data from "users"
-              const pointsData = data.participants[participantID]; // get points for this participant ** coming from "challenges" 
-              const participantWithPoints = { ...userData, ...pointsData }; 
+              const participantData = data.participants[participantID]; // data from "challenges"
+              const pointMetrics = participantData.pointMetricsUser || {}; // points from 'challenges' for each user bucket
+              // combined userData from USERS bucket + the user's points from CHALLENGES bucket via challenge/challengeID/participants/participantID/pointMetricsUser
+              const participantWithPoints = { ...userData, ...participantData, pointMetrics };
               participantsData.push(participantWithPoints);
+/*               setParticipantsInfo(participantsData); */
             }
           })
           .catch((error) => {
             console.error('Error fetching user data:', error);
           });
         })).then(() => {
-            // sort participants by total points before setting the state
-            const sortedParticipants = participantsData.sort((a: any, b: any) => {
-              const totalPointsA = a.cardioPoints + a.weightsPoints;
-              const totalPointsB = b.cardioPoints + b.weightsPoints;
-              return totalPointsB - totalPointsA; 
-            });
-
-            // update state with sorted data of participants
-            setParticipantsInfo(sortedParticipants);
+          // Sort participants by total points before setting the state
+          participantsData.sort((a: any, b: any) => b.totalPoints - a.totalPoints);
+          setParticipantsInfo(participantsData);
         });
 
         // update isChallengeActive and challengeWinner based on the challenge data
@@ -221,23 +220,29 @@ export default function Challenge({params}: urlParamsProps) {
           </div>
           <div className={styles.challenge_overview}>
             <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
-
-            <div className={styles.rules}>
-              <p> <b>Cardio: </b>
-                  <span className={styles.rule}>
-                    {challengeData ? challengeData.rules.cardioMinutes : ''} = {challengeData ? challengeData.rules.cardioPoints : ''}
-                  </span>
-              </p>
-              <p> <b>Weights: </b>
-                  <span className={styles.rule}>
-                    {challengeData ? challengeData.rules.weightsMinutes : ''} = {challengeData ? challengeData.rules.weightsPoints : ''}
-                  </span>
-              </p>
-            </div>
           </div>
 
+          
+            <div className={styles.challenge_overview}>
+              <ExpandableContainer title='Challenge Rules'>
+                <div className={styles.point_rules_container}>
+                  {pointMetricsArray.length > 0 && pointMetricsArray.map((metric: any, i: number) => (
+                    <div key={i}> 
+                      <p className={styles.rule}>
+                        <b>{metric.name}: </b>
+                        for {metric.duration} {metric.durationOption === "" ? 'minutes' : metric.durationOption}
+                        {metric.intensity && ` at ${metric.intensity} intensity`}
+                        &nbsp; = {metric.value} point{metric.value > 1 ? 's' : ''}
+                      </p>
+                    </div> 
+                  ))}
+                </div>
+               </ExpandableContainer>
+            </div>
+         
+
           <div className={styles.dashboard_section}>
-            <h3> Submit points  </h3>
+            <h4> Submit points  </h4>
             {isUserAParticipant ? (
               <DailyPointsInput 
                 challengeId={params} 
@@ -253,15 +258,13 @@ export default function Challenge({params}: urlParamsProps) {
                 >
                     Request to Join Challenge
                 </a>
-
-
               </div>
             )}
           </div>
 
           <div className={styles.dashboard_section}>
             <div className={styles.subheader_container}>
-              <h3> Participants </h3>
+              <h4> Participants </h4>
               {isAddParticipantsButtonVisible && 
                 <ButtonPill
                   label='add-users'
@@ -282,9 +285,8 @@ export default function Challenge({params}: urlParamsProps) {
                         lastName={user.lastName}
                         profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
                         userName={user.userName}
-                        cardio={user.cardioPoints}
-                        weights={user.weightsPoints}
-                        total={user.cardioPoints + user.weightsPoints}
+                        pointMetrics={user.pointMetrics} 
+                        total={user.totalPoints}
                       />
                     ))}
                   </>
@@ -376,9 +378,8 @@ export default function Challenge({params}: urlParamsProps) {
                     lastName={user.lastName}
                     profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
                     userName={user.userName}
-                    cardio={user.cardioPoints}
-                    weights={user.weightsPoints}
-                    total={user.cardioPoints + user.weightsPoints}
+                    pointMetrics={user.pointMetrics} 
+                    total={user.totalPoints}
                   />
                 ))}  
               </div> 

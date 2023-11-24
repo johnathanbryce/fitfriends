@@ -2,10 +2,7 @@ import React from 'react'
 import styles from './ParticipantCard.module.css'
 // Next.js
 import Image from 'next/image'
-import Link from 'next/link'
-
 // External Libraries 
-import {GoPerson} from 'react-icons/go'
 import { TbHexagonNumber1 } from "react-icons/tb";
 
 interface ParticipantCardProps {
@@ -14,13 +11,22 @@ interface ParticipantCardProps {
     lastName: string,
     userName: string,
     profilePicture: any,
-    cardio: number,
-    weights: number,
+    pointMetrics: any
     total: number,
     index?: number
 }
 
-export default function ParticipantCard({firstName, lastName, userName, profilePicture, cardio, weights, index}: ParticipantCardProps) {
+export default function ParticipantCard({firstName, lastName, userName, profilePicture, pointMetrics, index, total}: ParticipantCardProps) {
+    
+    let pointMetricsArray = Object.entries(pointMetrics).map(([id, metric]) => {
+      if (metric && typeof metric === 'object') {
+          return { id, ...metric };
+      } else {
+          // return a default structure if metric is not an object
+          return { id, name: '', score: 0 };
+      }
+    });
+
     return (
         <div className={index === 0 ? styles.first_place_participant_card : styles.participant_card}>
             {index === 0  && <TbHexagonNumber1 className={styles.first_place_number} />}
@@ -48,9 +54,15 @@ export default function ParticipantCard({firstName, lastName, userName, profileP
                   />      
                 </div>
               <div className={styles.points_container}>
-                  <p> Cardio: {cardio}</p>
-                  <p> Weights: {weights}</p>
-                  <p className={styles.total_points}> Total: {cardio + weights}</p>
+                <div className={styles.point_metrics_wrapper}>
+                  {pointMetricsArray.map((metric: any, i: number) => (
+                    <div className={styles.point} key={i}>
+                      <p> {metric.name}:&nbsp; </p>
+                      <p> {metric.score}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className={styles.total_points}> Total: {total}</p>
               </div>
             </div>
         </div>
