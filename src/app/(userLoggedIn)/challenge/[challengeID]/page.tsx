@@ -9,6 +9,7 @@ import LeaderboardCard from '@/components/Cards/LeaderboardCard/LeaderboardCard'
 import ParticipantsModal from '@/components/Modals/ParticipantsModal/ParticipantsModal'
 import ParticipantCard from '@/components/Cards/ParticipantCard/ParticipantCard'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
+import ExpandableContainer from '@/components/ExpandableContainer/ExpandableContainer'
 // Internal Assets
 import defaultUser from '../../../../../public/images/default-user-img.png'
 // Firebase
@@ -30,7 +31,8 @@ interface urlParamsProps {
 }
 
 export default function Challenge({params}: urlParamsProps) {
-  const [challengeData, setChallengeData] = useState<any>()
+  const [challengeData, setChallengeData] = useState<any>();
+  const [pointMetricsArray, setPointMetricsArray] =useState<any>([]); // convert .pointMetrics to an array from challengeData to map over in JSX
   const [participantsInfo, setParticipantsInfo] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   // state to track if a user is part of this challenge
@@ -89,6 +91,7 @@ export default function Challenge({params}: urlParamsProps) {
     onValue(challengeRef, (snapshot) => {
       const data = snapshot.val();
       setChallengeData(data);
+      setPointMetricsArray(Object.values(data.pointMetrics))
   
       if (data.participants) {
         const participantIds = Object.keys(data.participants);
@@ -206,7 +209,6 @@ export default function Challenge({params}: urlParamsProps) {
         console.error('Error fetching challenge data:', error);
       });
   };
-  
 
   return (
     <section className={styles.dashboard}>
@@ -224,6 +226,23 @@ export default function Challenge({params}: urlParamsProps) {
           <div className={styles.challenge_overview}>
             <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
           </div>
+
+          
+            <div className={styles.challenge_overview}>
+              {/* <p> <b>Rules:</b></p> */}
+              <ExpandableContainer title='Rules'>
+                {pointMetricsArray.length > 0 && pointMetricsArray.map((metric: any, i: number) => (
+                  <div key={i} className={styles.rule}> 
+                    <p><b>{metric.name}: </b></p>
+                    <p> for {metric.duration} </p>
+                    <p> {metric.durationOption === "" ? 'minutes' : metric.durationOption}</p>
+                    {metric.intensity === "" ? null : <p>at {metric.intensity} intensity</p>}
+                    <p> equals {metric.value} point{metric.value > 1 ? 's' : null} </p>
+                  </div>
+                ))}
+               </ExpandableContainer>
+            </div>
+         
 
           <div className={styles.dashboard_section}>
             <h3> Submit points  </h3>
