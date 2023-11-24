@@ -7,8 +7,6 @@ import ButtonPill from '../Buttons/ButtonPill/ButtonPill';
 // Firebase
 import { database } from '../../../firebaseApp';
 import {get, update, ref} from 'firebase/database'
-// Custom Hooks
-import { useFetchUserData } from '@/hooks/useFetchUserData';
 
 interface DailyPointsInputProps {
     challengeId: any,
@@ -24,9 +22,6 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
     const [pointMetrics, setPointMetrics] = useState<any>([]);
     // input values per point metric
     const [inputValues, setInputValues] = useState<any>({});
-
-    // custom hook
-    const { userData } = useFetchUserData();
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       if (e.target.value === '0') {
@@ -131,7 +126,7 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
         <div className={styles.inputs_container}>
           {pointMetrics.map((metric: any, index: any) => (
             <div key={index} className={styles.input}>
-                <h5 className={styles.input_category}>{metric.name}</h5>
+                <h6 className={styles.input_metric_name}>{metric.name}</h6>
                 <div className={styles.input_width_wrapper}>
                     <Input 
                         name={metric.name}
@@ -155,7 +150,8 @@ export default function DailyPointsInput({challengeId, user}: DailyPointsInputPr
                 onClick={toggleConfirmPoints}
             />
         </div>
-        { isConfirmActive && (
+
+        {isConfirmActive && (
           <div className={styles.confirm_points_container}>
             <div className={styles.confirm_text_wrapper}>
               <h6> Confirm:</h6>

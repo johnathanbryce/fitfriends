@@ -57,7 +57,7 @@
 
 /* Mobile Devices (landscape) */
 @media (max-width: 775px) { 
-    .input{
+    .input, .input_light{
         width: 90%;
         height: 3rem;
     }
