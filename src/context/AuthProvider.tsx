@@ -30,12 +30,14 @@ interface AuthContextState {
   newUser: boolean | null;
   authError: string | null;
   isPasswordResetSent: boolean | null;
+  isVerifyEmailResent: boolean | null;
   isLoading: boolean;
   clearAuthError: () => void,
   handleLogin: (email: string, password: string) => void;
   handleSignInWithGoogle: (e: any) => void;
   handleLogout: () => void;
   handleSignup: (email: string, password: string, userData: any) => void;
+  resendVerifyEmail: () => void;
   forgotPassword: (email: string) => void; 
 }
 
@@ -45,11 +47,13 @@ const AuthContext = createContext<AuthContextState>({
   authError: null,
   isLoading: false,
   isPasswordResetSent: false,
+  isVerifyEmailResent: false,
   clearAuthError: () => {},
   handleLogin: () => {},
   handleSignInWithGoogle: () => {},
   handleLogout: () => {},
   handleSignup: () => {},
+  resendVerifyEmail: () => {},
   forgotPassword: () => {},
 });
 
@@ -62,6 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authError, setAuthError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isPasswordResetSent, setPasswordResetSent] = useState(false);
+  const [isVerifyEmailResent, setIsVerifyEmailResent] = useState(false);
 
   // Firebase Auth
   initFirebase(); // configures firebase in our app
@@ -106,7 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
       setUser(mergedUserData); // set the user in the context
       localStorage.setItem('user', JSON.stringify(mergedUserData)); 
-      router.replace(`/intro`);
+      router.replace(`/verify-email`);
     } catch (error: any) {
       if (error.code === 'auth/invalid-email' || error.code === 'auth/missing-email') {
         setAuthError('Invalid or missing email address. Please input again.')
@@ -119,12 +124,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const resendVerifyEmail = async () => {
+    const currentUser = auth.currentUser; 
+    if (!currentUser) return;
+    try {
+      setIsLoading(true);
+      setAuthError('Email verification resent')
+      await sendEmailVerification(currentUser);
+      setIsVerifyEmailResent(true);
+    } catch (error: any) {
+      setAuthError("You have sent too many requests to re-verify your email. Please wait and try again");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+
   const handleLogin = async (email: string, password: string) => {
     try {
       setAuthError(null);
       setIsLoading(true)
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const loggedInUser = userCredential.user;
+
+      // check if email is verified
+      if (!loggedInUser.emailVerified) {
+        setAuthError('Please verify your email before logging in.');
+        setIsLoading(false);
+        return; 
+      }
+
       if (loggedInUser) {
         // check if the user exists in the db
         const userRef = ref(database, `users/${loggedInUser.uid}`);
@@ -183,7 +212,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // user exists in your database, proceed with authentication
         setUser(googleUser);
         localStorage.setItem('user', JSON.stringify(googleUser)); 
-        router.replace('/challenges-dashboard');
+        /* router.replace('/challenges-dashboard'); */
       } else {
         // user doesn't exist in your database, prevent Firebase Authentication
         await googleAuth.signOut(); // Sign out the Google user
@@ -199,9 +228,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
   
-  
-
- 
   const handleLogout = async () => {
     if(user === null){
       return;
@@ -242,11 +268,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         authError,
         isLoading,
         isPasswordResetSent,
+        isVerifyEmailResent,
         clearAuthError: clearAuthError,
         handleLogin: handleLogin, 
         handleSignInWithGoogle: handleSignInWithGoogle,
         handleLogout: handleLogout, 
         handleSignup: handleSignup,
+        resendVerifyEmail: resendVerifyEmail,
         forgotPassword: forgotPassword,
         }}>
       {children}

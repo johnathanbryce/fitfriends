@@ -120,8 +120,9 @@
     gap: 2rem;
 }
 
-.not_participant_text {
-    text-align: center;
+.challenge_start_date{
+    color: var(--accent-secondary);
+    font-weight: 600;
 }
 
 .request_to_join_button {

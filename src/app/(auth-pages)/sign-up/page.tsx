@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import styles from './SignUp.module.css'
+// Next.js
+import { redirect } from 'next/navigation';
 // Internal Components
 import AuthCard from '@/components/Cards/AuthCard/AuthCard'
 import InputForm from '@/components/Input/Input'
@@ -24,63 +26,63 @@ export default function SignUp() {
   // Error state variables
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  // Custom hook
-  useAuthenticationRedirect('/sign-up', 'challenges-dashboard');
+
+/*   // Custom hook
+  useAuthenticationRedirect('/sign-up', 'challenges-dashboard'); */
   // Auth
-  const { handleSignup, authError,clearAuthError, isLoading } = useAuth();
+  const { handleSignup, resendVerifyEmail, isVerifyEmailResent,  authError, clearAuthError, isLoading } = useAuth();
+
+  const handleUserSignUp = (e: any) => {
+    e.preventDefault();
+    
+    const userData = {
+      email: email,
+      firstName: capitalizeFirstLetter(firstName),
+      lastName: capitalizeFirstLetter(lastName),
+      userName: userName,
+      profilePicture: defaultUser,
+      isLoggedin: null,
+      challengesWon: 0,
+      challenges: {
+        
+      },
+      challengesCreatedLimit: 0,
+    };
+
+    handleSignup(email, password, userData);
+
+    if (authError === 'Invalid or missing email address. Please input again.') {
+      setEmailError(true);
+    } else if (authError === 'Invalid or missing password') {
+      setPasswordError(true);
+    } else if (authError === 'This email is already registered. Please try another.') {
+      setEmailError(true);
+    }
+
+    if (!authError) {
+      redirect('/email-verification'); 
+    }
+    // reset errors to false 
+    setEmailError(false);
+    setPasswordError(false);
+  }
 
   // Use useEffect to watch for changes in authError
   useEffect(() => {
-    // Reset errors to false initially
-    setEmailError(false);
-    setPasswordError(false);
-    if (authError === 'Invalid or missing email address. Please input again.') {
-      setEmailError(true);
-    } else if (authError === 'Invalid or missing password') {
-      setPasswordError(true);
-    } else if (authError === 'This email is already registered. Please try another.') {
-      setEmailError(true);
-    }
-  }, [authError]);
-
-  const handleUserSignUp = async(e: any) => {
-    e.preventDefault();
-    try {
-      const userData = {
-        email: email,
-        firstName: capitalizeFirstLetter(firstName),
-        lastName: capitalizeFirstLetter(lastName),
-        userName: userName,
-        profilePicture: defaultUser,
-        isLoggedin: null,
-        challengesWon: 0,
-        challenges: {
-          
-        },
-        challengesCreatedLimit: 0,
-        totalPointsOverall: {
-          totalWeights: 0,
-          totalCardio: 0,
-          totalPoints: 0
-       }
-      };
-
-      handleSignup(email, password, userData);
-      // reset errors to false 
+    if (authError) {
+      if (authError === 'Invalid or missing email address. Please input again.') {
+        setEmailError(true);
+      } else if (authError === 'Invalid or missing password') {
+        setPasswordError(true);
+      } else if (authError === 'This email is already registered. Please try another.') {
+        setEmailError(true);
+      }
+    } else {
+      // Reset email and password errors if there's no authError
       setEmailError(false);
       setPasswordError(false);
-    } catch (error: any) {
-
     }
-    
-    if (authError === 'Invalid or missing email address. Please input again.') {
-      setEmailError(true);
-    } else if (authError === 'Invalid or missing password') {
-      setPasswordError(true);
-    } else if (authError === 'This email is already registered. Please try another.') {
-      setEmailError(true);
-    }
-  }
+  }, [authError]);
 
   // when component unmounts, clear any authError's
   useEffect(() => {
@@ -99,6 +101,7 @@ export default function SignUp() {
       >
           {emailError && <p className={styles.error_text}> {authError} </p>}
           {passwordError && <p className={styles.error_text}> {authError} </p>}
+          
           <InputForm 
             name='Your Email'
             placeholder={'Your Email'}
