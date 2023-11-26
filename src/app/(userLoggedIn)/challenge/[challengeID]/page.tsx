@@ -53,7 +53,7 @@ export default function Challenge({params}: urlParamsProps) {
   const { userData } = useFetchUserData();
   // routing
   const router = useRouter();
-  
+
   // checks if the user created the challenge to show or hide the
   // delete button and then add participants button
   useEffect(() => {
@@ -113,7 +113,6 @@ export default function Challenge({params}: urlParamsProps) {
               // combined userData from USERS bucket + the user's points from CHALLENGES bucket via challenge/challengeID/participants/participantID/pointMetricsUser
               const participantWithPoints = { ...userData, ...participantData, pointMetrics };
               participantsData.push(participantWithPoints);
-/*               setParticipantsInfo(participantsData); */
             }
           })
           .catch((error) => {
@@ -205,6 +204,19 @@ export default function Challenge({params}: urlParamsProps) {
       });
   };
 
+  const isChallengeStartDateActive = (startDateTimestamp: any) => {
+    const startDate = new Date(startDateTimestamp);
+    const currentDate = new Date();
+  
+    // Set time to 00:00:00 for both dates to compare only day, month, and year
+    startDate.setHours(0, 0, 0, 0);
+    currentDate.setHours(0, 0, 0, 0);
+  
+    return currentDate >= startDate;
+  };
+
+  const challengeIsActive = challengeData ? isChallengeStartDateActive(challengeData.challengeDuration.starts) : false;
+
   return (
     <section className={styles.dashboard}>
       {isChallengeActive ? (
@@ -218,39 +230,39 @@ export default function Challenge({params}: urlParamsProps) {
               <Lottie animationData={animationData} loop={false}/>
             </div>
           </div>
+
           <div className={styles.challenge_overview}>
             <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
           </div>
 
-          
-            <div className={styles.challenge_overview}>
-              <ExpandableContainer title='Challenge Rules'>
-                <div className={styles.point_rules_container}>
-                  {pointMetricsArray.length > 0 && pointMetricsArray.map((metric: any, i: number) => (
-                    <div key={i}> 
-                      <p className={styles.rule}>
-                        <b>{metric.name}: </b>
-                        for {metric.duration} {metric.durationOption === "" ? 'minutes' : metric.durationOption}
-                        {metric.intensity && ` at ${metric.intensity} intensity`}
-                        &nbsp; = {metric.value} point{metric.value > 1 ? 's' : ''}
-                      </p>
-                    </div> 
-                  ))}
-                </div>
-               </ExpandableContainer>
-            </div>
-         
-
+          <div className={styles.challenge_overview}>
+            <ExpandableContainer title='Challenge Rules'>
+              <div className={styles.point_rules_container}>
+                {pointMetricsArray.length > 0 && pointMetricsArray.map((metric: any, i: number) => (
+                  <div key={i}> 
+                    <p className={styles.rule}>
+                      <b>{metric.name}: </b>
+                      for {metric.duration} {metric.durationOption === "" ? 'minutes' : metric.durationOption}
+                      {metric.intensity && ` at ${metric.intensity} intensity`}
+                      &nbsp; = {metric.value} point{metric.value > 1 ? 's' : ''}
+                    </p>
+                  </div> 
+                ))}
+              </div>
+              </ExpandableContainer>
+          </div>
+        
           <div className={styles.dashboard_section}>
             <h4> Submit points  </h4>
             {isUserAParticipant ? (
-              <DailyPointsInput 
-                challengeId={params} 
-                user={user?.uid}   
-              />
+              challengeIsActive ? (
+                <DailyPointsInput challengeId={params} user={user?.uid} />
+              ) : (
+                  <p >The challenge has not started yet. It will be begin on <span className={styles.challenge_start_date}>{formatDateForChallenges(challengeData?.challengeDuration.starts)}.</span></p>
+              )
             ) : (
               <div className={styles.not_participant_container}>
-                <h5 className={styles.not_participant_text}> You are not a participant of this challenge.</h5>
+                <p> You are not a participant of this challenge.</p>
                 <a 
                     className={styles.request_to_join_button} 
                     href={`mailto:${challengeData?.creatorEmail}?subject=User%20${userData?.userName + ' is requesting to join your FitFriends challenge: ' + challengeData?.name}.&body=Hello%2C%20${challengeData?.creatorName}%2C%0D%0A%0D%0A${userData?.userName + ' is requesting to join your challenge: ' + challengeData?.name}.%0D%0A%0D%0APlease invite them to your challenge: ${'https://fitfriends.ca/challenge/' + params.challengeID}%0D%0A%0D%0AThank you,%0D%0AFitFriends`} 

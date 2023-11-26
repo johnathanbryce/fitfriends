@@ -7,12 +7,6 @@ import InputForm from '@/components/Input/Input'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 // Auth Provider Context
 import { useAuth } from '@/context/AuthProvider'
-// Next.js
-import { useRouter } from 'next/navigation';
-import Image from 'next/image'
-// Internal Assets
-import googleIcon from '../../../../public/images/google-icon.png'
-import appleIcon from '../../../../public/images/apple-icon.png'
 // Custom Hook
 import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect'
 
@@ -22,13 +16,10 @@ export default function Login() {
   // Error state variables
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-
-  // Custom hook
-  useAuthenticationRedirect('/login', 'challenges-dashboard');
-  // Router
-  const router = useRouter();
+/*   // Custom hook
+  useAuthenticationRedirect('/login', 'challenges-dashboard'); */
   // Auth
-  const { handleSignInWithGoogle, handleLogin, authError, clearAuthError, isLoading } = useAuth();
+  const { handleLogin, resendVerifyEmail, authError, clearAuthError, isLoading } = useAuth();
 
   // Use useEffect to watch for changes in authError
   useEffect(() => {
@@ -42,7 +33,7 @@ export default function Login() {
     } else if (authError === 'Invalid credentials. Please check your email or password.') {
       setEmailError(true);
       setPasswordError(true);
-    }
+    } 
   }, [authError]);
 
   // when component unmounts, clear any authError's
@@ -68,13 +59,7 @@ export default function Login() {
         navigateToSubSectionTwo='/sign-up'
         isLoading={isLoading}
       >  
-{/*         <button type="button" onClick={handleSignInWithGoogle} className={styles.login_option}> 
-          <Image src={googleIcon} className={styles.icon} alt="Google's icon"/> 
-          <p className={styles.button_label}> Sign in using Google </p>
-          <div className={styles.empty} />
-        </button>
-        
-        <p> or sign in with email</p> */}
+
         {authError && <p className={styles.auth_error}>{authError}</p>}
         <InputForm 
           name='Your Email'
@@ -102,6 +87,13 @@ export default function Login() {
           onClick={handleSignIn}
           isLoading={isLoading}
         />
+        {authError === 'Please verify your email before logging in.' && 
+          <ButtonPill
+            label="Resend verification email"
+            onClick={resendVerifyEmail}
+            isLoading={isLoading}
+          /> 
+        }
       </AuthCard>   
     </section>
   )
