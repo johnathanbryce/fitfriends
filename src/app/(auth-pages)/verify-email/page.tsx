@@ -16,7 +16,7 @@ export default function VerifyEmail() {
   const { user, resendVerifyEmail, isVerifyEmailResent, authError, isLoading } = useAuth();
 
   // check if the user object is loaded
-  useEffect(() => {
+/*   useEffect(() => {
     if (user && user.email && user.userName) {
       setIsUserLoaded(true);
     }
@@ -24,7 +24,7 @@ export default function VerifyEmail() {
 
   if (!isUserLoaded) {
     return <Loading />;
-  }
+  } */
 
   if(isVerifyEmailResent){
     return (
