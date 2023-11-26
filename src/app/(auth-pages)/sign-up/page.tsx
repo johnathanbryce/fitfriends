@@ -26,14 +26,31 @@ export default function SignUp() {
   // Error state variables
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
 
 /*   // Custom hook
   useAuthenticationRedirect('/sign-up', 'challenges-dashboard'); */
   // Auth
-  const { handleSignup, resendVerifyEmail, isVerifyEmailResent,  authError, clearAuthError, isLoading } = useAuth();
+  const { handleSignup, authError, clearAuthError, isLoading } = useAuth();
 
   const handleUserSignUp = (e: any) => {
     e.preventDefault();
+    // reset errors
+    setEmailError(false);
+    setPasswordError(false);
+    setNameError(false);
+    setUsernameError(false);
+
+    if(!firstName || !lastName){
+      setNameError(true)  
+      return;
+    }
+
+    if(!userName){ 
+      setUsernameError(true) 
+      return;
+    }
     
     const userData = {
       email: email,
@@ -65,6 +82,8 @@ export default function SignUp() {
     // reset errors to false 
     setEmailError(false);
     setPasswordError(false);
+    setNameError(false)  
+    setUsernameError(false) 
   }
 
   // Use useEffect to watch for changes in authError
@@ -81,6 +100,8 @@ export default function SignUp() {
       // Reset email and password errors if there's no authError
       setEmailError(false);
       setPasswordError(false);
+      setNameError(false)  
+      setUsernameError(false) 
     }
   }, [authError]);
 
@@ -101,6 +122,8 @@ export default function SignUp() {
       >
           {emailError && <p className={styles.error_text}> {authError} </p>}
           {passwordError && <p className={styles.error_text}> {authError} </p>}
+          {nameError && <p className={styles.error_text}> Please provide your first and last name. </p> }
+          {usernameError && <p className={styles.error_text}> Please provide a username. </p> }
           
           <InputForm 
             name='Your Email'
@@ -130,7 +153,12 @@ export default function SignUp() {
                 placeholder={'First Name'}
                 value={firstName}
                 type='text'
-                onChange={(newVal) => setFirstName(newVal)}
+                onChange={(newVal) => {
+                  setFirstName(newVal);
+                  if (newVal.trim() !== '') {
+                    setNameError(false);
+                  }
+                }}
                 theme='light'
                 required={true}
                 maxLength={15}
@@ -140,7 +168,12 @@ export default function SignUp() {
                 placeholder={'Last Name'}
                 value={lastName}
                 type='text'
-                onChange={(newVal) => setLastName(newVal)}
+                onChange={(newVal) => {
+                  setLastName(newVal);
+                  if (newVal.trim() !== '') {
+                    setNameError(false);
+                  }
+                }}
                 theme='light'
                 required={true}
                 maxLength={15}
@@ -151,7 +184,12 @@ export default function SignUp() {
                 placeholder={'Username'}
                 value={userName}
                 type='text'
-                onChange={(newVal) => setUserName(newVal)}
+                onChange={(newVal) => {
+                  setUserName(newVal);
+                  if (newVal.trim() !== '') {
+                    setUsernameError(false);
+                  }
+                }}
                 theme='light'
                 required={true}
                 maxLength={15}
