@@ -15,7 +15,7 @@ import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect'
 export default function ForgotPassword() {
   const [email, setEmail] = useState('')
   // Custom hook
-  useAuthenticationRedirect('/forgot-password', 'challenges-dashboard');
+  useAuthenticationRedirect('challenges-dashboard', 'forgot-password');
   // Auth context
   const { forgotPassword, isLoading, authError, clearAuthError, isPasswordResetSent} = useAuth()
 
