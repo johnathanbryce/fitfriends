@@ -11,11 +11,14 @@ export default function useAuthenticationRedirect(authRoute: string, unAuthRoute
     const [loading, setLoading] = useState(true);
 
     const { user } = useAuth();
-  
+
+
     useEffect(() => {
       if (!user) {
+        console.log('no user', unAuthRoute)
         router.replace(unAuthRoute);
       } else {
+        console.log('user', authRoute)
         router.replace(authRoute);
       }
       setLoading(false);
