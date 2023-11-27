@@ -16,8 +16,10 @@ export default function Login() {
   // Error state variables
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-/*   // Custom hook
-  useAuthenticationRedirect('/login', 'challenges-dashboard'); */
+
+  // Custom Hook
+/*   useAuthenticationRedirect('/challenges-dashboard', '/login') */
+
   // Auth
   const { handleLogin, resendVerifyEmail, authError, clearAuthError, isLoading } = useAuth();
 

@@ -3,7 +3,6 @@
 import React from 'react';
 // Next.js
 import { usePathname, redirect, useRouter } from 'next/navigation';
-
 // Internal Components
 import HeaderLoggedIn from '@/components/Headers/HeaderLoggedIn/HeaderLoggedIn';
 import FooterLoggedIn from '@/components/Footers/FooterLoggedIn/FooterLoggedIn';
@@ -23,10 +22,11 @@ export default function LoggedInLayout({
 
   // NOTE: NEVER use useAuthenticationRedirect here... it breaks challenges[ID] page on page refresh only
   const user = useAuth()
+  const localStorageUser = localStorage.getItem('user')
   // routing
   const router = useRouter();
 
-  if(!user){
+  if(!user.user && !localStorageUser ){
     router.replace('/login');
   }
 
