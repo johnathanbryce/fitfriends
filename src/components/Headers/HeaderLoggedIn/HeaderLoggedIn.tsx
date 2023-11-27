@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styles from './HeaderLoggedIn.module.css'
 // Internal Components
 import ButtonPillRoute from '../../Buttons/ButtonPillRoute/ButtonPillRoute'
@@ -41,6 +41,15 @@ export default function HeaderLoggedIn() {
   const onClickDisplayNotifications = () => {
     console.log('click')
   }
+
+  // ensures no scrolling when dropdown is active (the nav items stay locked in place)
+  useEffect(() => {
+    if (isDropdownActive) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+  }, [isDropdownActive]);
 
   return (
     <header className={styles.header}>
@@ -90,10 +99,10 @@ export default function HeaderLoggedIn() {
       
       {isDropdownActive && 
         <nav className={styles.navbar_dropdown}>
-          <ul>
-              <li className={styles.link}><Link href={`/user-profile/${user?.uid}`} onClick={onClickCloseDropdown} > Profile </Link></li>   
+          <ul className={styles.navbar_links_container}>   
               <li className={styles.link}><Link href='/challenges-dashboard' onClick={onClickCloseDropdown} > Challenges </Link></li> 
-              <li className={styles.link}><Link href='/create-challenge' onClick={onClickCloseDropdown} > Create Challenge </Link></li> 
+              <li className={styles.link}><Link href={`/user-profile/${user?.uid}`} onClick={onClickCloseDropdown} > Profile </Link></li> 
+              <li className={styles.link}><Link href='/create-challenge' onClick={onClickCloseDropdown} > Create Challenge </Link></li>
               <li className={styles.link}><Link href='/users' onClick={onClickCloseDropdown} > Users </Link></li> 
           </ul>
         </nav>

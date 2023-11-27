@@ -4,7 +4,6 @@
     align-items: center;
     text-align: center;
     gap: 2rem;
-    padding: 4rem 4rem;
     width: 85vw;
 
 }
@@ -52,7 +51,7 @@
 @media (max-width: 775px) { 
     .challenges{
         width: 100%;
-        padding: 1rem 0.5rem;
+        padding: 0 0.5rem;
     }
 }
 

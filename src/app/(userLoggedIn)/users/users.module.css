@@ -61,11 +61,12 @@
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .users{
-        padding: 2rem 0;
+        padding: 0;
     }
 
     .table_container {
-        width: 100vw;
+        
+        width: 90vw;
         padding: 0.5rem;
 
     }
