@@ -13,8 +13,6 @@ import defaultUser from '../../../../public/images/default-user-img.png'
 import { useAuth } from '@/context/AuthProvider'
 // Util Functions
 import { capitalizeFirstLetter } from '@/utils/stringHelpers'
-// Custom Hook
-import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect';
 
 export default function SignUp() {
   // User input state
@@ -29,8 +27,6 @@ export default function SignUp() {
   const [nameError, setNameError] = useState(false);
   const [usernameError, setUsernameError] = useState(false);
 
-/*   // Custom hook
-  useAuthenticationRedirect('/sign-up', 'challenges-dashboard'); */
   // Auth
   const { handleSignup, authError, clearAuthError, isLoading } = useAuth();
 
