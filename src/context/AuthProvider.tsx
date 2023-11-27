@@ -111,7 +111,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
       setUser(mergedUserData); // set the user in the context
       localStorage.setItem('user', JSON.stringify(mergedUserData)); 
-      router.replace(`/verify-email`);
+      /* router.replace(`/verify-email`); */
+      redirect('/verify-email')
     } catch (error: any) {
       if (error.code === 'auth/invalid-email' || error.code === 'auth/missing-email') {
         setAuthError('Invalid or missing email address. Please input again.')

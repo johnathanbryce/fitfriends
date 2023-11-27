@@ -22,19 +22,14 @@ export default function LoggedInLayout({
 
   // NOTE: NEVER use useAuthenticationRedirect here... it breaks challenges[ID] page on page refresh only
   const user = useAuth()
-  console.log(user)
 
   // routing
   const router = useRouter();
 
-  if(!user.user) {
-    redirect('/login');
-  }
-
   useEffect(() => {
-/*     if(!user.user) {
-      redirect('/login');
-    } */
+    if(!user.user) {
+      redirect('/login'); // using router.replace does not work
+    }
   }, [user, router]);
 
   return (
