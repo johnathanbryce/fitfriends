@@ -1,6 +1,6 @@
 
 'use client'
-import React from 'react';
+import React, {useEffect} from 'react';
 // Next.js
 import { usePathname, redirect, useRouter } from 'next/navigation';
 // Internal Components
@@ -22,7 +22,10 @@ export default function LoggedInLayout({
 
   // NOTE: NEVER use useAuthenticationRedirect here... it breaks challenges[ID] page on page refresh only
   const user = useAuth()
-  const localStorageUser = localStorage.getItem('user')
+  let localStorageUser;
+  if (typeof window !== 'undefined') {
+    localStorageUser = localStorage.getItem('user');
+  }
   // routing
   const router = useRouter();
 
