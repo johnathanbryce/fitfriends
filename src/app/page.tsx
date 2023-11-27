@@ -1,4 +1,5 @@
 'use client'
+
 // Next.js
 import Head from 'next/head';
 // Internal Components
@@ -11,6 +12,7 @@ import GetStarted from "./(home)/GetStarted/GetStarted";
 import FooterLoggedOut from "@/components/Footers/FooterLoggedOut/FooterLoggedOut";
 // Custom Hook
 import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect';
+
 
 export default function Home() {
   useAuthenticationRedirect('challenges-dashboard', '/');

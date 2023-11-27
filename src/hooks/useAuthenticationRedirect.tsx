@@ -12,15 +12,14 @@ export default function useAuthenticationRedirect(authRoute: string, unAuthRoute
 
     const { user } = useAuth();
 
-
     useEffect(() => {
       if (!user) {
         router.replace(unAuthRoute);
-      } else {
+      } else if (user && user.emailVerified) { // ensures the user has also verified their email before routing
         router.replace(authRoute);
       }
       setLoading(false);
-    }, [router]);
+    }, [router, user]);
 
     if (loading) {
       return <Loading />;

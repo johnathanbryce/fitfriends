@@ -11,6 +11,8 @@ import { useAuth } from '@/context/AuthProvider'
 import useAuthenticationRedirect from '@/hooks/useAuthenticationRedirect'
 
 export default function Login() {
+  useAuthenticationRedirect('challenges-dashboard', 'login')
+  // state
   const [emailInput, setEmailInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
   // Error state variables
