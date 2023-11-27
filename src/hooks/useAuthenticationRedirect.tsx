@@ -13,11 +13,10 @@ export default function useAuthenticationRedirect(authRoute: string, unAuthRoute
     const { user } = useAuth();
   
     useEffect(() => {
-      const user = localStorage.getItem('user');
       if (!user) {
-        router.replace(authRoute);
-      } else {
         router.replace(unAuthRoute);
+      } else {
+        router.replace(authRoute);
       }
       setLoading(false);
     }, [router]);
