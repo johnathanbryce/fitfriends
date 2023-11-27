@@ -8,6 +8,8 @@
     text-align: center;
     position: relative;
     width: 100vw;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .footer > * {
@@ -24,11 +26,19 @@
     color: var(--font-secondary);
 }
 
+/* Mobile Devices (landscape) */
+@media (max-width: 775px) { 
+    .footer {
+        align-items: flex-start;
+        text-align: left;
+        padding: 10rem 2rem;
+    }
+}
+
 /* Mobile Devices up to 480px */
 @media (max-width: 480px) {  
     .footer {
         gap: 1rem;
-        padding: 6.5rem 2rem;
         margin-top: 2rem;
     }
 }

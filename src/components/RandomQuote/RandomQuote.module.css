@@ -1,0 +1,45 @@
+.blockquote {
+    position: relative;
+    font-style: italic; 
+    padding: 1rem; 
+}
+
+.blockquote::before,
+.blockquote::after {
+    font-size: 4rem; 
+    color: var(--inactive-color-light); 
+    position: absolute;
+}
+
+.blockquote::before {
+    content: "“"; 
+    top: -1rem; 
+    left: -2rem; 
+}
+
+.blockquote::after {
+    content: "”"; 
+    top: -1rem; 
+    right: -2rem;
+}
+
+
+.quote {
+    font-size: clamp(0.8rem, 2vw, 1.4rem);
+}
+
+/* Mobile Devices up to 480px */
+@media (max-width: 480px) {  
+    .blockquote::before {
+        content: "“"; 
+        top: -1rem; 
+        left: -1rem; 
+    }
+    
+    .blockquote::after {
+        content: "”"; 
+        top: -1rem; 
+        right: -0.5rem;
+    }
+    
+}

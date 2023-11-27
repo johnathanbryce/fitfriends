@@ -8,6 +8,7 @@ import ActiveChallenge from '@/components/ActiveChallenge/ActiveChallenge'
 import Loading from '@/app/loading'
 import ButtonPillRoute from '@/components/Buttons/ButtonPillRoute/ButtonPillRoute'
 import ExpandableContainer from '@/components/ExpandableContainer/ExpandableContainer'
+import RandomQuote from '@/components/RandomQuote/RandomQuote'
 // Firebase
 import { database } from '../../../../firebaseApp'
 import {ref, get} from 'firebase/database'
@@ -71,6 +72,7 @@ export default function Challenges() {
   
   return (
     <section className={styles.challenges}>
+      <RandomQuote />
       <div className={styles.challenge_section}>
         <ExpandableContainer title="Your Challenges" isOpenDefault={true}>
           <ul className={styles.active_challenges_container}>
