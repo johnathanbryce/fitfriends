@@ -10,6 +10,8 @@ import ParticipantsModal from '@/components/Modals/ParticipantsModal/Participant
 import ParticipantCard from '@/components/Cards/ParticipantCard/ParticipantCard'
 import ButtonPill from '@/components/Buttons/ButtonPill/ButtonPill'
 import ExpandableContainer from '@/components/ExpandableContainer/ExpandableContainer'
+// Loading
+import Loading from '@/app/loading'
 // Internal Assets
 import defaultUser from '../../../../../public/images/default-user-img.png'
 // Firebase
@@ -86,6 +88,7 @@ export default function Challenge({params}: urlParamsProps) {
   // fetches all the users included in the participants object in the challenge 
   // participants are invited via ParticipantsModal.tsx which houses this logic
   const fetchActiveChallengeParticipants = () => {
+    setIsLoading(true);
     const challengeRef = ref(database, `challenges/${params.challengeID}`);
 
     onValue(challengeRef, (snapshot) => {
@@ -109,12 +112,16 @@ export default function Challenge({params}: urlParamsProps) {
             if (userSnapshot.exists()) {
               const userData = userSnapshot.val(); // data from "users"
               const participantData = data.participants[participantID]; // data from "challenges"
-              const pointMetrics = participantData.pointMetricsUser || {}; // points from 'challenges' for each user bucket
-              // combined userData from USERS bucket + the user's points from CHALLENGES bucket via challenge/challengeID/participants/participantID/pointMetricsUser
-              const participantWithPoints = { ...userData, ...participantData, pointMetrics };
-              participantsData.push(participantWithPoints);
+              if (userData && participantData && participantData.pointMetricsUser) {
+                const pointMetrics = participantData?.pointMetricsUser ?? {};
+                /* const pointMetrics = participantData?.pointMetricsUser || {} */; // points from 'challenges' for each user bucket
+                // combined userData from USERS bucket + the user's points from CHALLENGES bucket via challenge/challengeID/participants/participantID/pointMetricsUser
+                const participantWithPoints = { ...userData, ...participantData, pointMetrics };
+                participantsData.push(participantWithPoints);
+              }
             }
           })
+          
           .catch((error) => {
             console.error('Error fetching user data:', error);
           });
@@ -124,11 +131,13 @@ export default function Challenge({params}: urlParamsProps) {
           setParticipantsInfo(participantsData);
         });
 
+        setIsLoading(false);
         // update isChallengeActive and challengeWinner based on the challenge data
         setIsChallengeActive(data.status === 'active');
         setChallengeWinner(data.challengeWinnerUsername || 'unknown'); 
       } else {
         setIsUserAParticipant(false);
+        setIsLoading(false);
       }
     });
   }
@@ -217,188 +226,193 @@ export default function Challenge({params}: urlParamsProps) {
 
   const challengeIsActive = challengeData ? isChallengeStartDateActive(challengeData.challengeDuration.starts) : false;
 
+
   return (
     <section className={styles.dashboard}>
-      {isChallengeActive ? (
-        <>
-          <div className={styles.header_container}>
-            <div className={styles.animation}>
-              <Lottie animationData={animationData} loop={false} />
-            </div>
-            <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
-            <div className={styles.animation}>
-              <Lottie animationData={animationData} loop={false}/>
-            </div>
-          </div>
-
-          <div className={styles.challenge_overview}>
-            <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
-          </div>
-
-          <div className={styles.challenge_overview}>
-            <ExpandableContainer title='Challenge Rules'>
-              <div className={styles.point_rules_container}>
-                {pointMetricsArray.length > 0 && pointMetricsArray.map((metric: any, i: number) => (
-                  <div key={i}> 
-                    <p className={styles.rule}>
-                      <b>{metric.name}: </b>
-                      for {metric.duration} {metric.durationOption === "" ? 'minutes' : metric.durationOption}
-                      {metric.intensity && ` at ${metric.intensity} intensity`}
-                      &nbsp; = {metric.value} point{metric.value > 1 ? 's' : ''}
-                    </p>
-                  </div> 
-                ))}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        isChallengeActive ? (
+          <>
+            <div className={styles.header_container}>
+              <div className={styles.animation}>
+                <Lottie animationData={animationData} loop={false} />
               </div>
-              </ExpandableContainer>
-          </div>
-        
-          <div className={styles.dashboard_section}>
-            <h4> Submit points  </h4>
-            {isUserAParticipant ? (
-              challengeIsActive ? (
-                <DailyPointsInput challengeId={params} user={user?.uid} />
-              ) : (
-                  <p >The challenge has not started yet. It will be begin on <span className={styles.challenge_start_date}>{formatDateForChallenges(challengeData?.challengeDuration.starts)}.</span></p>
-              )
-            ) : (
-              <div className={styles.not_participant_container}>
-                <p> You are not a participant of this challenge.</p>
-                <a 
-                    className={styles.request_to_join_button} 
-                    href={`mailto:${challengeData?.creatorEmail}?subject=User%20${userData?.userName + ' is requesting to join your FitFriends challenge: ' + challengeData?.name}.&body=Hello%2C%20${challengeData?.creatorName}%2C%0D%0A%0D%0A${userData?.userName + ' is requesting to join your challenge: ' + challengeData?.name}.%0D%0A%0D%0APlease invite them to your challenge: ${'https://fitfriends.ca/challenge/' + params.challengeID}%0D%0A%0D%0AThank you,%0D%0AFitFriends`} 
-                    target="_blank"
-                >
-                    Request to Join Challenge
-                </a>
+              <h2 className={styles.challenge_name}> {challengeData?.name}  </h2>
+              <div className={styles.animation}>
+                <Lottie animationData={animationData} loop={false}/>
               </div>
-            )}
-          </div>
-
-          <div className={styles.dashboard_section}>
-            <div className={styles.subheader_container}>
-              <h4> Participants </h4>
-              {isAddParticipantsButtonVisible && 
-                <ButtonPill
-                  label='add-users'
-                  onClick={toggleAddParticipantsModal}
-                  isLoading={isLoading}
-                />
-              }
             </div>
-            <div className={styles.participants_container}>
-              {participantsInfo.length > 0 ? (
-                  <>
-                    {participantsInfo.map((user: any, index) => (
-                      <ParticipantCard
-                        key={user.uid}
-                        index={index}
-                        userId={user.uid}
-                        firstName={user.firstName}
-                        lastName={user.lastName}
-                        profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
-                        userName={user.userName}
-                        pointMetrics={user.pointMetrics} 
-                        total={user.totalPoints}
-                      />
-                    ))}
-                  </>
+  
+            <div className={styles.challenge_overview}>
+              <p> <b>Duration:</b> {formatDateForChallenges(challengeData?.challengeDuration.starts)} - {formatDateForChallenges(challengeData?.challengeDuration.ends)}</p>
+            </div>
+  
+            <div className={styles.challenge_overview}>
+              <ExpandableContainer title='Challenge Rules'>
+                <div className={styles.point_rules_container}>
+                  {pointMetricsArray?.length > 0 && pointMetricsArray?.map((metric: any, i: number) => (
+                    <div key={i}> 
+                      <p className={styles.rule}>
+                        <b>{metric.name}: </b>
+                        for {metric.duration} {metric.durationOption === "" ? 'minutes' : metric.durationOption}
+                        {metric.intensity && ` at ${metric.intensity} intensity`}
+                        &nbsp; = {metric.value} point{metric.value > 1 ? 's' : ''}
+                      </p>
+                    </div> 
+                  ))}
+                </div>
+                </ExpandableContainer>
+            </div>
+          
+            <div className={styles.dashboard_section}>
+              <h4> Submit points  </h4>
+              {isUserAParticipant ? (
+                challengeIsActive ? (
+                  <DailyPointsInput challengeId={params} user={user?.uid} />
                 ) : (
-                  <div className={styles.no_users}>
-                    <p> There are no active users. Invite participants to this challenge! </p>
-                  </div>
+                    <p >The challenge has not started yet. It will be begin on <span className={styles.challenge_start_date}>{formatDateForChallenges(challengeData?.challengeDuration.starts)}.</span></p>
+                )
+              ) : (
+                <div className={styles.not_participant_container}>
+                  <p> You are not a participant of this challenge.</p>
+                  <a 
+                      className={styles.request_to_join_button} 
+                      href={`mailto:${challengeData?.creatorEmail}?subject=User%20${userData?.userName + ' is requesting to join your FitFriends challenge: ' + challengeData?.name}.&body=Hello%2C%20${challengeData?.creatorName}%2C%0D%0A%0D%0A${userData?.userName + ' is requesting to join your challenge: ' + challengeData?.name}.%0D%0A%0D%0APlease invite them to your challenge: ${'https://fitfriends.ca/challenge/' + params.challengeID}%0D%0A%0D%0AThank you,%0D%0AFitFriends`} 
+                      target="_blank"
+                  >
+                      Request to Join Challenge
+                  </a>
+                </div>
               )}
             </div>
-
-            <div className={styles.btns_container}>
-              {isLeaveConfirmationVisible  ? (
-                  <div className={styles.delete_challenge_confirm}>
-                    <p className={styles.warning}> Are you sure you want to leave this challenge? </p>
-                    <div className={styles.btns_flex_wrapper}>
-                      <ButtonPill 
-                        label={'Yes'}
-                        isLoading={isLoading}
-                        onClick={leaveChallenge}
-                      />
-                      <ButtonPill 
-                        label={'No'}
-                        isLoading={isLoading}
-                        onClick={toggleConfirmLeaveChallnege}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {participantsInfo.length > 0 && isUserAParticipant &&  
-                      <ButtonPill 
-                        label={'Leave this challenge'}
-                        isLoading={isLoading}
-                        onClick={toggleConfirmLeaveChallnege}
-                      /> 
-                    }
-                  </>  
-                )}
-                {isDeleteConfirmationVisible ? (
-                  <div className={styles.delete_challenge_confirm}>
-                    <p className={styles.warning}> Are you sure you want to delete this challenge? </p>
-                    <div className={styles.btns_flex_wrapper}>
-                      <ButtonPill 
-                        label={'Confirm'}
-                        isLoading={isLoading}
-                        onClick={deleteChallenge}
-                      />
-                      <ButtonPill 
-                        label={'Decline'}
-                        isLoading={isLoading}
-                        onClick={toggleConfirmDeleteChallenge}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {isDeleteButtonVisible && participantsInfo.length > 0 && 
-                      <ButtonPill 
-                        label={'Delete this challenge'}
-                        isLoading={isLoading}
-                        onClick={toggleConfirmDeleteChallenge}
-                      />
-                    }
-                  </>
-                )}
-            </div>
-          </div>
-        </>
-      ): (
-        <>
-          {challengeWinner ? (
-            <div className={styles.inactive_challenge_container}> 
-              <div className={styles.inactive_challenge_announcement_wrapper}>
-                <div className={styles.animation_winner}>
-                  <Lottie animationData={animationDataWinner} loop={false} />
-                </div>
-                <div className={styles.animation_winner_text}>
-                  <h2> Challenge complete. </h2>
-                  <h2> The winner is <span className={styles.winner_text}>{challengeWinner}</span></h2>
-                </div>
-              </div>
-              <div className={styles.inactive_challenge_participants_container}>          
-                {participantsInfo.map((user: any, index) => (
-                  <ParticipantCard
-                    key={user.uid}
-                    index={index}
-                    userId={user.uid}
-                    firstName={user.firstName}
-                    lastName={user.lastName}
-                    profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
-                    userName={user.userName}
-                    pointMetrics={user.pointMetrics} 
-                    total={user.totalPoints}
+  
+            <div className={styles.dashboard_section}>
+              <div className={styles.subheader_container}>
+                <h4> Participants </h4>
+                {isAddParticipantsButtonVisible && 
+                  <ButtonPill
+                    label='add-users'
+                    onClick={toggleAddParticipantsModal}
+                    isLoading={isLoading}
                   />
-                ))}  
-              </div> 
+                }
+              </div>
+              <div className={styles.participants_container}>
+                {participantsInfo?.length > 0 ? (
+                    <>
+                      {participantsInfo?.map((user: any, index) => (
+                        <ParticipantCard
+                          key={user.uid}
+                          index={index}
+                          userId={user.uid}
+                          firstName={user.firstName}
+                          lastName={user.lastName}
+                          profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
+                          userName={user.userName}
+                          pointMetrics={user.pointMetrics} 
+                          total={user.totalPoints}
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    <div className={styles.no_users}>
+                      <p> There are no active users. Invite participants to this challenge! </p>
+                    </div>
+                )}
+              </div>
+  
+              <div className={styles.btns_container}>
+                {isLeaveConfirmationVisible  ? (
+                    <div className={styles.delete_challenge_confirm}>
+                      <p className={styles.warning}> Are you sure you want to leave this challenge? </p>
+                      <div className={styles.btns_flex_wrapper}>
+                        <ButtonPill 
+                          label={'Yes'}
+                          isLoading={isLoading}
+                          onClick={leaveChallenge}
+                        />
+                        <ButtonPill 
+                          label={'No'}
+                          isLoading={isLoading}
+                          onClick={toggleConfirmLeaveChallnege}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      {participantsInfo.length > 0 && isUserAParticipant &&  
+                        <ButtonPill 
+                          label={'Leave this challenge'}
+                          isLoading={isLoading}
+                          onClick={toggleConfirmLeaveChallnege}
+                        /> 
+                      }
+                    </>  
+                  )}
+                  {isDeleteConfirmationVisible ? (
+                    <div className={styles.delete_challenge_confirm}>
+                      <p className={styles.warning}> Are you sure you want to delete this challenge? </p>
+                      <div className={styles.btns_flex_wrapper}>
+                        <ButtonPill 
+                          label={'Confirm'}
+                          isLoading={isLoading}
+                          onClick={deleteChallenge}
+                        />
+                        <ButtonPill 
+                          label={'Decline'}
+                          isLoading={isLoading}
+                          onClick={toggleConfirmDeleteChallenge}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      {isDeleteButtonVisible && participantsInfo.length > 0 && 
+                        <ButtonPill 
+                          label={'Delete this challenge'}
+                          isLoading={isLoading}
+                          onClick={toggleConfirmDeleteChallenge}
+                        />
+                      }
+                    </>
+                  )}
+              </div>
             </div>
-          )
-          : null}
-        </>
+          </>
+        ): (
+          <>
+            {challengeWinner ? (
+              <div className={styles.inactive_challenge_container}> 
+                <div className={styles.inactive_challenge_announcement_wrapper}>
+                  <div className={styles.animation_winner}>
+                    <Lottie animationData={animationDataWinner} loop={false} />
+                  </div>
+                  <div className={styles.animation_winner_text}>
+                    <h2> Challenge complete. </h2>
+                    <h2> The winner is <span className={styles.winner_text}>{challengeWinner}</span></h2>
+                  </div>
+                </div>
+                <div className={styles.inactive_challenge_participants_container}>          
+                  {participantsInfo.map((user: any, index) => (
+                    <ParticipantCard
+                      key={user.uid}
+                      index={index}
+                      userId={user.uid}
+                      firstName={user.firstName}
+                      lastName={user.lastName}
+                      profilePicture={user.profilePicture ? user.profilePicture : defaultUser}
+                      userName={user.userName}
+                      pointMetrics={user.pointMetrics} 
+                      total={user.totalPoints}
+                    />
+                  ))}  
+                </div> 
+              </div>
+            )
+            : null}
+          </>
+        )
       )}
 
       {isAddParticipantsModalOpen && 
