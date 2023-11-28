@@ -90,8 +90,8 @@
 
 .profile_pic_container_small_screens {
     display: none;
-    width: 7.5rem; 
-    height: 7.5rem; 
+    width: 4.5rem; 
+    height: 4.5rem; 
     overflow: hidden;
     border-radius: 50%; 
     border: 0.1rem solid var(--default-color);
@@ -159,8 +159,8 @@
 /* Tiny Mobile Devices up to 325px (e.g. galaxy fold) */
 @media (max-width: 325px){
     .profile_pic_container_small_screens {
-        width: 4.5rem; 
-        height: 4.5rem; 
+        width: 3.75rem; 
+        height: 3.75rem; 
     }
 }
 

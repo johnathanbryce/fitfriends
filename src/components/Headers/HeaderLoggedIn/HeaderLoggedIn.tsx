@@ -43,13 +43,13 @@ export default function HeaderLoggedIn() {
   }
 
   // ensures no scrolling when dropdown is active (the nav items stay locked in place)
-  useEffect(() => {
+/*   useEffect(() => {
     if (isDropdownActive) {
         document.body.style.overflow = 'hidden';
     } else {
         document.body.style.overflow = '';
     }
-  }, [isDropdownActive]);
+  }, [isDropdownActive]); */
 
   return (
     <header className={styles.header}>
