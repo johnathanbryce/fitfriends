@@ -9,13 +9,15 @@
 
 .select_trigger {
     padding: 1rem;
-    color: var(--input-text);
-    background-color: var(--input-bg);
+    color: var(--font-primary);
+    background-color: var(--background-primary);
     padding: var(--input-padding);
     border-radius: var(--border-radius);
     font-size: clamp(1rem, 2vw, 1.15rem); /* same as custom Input */
     cursor: pointer;
     position: relative; /* for positioning the arrow icon */
+    border: 0.1rem solid var(--input-bg);
+    
     
 }
 
@@ -27,6 +29,7 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: clamp(1rem, 2vw, 1.15rem);
+    
 }
 
 .options {

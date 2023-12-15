@@ -79,7 +79,7 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     value={metric.name}
                     onChange={(newValue) => handleChange('name', newValue)}
                     type='text'
-                    theme='dark'
+                    theme='light'
                     required={true}
                     smallInput={true}
                     maxLength={20}
@@ -94,7 +94,7 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     value={metric.name}
                     onChange={(newValue) => handleChange('name', newValue)}
                     type='text'
-                    theme='dark'
+                    theme='light'
                     required={true}
                     smallInput={true}
                     maxLength={18}
@@ -108,7 +108,7 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     value={metric.duration}
                     onChange={(newValue) => handleChange('duration', newValue)}
                     type='number'
-                    theme='dark'
+                    theme='light'
                     required={true}
                     smallInput={true}
                     maxLength={3}
@@ -142,7 +142,7 @@ export default function PointMetric({metric, index, updateMetric, deleteMetric}:
                     value={metric.value}
                     onChange={(newValue) => handleChange('value', newValue)}
                     type='number'
-                    theme='dark'
+                    theme='light'
                     required={true}
                     smallInput={true}
                     maxLength={3}
