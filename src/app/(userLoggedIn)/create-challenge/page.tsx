@@ -100,6 +100,14 @@ export default function CreateChallenge() {
             setRequiredInputAlert('The start date cannot be in the past.');
             return;
           }
+          if (
+            selection[0].startDate.getFullYear() === today.getFullYear() &&
+            selection[0].startDate.getMonth() === today.getMonth() &&
+            selection[0].startDate.getDate() === today.getDate()
+          ) {
+            setRequiredInputAlert('The start date cannot be today.');
+            return;
+          }
           break;
     
         default:
@@ -228,7 +236,7 @@ export default function CreateChallenge() {
                     value={challengeName}
                     type='text'
                     onChange={(e) => setChallengeName(e)}
-                    theme='dark'
+                    theme='light'
                     required={true}
                     maxLength={30}
                 />
