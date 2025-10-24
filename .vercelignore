@@ -1,0 +1,13 @@
+# Exclude Firebase Functions from Vercel deployment
+functions/
+
+# Exclude Firebase config files
+firebase.json
+.firebaserc
+.firebase/
+
+# Exclude old server directory
+server/
+
+# Exclude service account key
+serviceAccountKey.json
