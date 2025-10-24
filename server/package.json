@@ -1,10 +1,19 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "FitFriends cron server for challenge management",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "firebase-admin": "^11.11.0",
+    "node-cron": "^3.0.3"
   },
   "keywords": [],
   "author": "",

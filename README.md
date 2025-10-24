@@ -12,24 +12,42 @@ FitFriends transforms your fitness journey into an engaging and competitive expe
 - Responsive Design: Accessible on various devices and screen sizes.
 
 **Technologies**
-- Frontend: Next.js, TypeScript, CSS
-- Server: Node.js
+- Frontend: Next.js 14, TypeScript, React 18, CSS Modules
+- Backend: Firebase Cloud Functions (Node.js 22)
 - Database: Firebase Realtime Database
 - Authentication: Firebase Authentication
+- Hosting: Firebase Hosting
+- Scheduled Tasks: Firebase Cloud Functions (Scheduled)
 
 **Getting Started**
 
 **Prerequisites**
-- Node.js
+- Node.js 22.0 or higher
 - npm or yarn
+- Firebase CLI (for deploying functions): `npm install -g firebase-tools`
 
 **Installation**
-  1. Clone the repository: git clone https://github.com/yourusername/FitFriends.git
-  2. Install NPM packages: npm install
- 
+  1. Clone the repository: `git clone https://github.com/johnathanbryce/fitfriends.git`
+  2. Install NPM packages: `npm install`
+  3. Install Cloud Functions dependencies: `cd functions && npm install && cd ..`
+
 **Running the Application**
-- To start the server: npm run dev
-- Navigate to http://localhost:3000 to view the application.
+
+**Frontend Development**
+- To start the Next.js dev server: `npm run dev`
+- Navigate to http://localhost:3000 to view the application
+
+**Cloud Functions (Automated Challenge Management)**
+- Cloud Functions automatically handle challenge lifecycle (closing challenges, determining winners)
+- See [functions/README.md](functions/README.md) for detailed setup and deployment instructions
+- To test locally: `cd functions && npm run serve`
+
+**Deploying Cloud Functions**
+```bash
+firebase deploy --only functions
+```
+
+For detailed deployment instructions, see [functions/README.md](functions/README.md)
 
 **Creating a Challenge**
 - Step 1: Navigate to "challenges dashboard"
